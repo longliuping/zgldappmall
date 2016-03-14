@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
+import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.GsonObject;
 import com.zgld.mall.utils.Contents;
 
@@ -50,7 +51,10 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
         if(msg.getData().getInt("status")==200){
             switch (msg.what){
                 case 201:
-                    
+                    String gson = msg.getData().getString("data");
+                    AspnetUsers user = new Gson().fromJson(gson, new TypeToken<AspnetUsers>() {
+                    }.getType());
+                    Toast.makeText(getApplicationContext(),user.getUserName(),Toast.LENGTH_SHORT).show();
                     break;
             }
         }
