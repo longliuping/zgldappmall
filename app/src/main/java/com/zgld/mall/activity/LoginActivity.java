@@ -78,7 +78,7 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
                     Map<String,String> m = new HashMap();
                     m.put("name",et_user_name.getText().toString());
                     m.put("password",et_user_password.getText().toString());
-                    m.put("loginType","1");
+                    m.put("id","1");
                     getData(Request.Method.POST, 201, "user_login.html", m, null,1);
                 }
                 break;
