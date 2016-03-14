@@ -52,7 +52,7 @@ public class GsonObject implements Serializable{
         this.data = data;
     }
 
-    private class ObjectData{
+    private class ObjectData implements Serializable{
 
     }
 }

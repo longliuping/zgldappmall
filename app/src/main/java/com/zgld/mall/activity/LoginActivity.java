@@ -47,20 +47,13 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
 
     @Override
     public void handleMsg(Message msg) {
-        Gson gson = new Gson();
-        String json = msg.getData().get(Contents.JSON).toString();
-        GsonObject go = gson.fromJson(json, new TypeToken<GsonObject>() { }.getType());
-        if(go.getStatus()!=200)
-        {
-            Toast.makeText(getApplicationContext(),go.getMsg(),Toast.LENGTH_SHORT).show();
-        }else{
+        if(msg.getData().getInt("status")==200){
             switch (msg.what){
                 case 201:
-
+                    
                     break;
             }
         }
-
     }
 
     @Override

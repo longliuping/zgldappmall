@@ -18,12 +18,17 @@ import android.widget.Toast;
 import com.android.volley.Cache;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
+import com.zgld.mall.beans.GsonObject;
 import com.zgld.mall.utils.ConfirmDialog;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.volley.AsyncGameRunner;
 import com.zgld.mall.volley.NetWorkTools;
 import com.zgld.mall.volley.RequestListenr;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Date;
@@ -62,14 +67,24 @@ public abstract class BaseActivity extends Activity  implements RequestListenr {
      */
     @Override
     public void onCompelete(int tag, String json) {
+//        GsonObject go = new Gson().fromJson(json, new TypeToken<GsonObject>() {
+//        }.getType());
         Message msg = handler.obtainMessage();
         msg.what = tag;
-        Bundle data = new Bundle();
-        data.putString("json", json);
-        msg.setData(data);
-        if (confirmDialog != null && confirmDialog.isShowing()) {
-            confirmDialog.dismiss();
-        }
+       try{
+           JSONObject object = new JSONObject(json);
+           Toast.makeText(getApplicationContext(),object.getString("msg"),Toast.LENGTH_SHORT).show();
+           Bundle data = new Bundle();
+           data.putInt("status",object.getInt("status"));
+           data.putString("json", json);
+           data.putString("data",object.getJSONObject("data").toString());
+           msg.setData(data);
+           if (confirmDialog != null && confirmDialog.isShowing()) {
+               confirmDialog.dismiss();
+           }
+       }catch (Exception e){
+        e.printStackTrace();
+       }
         handler.sendMessage(msg);
     }
 
