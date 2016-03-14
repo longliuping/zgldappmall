@@ -54,11 +54,11 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login_button:
-                if(et_user_name.getText()==null || !et_user_name.getText().toString().isEmpty())
+                if(et_user_name.getText()==null || et_user_name.getText().toString().isEmpty())
                 {
                     Toast.makeText(this,"用户名不能为空!",Toast.LENGTH_SHORT).show();
                 }else
-                if(et_user_password.getText()==null || !et_user_password.getText().toString().isEmpty())
+                if(et_user_password.getText()==null || et_user_password.getText().toString().isEmpty())
                 {
                     Toast.makeText(this,"密码不能为空!",Toast.LENGTH_SHORT).show();
                 }else{
