@@ -6,25 +6,17 @@ import java.io.Serializable;
  * Created by LongLiuPing on 2016/3/14.
  */
 public class GsonObject implements Serializable{
-    int flag;
+    boolean flag;
     String msg;
     int status;
-//    boolean timeout;
+    boolean timeout;
     ObjectData data;
 
-    public ObjectData getData() {
-        return data;
-    }
-
-    public void setData(ObjectData data) {
-        this.data = data;
-    }
-
-    public int getFlag() {
+    public boolean isFlag() {
         return flag;
     }
 
-    public void setFlag(int flag) {
+    public void setFlag(boolean flag) {
         this.flag = flag;
     }
 
@@ -44,13 +36,22 @@ public class GsonObject implements Serializable{
         this.status = status;
     }
 
-//    public boolean isTimeout() {
-//        return timeout;
-//    }
-//
-//    public void setTimeout(boolean timeout) {
-//        this.timeout = timeout;
-//    }
+    public boolean isTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(boolean timeout) {
+        this.timeout = timeout;
+    }
+
+    public ObjectData getData() {
+        return data;
+    }
+
+    public void setData(ObjectData data) {
+        this.data = data;
+    }
+
     private class ObjectData{
 
     }

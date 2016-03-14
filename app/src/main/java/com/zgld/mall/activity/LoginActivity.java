@@ -49,8 +49,7 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
     public void handleMsg(Message msg) {
         Gson gson = new Gson();
         String json = msg.getData().get(Contents.JSON).toString();
-        GsonObject go = gson.fromJson(msg.getData().get(Contents.JSON).toString().trim(), new TypeToken<GsonObject>() {
-        }.getType());
+        GsonObject go = gson.fromJson(json, new TypeToken<GsonObject>() { }.getType());
         if(go.getStatus()!=200)
         {
             Toast.makeText(getApplicationContext(),go.getMsg(),Toast.LENGTH_SHORT).show();
@@ -80,7 +79,7 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
                     m.put("name",et_user_name.getText().toString());
                     m.put("password",et_user_password.getText().toString());
                     m.put("loginType","1");
-                    getData(Request.Method.POST, 201, "", m, null,1);
+                    getData(Request.Method.POST, 201, "user_login.html", m, null,1);
                 }
                 break;
         }
