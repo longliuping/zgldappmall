@@ -1,0 +1,38 @@
+package com.zgld.mall.activity;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Message;
+import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.TextView;
+
+import com.zgld.mall.R;
+
+public class AboutActivity extends BaseActivity {
+    @Override
+    public void handleMsg(Message msg) {
+
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initStyle();
+        setContentView(R.layout.activity_about);
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated com.android.volley.Request.Method stub
+                finish();
+            }
+        });
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText("关于我们");
+        WebView wView = (WebView) findViewById(R.id.wv1);
+        WebSettings wSet = wView.getSettings();
+        wSet.setJavaScriptEnabled(true);
+        wView.loadUrl(getString(R.string.about_address));
+    }
+}
