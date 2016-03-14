@@ -8,8 +8,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
+import com.zgld.mall.beans.GsonObject;
+import com.zgld.mall.utils.Contents;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,12 +47,21 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
 
     @Override
     public void handleMsg(Message msg) {
+        Gson gson = new Gson();
+        String json = msg.getData().get(Contents.JSON).toString();
+        GsonObject go = gson.fromJson(msg.getData().get(Contents.JSON).toString().trim(), new TypeToken<GsonObject>() {
+        }.getType());
+        if(go.getStatus()!=200)
+        {
+            Toast.makeText(getApplicationContext(),go.getMsg(),Toast.LENGTH_SHORT).show();
+        }else{
+            switch (msg.what){
+                case 201:
 
-        switch (msg.what){
-            case 201:
-
-                break;
+                    break;
+            }
         }
+
     }
 
     @Override
