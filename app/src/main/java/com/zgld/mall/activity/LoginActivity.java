@@ -7,7 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.zgld.mall.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends BaseActivity implements  View.OnClickListener{
 
@@ -39,6 +43,11 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
     @Override
     public void handleMsg(Message msg) {
 
+        switch (msg.what){
+            case 201:
+
+                break;
+        }
     }
 
     @Override
@@ -53,7 +62,11 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
                 {
                     Toast.makeText(this,"密码不能为空!",Toast.LENGTH_SHORT).show();
                 }else{
-
+                    Map<String,String> m = new HashMap();
+                    m.put("name",et_user_name.getText().toString());
+                    m.put("password",et_user_password.getText().toString());
+                    m.put("loginType","1");
+                    getData(Request.Method.POST, 201, "", m, null,1);
                 }
                 break;
         }

@@ -19,7 +19,7 @@ import java.util.List;
  * Created by ILoveYou on 2016/3/4.
  */
 public class Contents {
-    public static final String BASE_URL = "http://www.zncdk.com:8044/";
+    public static final String BASE_URL = "http://114.215.198.143:89/webapi/json/";
     public static final String BASE_IMAGE_PATH = "http://www.zncdk.com/";
     public static final String UPLOAD_USER_IMAGE = "http://www.zncdk.com/ComImgUpload.ashx";// upload
     public static final String DATA = "data";
