@@ -85,10 +85,11 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 	public AspnetUsers getUserData() {
 		AspnetUsers info = null;
 		if (isLogin()) {
-			info.setEmail(haredPreferences.getString("haredPreferences", ""));
+			info = new AspnetUsers();
+			info.setEmail(haredPreferences.getString("email", ""));
 			info.setUserName(haredPreferences.getString("userName", ""));
 			info.setGender(haredPreferences.getInt("gender", 0));
-			info.setUserId(haredPreferences.getInt("userId", 0));
+			info.setUserId(Integer.parseInt(haredPreferences.getString("userId", "0")));
 			UserToken token = new UserToken();
 			token.setAccountToken(haredPreferences.getString("accountToken",""));
 			info.setUserToken(token);

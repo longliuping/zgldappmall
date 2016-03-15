@@ -61,7 +61,7 @@ public class Contents {
     public static int selectedProvincePosition = 0;// 选中省份
     public static int selectedCityPosition = 0;// 选中城市
     public static int selectedCountyPosition = 0;// 选中的县
-    static AspnetUsers user = new AspnetUsers();
+    static AspnetUsers user = null;
 
     public static AspnetUsers getUser(Context context) {
 //		UserInfo u = null;

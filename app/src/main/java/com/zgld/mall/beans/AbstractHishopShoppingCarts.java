@@ -17,7 +17,7 @@ public abstract class AbstractHishopShoppingCarts implements
 	private String skuId;
 	private Integer productId;
 	private Integer quantity;
-	private Date addTime;
+	private String addTime;
 
 	// Constructors
 
@@ -57,11 +57,11 @@ public abstract class AbstractHishopShoppingCarts implements
 		this.quantity = quantity;
 	}
 
-	public Date getAddTime() {
+	public String getAddTime() {
 		return addTime;
 	}
 
-	public void setAddTime(Date addTime) {
+	public void setAddTime(String addTime) {
 		this.addTime = addTime;
 	}
 

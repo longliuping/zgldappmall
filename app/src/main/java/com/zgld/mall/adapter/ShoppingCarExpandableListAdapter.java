@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
+import com.zgld.mall.beans.HishopProducts;
+import com.zgld.mall.beans.HishopShoppingCarts;
 import com.zgld.mall.beans.ShopingCar;
 import com.zgld.mall.beans.ShopingCartItem;
 import com.zgld.mall.utils.PriceUtil;
@@ -80,12 +82,12 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 
 	}
 
-	List<ShopingCar> listInfo;
+	List<HishopShoppingCarts> listInfo;
 	LayoutInflater layoutInflater;
 	Context context;
 	ShoppingCarExpandableListAdapterListener listener;
 
-	public ShoppingCarExpandableListAdapter(Context context, List<ShopingCar> listInfo,
+	public ShoppingCarExpandableListAdapter(Context context, List<HishopShoppingCarts> listInfo,
 											ShoppingCarExpandableListAdapterListener listener) {
 		// TODO Auto-generated constructor stub
 		this.listInfo = listInfo;
@@ -124,7 +126,7 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		// return listInfo.get(groupPosition).getProducts().size();
-		return listInfo.get(groupPosition).getCartItems().size();
+		return listInfo.get(groupPosition).getListHishopProducts().size();
 	}
 
 	/**
@@ -133,7 +135,7 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		// return listInfo.get(groupPosition).getProducts().get(childPosition);
-		return listInfo.get(groupPosition).getCartItems().get(childPosition);
+		return listInfo.get(groupPosition).getListHishopProducts().get(childPosition);
 	}
 
 	/**
@@ -173,11 +175,11 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 		} else {
 			holder = (GroupViewHolder) convertView.getTag();
 		}
-		ShopingCar info = listInfo.get(groupPosition);
+		HishopShoppingCarts info = listInfo.get(groupPosition);
 		if (info != null) {
-			holder.item_car_manufactor_name.setText(info.getSupplierName());
-			holder.item_car_manufactor_detail.setText(info.getSupplierName());
-			holder.item_car_manufactor.setChecked(info.isChecked());
+			holder.item_car_manufactor_name.setText(info.getSupplier().getSupplierName());
+			holder.item_car_manufactor_detail.setText(info.getSupplier().getSupplierName());
+//			holder.item_car_manufactor.setChecked(info.isChecked());
 
 			final GroupViewHolder h = holder;
 			holder.item_car_manufactor.setOnClickListener(new OnClickListener() {
@@ -232,18 +234,18 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 		if (isLastChild) {
 			holder.item_line.setVisibility(View.GONE);
 		}
-		final ShopingCartItem info = listInfo.get(groupPosition).getCartItems().get(childPosition);
+		final HishopProducts info = listInfo.get(groupPosition).getListHishopProducts().get(childPosition);
 		if (info != null) {
 			holder.item_title.setText(info.getProductName());
-			if (info.getNorms() != null) {
-				holder.item_detail.setText(String.valueOf(info.getNorms().trim()));
-			}
-			holder.item_price.setText(PriceUtil.priceY(info.getSalePrice()));
-			holder.item_market_price.setText(PriceUtil.priceY(info.getSalePrice()));
+//			if (info.getNorms() != null) {
+//				holder.item_detail.setText(String.valueOf(info.get));
+//			}
+			holder.item_price.setText(PriceUtil.priceY(info.getHishopSkus().getSalePrice()+""));
+			holder.item_market_price.setText(PriceUtil.priceY(info.getHishopSkus().getSalePrice()+""));
 //			holder.d_result.setText(info.getQuantity() + "");
-//			SysApplication.DisplayImage(info.getImageUrl1(), holder.item_image);
+			SysApplication.DisplayImage(info.getImageUrl1(), holder.item_image);
 			final int number = Integer.parseInt(holder.d_result.getText().toString());
-			holder.item_car_checkbox.setChecked(info.isChecked());
+//			holder.item_car_checkbox.setChecked(info.isChecked());
 			holder.item_image.setOnClickListener(new OnClickListener() {
 
 				@Override
