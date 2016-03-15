@@ -1,38 +1,28 @@
 package com.zgld.mall.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
 import com.zgld.mall.UserDataShare;
 import com.zgld.mall.beans.ProductImageUpload;
-import com.zgld.mall.beans.UserInfo;
-import com.zgld.mall.sync.AsyncUpImgTask;
 import com.zgld.mall.utils.BitmapUtil;
 import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.CustomDialog;
-import com.zgld.mall.utils.ViewUtil;
 
 import java.io.File;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 

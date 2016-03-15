@@ -11,10 +11,9 @@ import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
+import com.zgld.mall.UserDataShare;
 import com.zgld.mall.beans.AspnetUsers;
-import com.zgld.mall.beans.GsonObject;
-import com.zgld.mall.utils.Contents;
-
+import com.zgld.mall.utils.BroadcastUtils;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +43,11 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
         login_button.setOnClickListener(this);
         et_user_password = (EditText) findViewById(R.id.et_user_password);
         et_user_name = (EditText) findViewById(R.id.et_user_name);
+        String user[] = new UserDataShare(this).getLoginInfo();
+        if (user != null) {
+            et_user_name.setText(user[0]);
+            et_user_password.setText(user[1]);
+        }
     }
 
     @Override
@@ -55,6 +59,11 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
                     AspnetUsers user = new Gson().fromJson(gson, new TypeToken<AspnetUsers>() {
                     }.getType());
                     Toast.makeText(getApplicationContext(),user.getUserName(),Toast.LENGTH_SHORT).show();
+                    new UserDataShare(this).saveUserData(user);
+                    new UserDataShare(this).saveLoginInfo(et_user_name.getText().toString(), et_user_password.getText()
+                                .toString(), user.getUserId()+"");
+                    BroadcastUtils.sendUpdateHomeUser(this);
+                    finish();
                     break;
             }
         }

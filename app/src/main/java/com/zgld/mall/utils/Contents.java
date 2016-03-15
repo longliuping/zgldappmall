@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.zgld.mall.UserDataShare;
 import com.zgld.mall.activity.LoginActivity;
+import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.Province;
-import com.zgld.mall.beans.UserInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,9 +61,9 @@ public class Contents {
     public static int selectedProvincePosition = 0;// 选中省份
     public static int selectedCityPosition = 0;// 选中城市
     public static int selectedCountyPosition = 0;// 选中的县
-    static UserInfo user = new UserInfo();
+    static AspnetUsers user = new AspnetUsers();
 
-    public static UserInfo getUser(Context context) {
+    public static AspnetUsers getUser(Context context) {
 //		UserInfo u = null;
 //		if(context==null)
 //		{
@@ -103,7 +102,7 @@ public class Contents {
         intent.putExtra("data",bundle);
         activity.startActivityForResult(intent,flag);
     }
-    public static void setUser(UserInfo u) {
+    public static void setUser(AspnetUsers u) {
         user = u;
     }
     public static void updateCarProduct(Context context) {

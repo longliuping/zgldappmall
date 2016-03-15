@@ -5,7 +5,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.text.TextUtils;
 
-import com.zgld.mall.beans.UserInfo;
+import com.zgld.mall.beans.AspnetUsers;
+import com.zgld.mall.beans.UserToken;
 import com.zgld.mall.utils.Contents;
 
 /**
@@ -81,22 +82,16 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 	 * 
 	 * @return
 	 */
-	public UserInfo getUserData() {
-		UserInfo info = null;
+	public AspnetUsers getUserData() {
+		AspnetUsers info = null;
 		if (isLogin()) {
-			info = new UserInfo();
-//			info.setCellPhone(haredPreferences.getString("CellPhone", ""));
-//			info.setExamineStuart(haredPreferences.getBoolean("ExamineStuart", false));
-//			info.setGender(haredPreferences.getString("Gender", "0"));
-//			info.setHeadImg(haredPreferences.getString("HeadImg", ""));
-//			info.setLoweredUserName(haredPreferences.getString("LoweredUserName", ""));
-//			info.setNickname(haredPreferences.getString("Nickname", ""));
-//			info.setPersonalSignature(haredPreferences.getString("PersonalSignature", ""));
-//			info.setRegionId(haredPreferences.getString("RegionId", "0"));
-//			info.setUserId(haredPreferences.getString("UserId", "0"));
-//			info.setToken(haredPreferences.getString("Token", "0"));
-//			info.setWeChat(haredPreferences.getString("WeChat", ""));
-//			info.setAddress(haredPreferences.getString("address", ""));
+			info.setEmail(haredPreferences.getString("haredPreferences", ""));
+			info.setUserName(haredPreferences.getString("userName", ""));
+			info.setGender(haredPreferences.getInt("gender", 0));
+			info.setUserId(haredPreferences.getInt("userId", 0));
+			UserToken token = new UserToken();
+			token.setAccountToken(haredPreferences.getString("accountToken",""));
+			info.setUserToken(token);
 			Contents.setUser(info);
 		}
 		return info;
@@ -107,27 +102,21 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 	 * 
 	 * @param info
 	 */
-//	public void saveUserData(UserInfo info) {
-//		// 实例化SharedPreferences.Editor对象（第二步）
-//		SharedPreferences.Editor editor = haredPreferences.edit();
-//		// 用putString的方法保存数据
-//		editor.putString("CellPhone", info.getCellPhone());
-//		editor.putBoolean("ExamineStuart", info.isExamineStuart());
-//		editor.putString("Gender", info.getGender());
-//		editor.putString("HeadImg", info.getHeadImg());
-//		editor.putString("LoweredUserName", info.getLoweredUserName());
-//		editor.putString("Nickname", info.getNickname());
-//		editor.putString("PersonalSignature", info.getPersonalSignature());
-//		editor.putString("RegionId", info.getRegionId());
-//		editor.putString("UserId", info.getUserId());
-//		editor.putString("Token", info.getToken());
-//		editor.putString("WeChat", info.getWeChat());
-//		editor.putString("address", info.getAddress());
-//		editor.putBoolean(ISLOGIN, true);
-//		// 提交当前数据
-//		editor.commit();
-//		Contents.setUser(info);
-//	}
+	public void saveUserData(AspnetUsers info) {
+		// 实例化SharedPreferences.Editor对象（第二步）
+		SharedPreferences.Editor editor = haredPreferences.edit();
+		// 用putString的方法保存数据
+		editor.putString("email", info.getEmail());
+		editor.putString("userName", info.getUserName());
+		editor.putInt("gender", info.getGender());
+		editor.putInt("userId", info.getUserId());
+		editor.putString("accountToken", info.getUserToken().getAccountToken());
+		editor.putString("tokenRemark", info.getUserToken().getTokenRemark());
+		editor.putBoolean(ISLOGIN, true);
+		// 提交当前数据
+		editor.commit();
+		Contents.setUser(info);
+	}
 
 	/**
 	 * 是否登录
