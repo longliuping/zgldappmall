@@ -25,6 +25,7 @@ import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
 import com.zgld.mall.beans.HishopProducts;
 import com.zgld.mall.beans.Product;
+import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.utils.PriceUtil;
 
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ public class PublishSelectPicPopupWindow extends PopupWindow {
 	TextView style;
 
 	@SuppressWarnings("deprecation")
-	public PublishSelectPicPopupWindow(final Activity context, HishopProducts info,
+	public PublishSelectPicPopupWindow(final Activity context, Supplier info,
 			final PublishSelectPicPopupWindowListener callBack) {
 		super(context);
 		LayoutInflater inflater = (LayoutInflater) context

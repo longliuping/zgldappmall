@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.zgld.mall.adapter.ProductCommentAdapter;
 import com.zgld.mall.beans.HishopProducts;
 import com.zgld.mall.beans.Product;
 import com.zgld.mall.beans.ProductComment;
+import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.jazzy.JazzPageChangeListener;
 import com.zgld.mall.jazzy.JazzProductDetailAdapter;
 import com.zgld.mall.jazzy.JazzyProductDetailViewPager;
@@ -49,7 +51,7 @@ import java.util.Map;
 
 public class ProductDetailActivity extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener,
         PullToRefreshBase.OnRefreshListener2, PublishSelectPicPopupWindow.PublishSelectPicPopupWindowListener, JazzProductDetailAdapter.JazzProductDetailAdapterListener {
-    HishopProducts info;
+    Supplier info;
     String ProductId = null;
     MyGridView gridview;
     LoveProductListAdapter loveProductListAdapter;
@@ -108,8 +110,9 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
             switch (msg.what){
                 case 205:
                     JSONObject jsonObject = new JSONObject(json).getJSONObject("data").getJSONObject("info");
-                    info = new Gson().fromJson(jsonObject.toString(),new TypeToken<HishopProducts>(){}.getType());
-
+                    String gsonStr = jsonObject.toString();
+                    info = new Gson().fromJson(gsonStr,new TypeToken<Supplier>(){}.getType());
+                    initJazzView();
                     break;
             }
         } catch (Exception e) {
@@ -391,18 +394,18 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
             mViewPager = (JazzyProductDetailViewPager) findViewById(R.id.index_product_images_container);
             mIndicator = (LinearLayout) findViewById(R.id.index_product_images_indicator);
             mImageUrls = new ArrayList<String>();
-//            if (!TextUtils.isEmpty(info.getImageUrl1())) {
-//                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getImageUrl1());
-//            }
-//            if (!TextUtils.isEmpty(info.getImageUrl2())) {
-//                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getImageUrl2());
-//            }
-//            if (!TextUtils.isEmpty(info.getImageUrl3())) {
-//                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getImageUrl3());
-//            }
-//            if (!TextUtils.isEmpty(info.getImageUrl4())) {
-//                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getImageUrl4());
-//            }
+            if (!TextUtils.isEmpty(info.getHishopProducts().getImageUrl1())) {
+                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getHishopProducts().getImageUrl1());
+            }
+            if (!TextUtils.isEmpty(info.getHishopProducts().getImageUrl2())) {
+                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getHishopProducts().getImageUrl2());
+            }
+            if (!TextUtils.isEmpty(info.getHishopProducts().getImageUrl3())) {
+                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getHishopProducts().getImageUrl3());
+            }
+            if (!TextUtils.isEmpty(info.getHishopProducts().getImageUrl4())) {
+                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getHishopProducts().getImageUrl4());
+            }
 
             mIndicators = new ImageView[mImageUrls.size()];
             // mIndicator.setBackgroundColor(Color.argb(200, 135, 135, 152));
