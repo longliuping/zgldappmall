@@ -14,6 +14,9 @@ import com.zgld.mall.R;
 import com.zgld.mall.UserDataShare;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.utils.BroadcastUtils;
+
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,11 +55,12 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
 
     @Override
     public void handleMsg(Message msg) {
+        try{
         if(msg.getData().getInt("status")==200){
             switch (msg.what){
                 case 201:
-                    String gson = msg.getData().getString("data");
-                    AspnetUsers user = new Gson().fromJson(gson, new TypeToken<AspnetUsers>() {
+                    JSONObject jo = new JSONObject(msg.getData().getString("data")).getJSONObject("info");
+                    AspnetUsers user = new Gson().fromJson(jo.toString(), new TypeToken<AspnetUsers>() {
                     }.getType());
                     Toast.makeText(getApplicationContext(),user.getUserName(),Toast.LENGTH_SHORT).show();
                     new UserDataShare(this).saveUserData(user);
@@ -66,6 +70,9 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
                     finish();
                     break;
             }
+        }
+        }catch (Exception e){
+            e.printStackTrace();;
         }
     }
 

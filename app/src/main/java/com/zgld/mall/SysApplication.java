@@ -142,7 +142,7 @@ public class SysApplication extends Application implements Thread.UncaughtExcept
 	 * @param imageView
 	 */
 	public static void DisplayImage(String url, ImageView imageView) {
-		imageLoaderCache.displayImage(Contents.BASE_IMAGE_PATH + url, imageView, optionsProduct, animateFirstListener);
+		imageLoaderCache.displayImage(url, imageView, optionsProduct, animateFirstListener);
 	}
 
 	/**

@@ -15,7 +15,7 @@ public abstract class AbstractUserToken  implements java.io.Serializable {
 
      private Integer tokenId;
      private String accountToken;
-     private Date tokenDateTime;
+     private String tokenDateTime;
      private Integer tokenType;
      private String tokenRemark;
      private Integer userId;
@@ -45,11 +45,11 @@ public abstract class AbstractUserToken  implements java.io.Serializable {
         this.accountToken = accountToken;
     }
 
-    public Date getTokenDateTime() {
+    public String getTokenDateTime() {
         return this.tokenDateTime;
     }
     
-    public void setTokenDateTime(Date tokenDateTime) {
+    public void setTokenDateTime(String tokenDateTime) {
         this.tokenDateTime = tokenDateTime;
     }
 

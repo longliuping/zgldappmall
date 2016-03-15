@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
 import com.zgld.mall.UserDataShare;
+import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.ProductImageUpload;
 import com.zgld.mall.utils.BitmapUtil;
 import com.zgld.mall.utils.BroadcastUtils;
@@ -249,7 +250,7 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
     }
 
     void bindData() {
-        UserInfo user = new UserDataShare(this).getUserData();
+        AspnetUsers user = new UserDataShare(this).getUserData();
 //        if (TextUtils.isEmpty(user.getGender())) {
 //            sex.setText("男");
 //        } else if (user.getGender().equals("1")) {

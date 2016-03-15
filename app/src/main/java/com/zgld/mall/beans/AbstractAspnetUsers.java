@@ -19,7 +19,7 @@ public abstract class AbstractAspnetUsers implements java.io.Serializable {
 	private String loweredUserName;
 	private String mobilePin;
 	private Boolean isAnonymous;
-	private Date lastActivityDate;
+	private String lastActivityDate;
 	private String password;
 	private Integer passwordFormat;
 	private String passwordSalt;
@@ -29,17 +29,17 @@ public abstract class AbstractAspnetUsers implements java.io.Serializable {
 	private String passwordAnswer;
 	private Boolean isApproved;
 	private Boolean isLockedOut;
-	private Date createDate;
-	private Date lastLoginDate;
-	private Date lastPasswordChangedDate;
-	private Date lastLockoutDate;
+	private String createDate;
+	private String lastLoginDate;
+	private String lastPasswordChangedDate;
+	private String lastLockoutDate;
 	private Integer failedPasswordAttemptCount;
-	private Date failedPasswordAttemptWindowStart;
+	private String failedPasswordAttemptWindowStart;
 	private Integer failedPasswordAnswerAttemptCount;
-	private Date failedPasswordAnswerAttemptWindowStart;
+	private String failedPasswordAnswerAttemptWindowStart;
 	private String comment;
 	private Integer gender;
-	private Date birthDate;
+	private String birthDate;
 	private Integer userRole;
 	private String openId;
 	private String openIdType;
@@ -50,83 +50,6 @@ public abstract class AbstractAspnetUsers implements java.io.Serializable {
 
 	/** default constructor */
 	public AbstractAspnetUsers() {
-	}
-
-	/** minimal constructor */
-	public AbstractAspnetUsers(String userName, String loweredUserName,
-			Boolean isAnonymous, Date lastActivityDate, String password,
-			Integer passwordFormat, String passwordSalt, Boolean isApproved,
-			Boolean isLockedOut, Date createDate, Date lastLoginDate,
-			Date lastPasswordChangedDate, Date lastLockoutDate,
-			Integer failedPasswordAttemptCount,
-			Date failedPasswordAttemptWindowStart,
-			Integer failedPasswordAnswerAttemptCount,
-			Date failedPasswordAnswerAttemptWindowStart, String sessionId) {
-		this.userName = userName;
-		this.loweredUserName = loweredUserName;
-		this.isAnonymous = isAnonymous;
-		this.lastActivityDate = lastActivityDate;
-		this.password = password;
-		this.passwordFormat = passwordFormat;
-		this.passwordSalt = passwordSalt;
-		this.isApproved = isApproved;
-		this.isLockedOut = isLockedOut;
-		this.createDate = createDate;
-		this.lastLoginDate = lastLoginDate;
-		this.lastPasswordChangedDate = lastPasswordChangedDate;
-		this.lastLockoutDate = lastLockoutDate;
-		this.failedPasswordAttemptCount = failedPasswordAttemptCount;
-		this.failedPasswordAttemptWindowStart = failedPasswordAttemptWindowStart;
-		this.failedPasswordAnswerAttemptCount = failedPasswordAnswerAttemptCount;
-		this.failedPasswordAnswerAttemptWindowStart = failedPasswordAnswerAttemptWindowStart;
-		this.sessionId = sessionId;
-	}
-
-	/** full constructor */
-	public AbstractAspnetUsers(String userName, String loweredUserName,
-			String mobilePin, Boolean isAnonymous, Date lastActivityDate,
-			String password, Integer passwordFormat, String passwordSalt,
-			String email, String loweredEmail, String passwordQuestion,
-			String passwordAnswer, Boolean isApproved, Boolean isLockedOut,
-			Date createDate, Date lastLoginDate,
-			Date lastPasswordChangedDate, Date lastLockoutDate,
-			Integer failedPasswordAttemptCount,
-			Date failedPasswordAttemptWindowStart,
-			Integer failedPasswordAnswerAttemptCount,
-			Date failedPasswordAnswerAttemptWindowStart, String comment,
-			Integer gender, Date birthDate, Integer userRole,
-			String openId, String openIdType, String sessionId,
-			Set aspnetUsersInRoleses) {
-		this.userName = userName;
-		this.loweredUserName = loweredUserName;
-		this.mobilePin = mobilePin;
-		this.isAnonymous = isAnonymous;
-		this.lastActivityDate = lastActivityDate;
-		this.password = password;
-		this.passwordFormat = passwordFormat;
-		this.passwordSalt = passwordSalt;
-		this.email = email;
-		this.loweredEmail = loweredEmail;
-		this.passwordQuestion = passwordQuestion;
-		this.passwordAnswer = passwordAnswer;
-		this.isApproved = isApproved;
-		this.isLockedOut = isLockedOut;
-		this.createDate = createDate;
-		this.lastLoginDate = lastLoginDate;
-		this.lastPasswordChangedDate = lastPasswordChangedDate;
-		this.lastLockoutDate = lastLockoutDate;
-		this.failedPasswordAttemptCount = failedPasswordAttemptCount;
-		this.failedPasswordAttemptWindowStart = failedPasswordAttemptWindowStart;
-		this.failedPasswordAnswerAttemptCount = failedPasswordAnswerAttemptCount;
-		this.failedPasswordAnswerAttemptWindowStart = failedPasswordAnswerAttemptWindowStart;
-		this.comment = comment;
-		this.gender = gender;
-		this.birthDate = birthDate;
-		this.userRole = userRole;
-		this.openId = openId;
-		this.openIdType = openIdType;
-		this.sessionId = sessionId;
-		this.aspnetUsersInRoleses = aspnetUsersInRoleses;
 	}
 
 	// Property accessors
@@ -171,11 +94,11 @@ public abstract class AbstractAspnetUsers implements java.io.Serializable {
 		this.isAnonymous = isAnonymous;
 	}
 
-	public Date getLastActivityDate() {
+	public String getLastActivityDate() {
 		return this.lastActivityDate;
 	}
 
-	public void setLastActivityDate(Date lastActivityDate) {
+	public void setLastActivityDate(String lastActivityDate) {
 		this.lastActivityDate = lastActivityDate;
 	}
 
@@ -251,35 +174,35 @@ public abstract class AbstractAspnetUsers implements java.io.Serializable {
 		this.isLockedOut = isLockedOut;
 	}
 
-	public Date getCreateDate() {
+	public String getCreateDate() {
 		return this.createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
 
-	public Date getLastLoginDate() {
+	public String getLastLoginDate() {
 		return this.lastLoginDate;
 	}
 
-	public void setLastLoginDate(Date lastLoginDate) {
+	public void setLastLoginDate(String lastLoginDate) {
 		this.lastLoginDate = lastLoginDate;
 	}
 
-	public Date getLastPasswordChangedDate() {
+	public String getLastPasswordChangedDate() {
 		return this.lastPasswordChangedDate;
 	}
 
-	public void setLastPasswordChangedDate(Date lastPasswordChangedDate) {
+	public void setLastPasswordChangedDate(String lastPasswordChangedDate) {
 		this.lastPasswordChangedDate = lastPasswordChangedDate;
 	}
 
-	public Date getLastLockoutDate() {
+	public String getLastLockoutDate() {
 		return this.lastLockoutDate;
 	}
 
-	public void setLastLockoutDate(Date lastLockoutDate) {
+	public void setLastLockoutDate(String lastLockoutDate) {
 		this.lastLockoutDate = lastLockoutDate;
 	}
 
@@ -291,12 +214,12 @@ public abstract class AbstractAspnetUsers implements java.io.Serializable {
 		this.failedPasswordAttemptCount = failedPasswordAttemptCount;
 	}
 
-	public Date getFailedPasswordAttemptWindowStart() {
+	public String getFailedPasswordAttemptWindowStart() {
 		return this.failedPasswordAttemptWindowStart;
 	}
 
 	public void setFailedPasswordAttemptWindowStart(
-			Date failedPasswordAttemptWindowStart) {
+			String failedPasswordAttemptWindowStart) {
 		this.failedPasswordAttemptWindowStart = failedPasswordAttemptWindowStart;
 	}
 
@@ -309,12 +232,12 @@ public abstract class AbstractAspnetUsers implements java.io.Serializable {
 		this.failedPasswordAnswerAttemptCount = failedPasswordAnswerAttemptCount;
 	}
 
-	public Date getFailedPasswordAnswerAttemptWindowStart() {
+	public String getFailedPasswordAnswerAttemptWindowStart() {
 		return this.failedPasswordAnswerAttemptWindowStart;
 	}
 
 	public void setFailedPasswordAnswerAttemptWindowStart(
-			Date failedPasswordAnswerAttemptWindowStart) {
+			String failedPasswordAnswerAttemptWindowStart) {
 		this.failedPasswordAnswerAttemptWindowStart = failedPasswordAnswerAttemptWindowStart;
 	}
 
@@ -334,11 +257,11 @@ public abstract class AbstractAspnetUsers implements java.io.Serializable {
 		this.gender = gender;
 	}
 
-	public Date getBirthDate() {
+	public String getBirthDate() {
 		return this.birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 

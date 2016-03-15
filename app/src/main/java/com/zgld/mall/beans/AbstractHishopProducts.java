@@ -26,7 +26,7 @@ public abstract class AbstractHishopProducts implements java.io.Serializable {
 	private String metaDescription;
 	private String metaKeywords;
 	private Integer saleStatus;
-	private Date addedDate;
+	private String addedDate;
 	private Integer vistiCounts;
 	private Integer saleCounts;
 	private Integer displaySequence;
@@ -155,11 +155,11 @@ public abstract class AbstractHishopProducts implements java.io.Serializable {
 		this.saleStatus = saleStatus;
 	}
 
-	public Date getAddedDate() {
+	public String getAddedDate() {
 		return this.addedDate;
 	}
 
-	public void setAddedDate(Date addedDate) {
+	public void setAddedDate(String addedDate) {
 		this.addedDate = addedDate;
 	}
 
