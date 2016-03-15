@@ -19,12 +19,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.zgld.mall.AppManager;
 import com.zgld.mall.R;
 import com.zgld.mall.adapter.LoveProductListAdapter;
 import com.zgld.mall.adapter.ProductCommentAdapter;
+import com.zgld.mall.beans.HishopProducts;
 import com.zgld.mall.beans.Product;
 import com.zgld.mall.beans.ProductComment;
 import com.zgld.mall.jazzy.JazzPageChangeListener;
@@ -47,7 +49,7 @@ import java.util.Map;
 
 public class ProductDetailActivity extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener,
         PullToRefreshBase.OnRefreshListener2, PublishSelectPicPopupWindow.PublishSelectPicPopupWindowListener, JazzProductDetailAdapter.JazzProductDetailAdapterListener {
-    Product info = null;
+    HishopProducts info;
     String ProductId = null;
     MyGridView gridview;
     LoveProductListAdapter loveProductListAdapter;
@@ -103,7 +105,13 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
             }
             json = bundle.getString(Contents.JSON);
             Gson gson = new Gson();
+            switch (msg.what){
+                case 205:
+                    JSONObject jsonObject = new JSONObject(json).getJSONObject("data").getJSONObject("info");
+                    info = new Gson().fromJson(jsonObject.toString(),new TypeToken<HishopProducts>(){}.getType());
 
+                    break;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -118,6 +126,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         AppManager.getAppManager().addActivity(this);
         setContentView(R.layout.activity_product_detail);
         ProductId = this.getIntent().getStringExtra(Contents.PRODUCTID);
+        ProductId = "45";
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -183,17 +192,17 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
 
     private void initData() {
         // 产品详细
-        getData(com.android.volley.Request.Method.GET, 205, "CloudsProduct/QueryMode?productId=" + ProductId, null,
+        getData(com.android.volley.Request.Method.GET, 205, "product_detail.html?id=" + ProductId, null,
                 null, 1);// + "&userId=" + Contents.getUser(this).getUserId()
         // 喜欢
 //		getData(com.android.volley.Request.Method.GET, 201,
 //				"Products/GetProducts?putawayType=-1&pageSize=6&pageIndex=1&startDate=&sort=2", null, null, 1);
         // 评论
-        Map<String, String> m = new HashMap<String, String>();
-        m.put("productId", ProductId);
-        m.put("Size", 10 + "");
-        m.put("pageIndex", 1 + "");
-        getData(com.android.volley.Request.Method.POST, 666, "ProductReviews/QueryProductReview", m, null, 1);
+//        Map<String, String> m = new HashMap<String, String>();
+//        m.put("productId", ProductId);
+//        m.put("Size", 10 + "");
+//        m.put("pageIndex", 1 + "");
+//        getData(com.android.volley.Request.Method.POST, 666, "ProductReviews/QueryProductReview", m, null, 1);
     }
 
     @Override

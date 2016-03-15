@@ -23,8 +23,11 @@ import android.widget.Toast;
 
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
+import com.zgld.mall.beans.HishopProducts;
 import com.zgld.mall.beans.Product;
 import com.zgld.mall.utils.PriceUtil;
+
+import org.json.JSONObject;
 
 public class PublishSelectPicPopupWindow extends PopupWindow {
 	public interface PublishSelectPicPopupWindowListener {
@@ -41,7 +44,7 @@ public class PublishSelectPicPopupWindow extends PopupWindow {
 	TextView style;
 
 	@SuppressWarnings("deprecation")
-	public PublishSelectPicPopupWindow(final Activity context, Product info,
+	public PublishSelectPicPopupWindow(final Activity context, HishopProducts info,
 			final PublishSelectPicPopupWindowListener callBack) {
 		super(context);
 		LayoutInflater inflater = (LayoutInflater) context

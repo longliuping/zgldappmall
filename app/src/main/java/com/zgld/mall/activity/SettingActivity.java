@@ -65,7 +65,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 		update_pwd.setOnClickListener(this);
 		message = findViewById(R.id.message);
 		message.setOnClickListener(this);
-		if (new UserDataShare(this).getUserData() == null) {
+		if (!new UserDataShare(this).isLogin()) {
 			logout.setVisibility(View.GONE);
 		} else {
 			logout.setVisibility(View.VISIBLE);
