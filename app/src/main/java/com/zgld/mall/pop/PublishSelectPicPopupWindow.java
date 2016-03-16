@@ -94,7 +94,6 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
 								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
-								Toast.makeText(context,selectedInfoAdapter1.getListInfo().get(position).getAttributeId()+"  "+selectedInfoAdapter1.getListInfo().get(position).getValueId(),Toast.LENGTH_SHORT).show();
 								for (int i=0;i<selectedInfoAdapter1.getListInfo().size();i++){
 									selectedInfoAdapter1.getListInfo().get(i).setSelected(false);
 								}
@@ -118,7 +117,6 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
 								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
-								Toast.makeText(context,selectedInfoAdapter2.getListInfo().get(position).getAttributeId()+"  "+selectedInfoAdapter2.getListInfo().get(position).getValueId(),Toast.LENGTH_SHORT).show();
 								for (int i=0;i<selectedInfoAdapter2.getListInfo().size();i++){
 									selectedInfoAdapter2.getListInfo().get(i).setSelected(false);
 								}
@@ -198,9 +196,8 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 					Toast.makeText(context,"请选择属性",Toast.LENGTH_SHORT).show();
 					return;
 				}
-				Toast.makeText(context,seleStr,Toast.LENGTH_SHORT).show();
 				int number = Integer.parseInt(d_result.getText().toString());
-				callBack.confirm(number,"",1,1);
+				callBack.confirm(number,seleStr,valueId,attributeId);
 				dismiss();
 			}
 		});
