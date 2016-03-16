@@ -40,9 +40,10 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 	public void deleteInfo(int attributeId, int position) {
 
 	}
-
+	private Integer valueId;
+	private Integer attributeId;
 	public interface PublishSelectPicPopupWindowListener {
-		void confirm(int number, String strNorms, String ids);
+		void confirm(int number, String strNorms, Integer valueId,Integer attributeId);
 	}
 	private View mMenuView;
 	View close, ok, d_add, d_reduce;
@@ -66,7 +67,7 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 
 		List<HishopSkus> listHishopSkus = info.getHishopProducts().getListHishopSkus();
 		List<HishopSkuitems> listHishopSkuitems = info.getHishopProducts().getListHishopSkuitems();
-		List<HishopAttributes> listHishopAttributes = info.getHishopProducts().getListHishopAttributes();
+		final List<HishopAttributes> listHishopAttributes = info.getHishopProducts().getListHishopAttributes();
 		List<HishopAttributeValues> listHishopAttributeValues = info.getHishopProducts().getListHishopAttributeValues();
 		if(listHishopSkus!=null && listHishopAttributes!=null && listHishopAttributeValues!=null){
 			for (int i = 0;i<listHishopAttributes.size();i++){
@@ -91,6 +92,8 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 						gridview_color.setOnItemClickListener(new OnItemClickListener() {
 							@Override
 							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
+								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
 								Toast.makeText(context,selectedInfoAdapter1.getListInfo().get(position).getAttributeId()+"  "+selectedInfoAdapter1.getListInfo().get(position).getValueId(),Toast.LENGTH_SHORT).show();
 								for (int i=0;i<selectedInfoAdapter1.getListInfo().size();i++){
 									selectedInfoAdapter1.getListInfo().get(i).setSelected(false);
@@ -113,6 +116,8 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 						gridview_size.setOnItemClickListener(new OnItemClickListener() {
 							@Override
 							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
+								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
 								Toast.makeText(context,selectedInfoAdapter2.getListInfo().get(position).getAttributeId()+"  "+selectedInfoAdapter2.getListInfo().get(position).getValueId(),Toast.LENGTH_SHORT).show();
 								for (int i=0;i<selectedInfoAdapter2.getListInfo().size();i++){
 									selectedInfoAdapter2.getListInfo().get(i).setSelected(false);
@@ -157,8 +162,45 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				boolean sa = false;
+				String seleStr = "";
+				for (int i=0;i<selectedInfoAdapter1.getListInfo().size();i++)
+				{
+					if(selectedInfoAdapter1.getListInfo().get(i).isSelected()){
+						sa = true;
+
+						for (HishopAttributes ha : listHishopAttributes) {
+							if(selectedInfoAdapter1.getListInfo().get(i).getAttributeId().equals(ha.getAttributeId())){
+								seleStr = ha.getAttributeName()+":";
+							}
+						}
+						seleStr = selectedInfoAdapter1.getListInfo().get(i).getValueStr()+";";
+					}
+				}
+				if(!sa){
+					Toast.makeText(context,"请选择属性",Toast.LENGTH_SHORT).show();
+					return;
+				}
+				sa = false;
+				for (int i=0;i<selectedInfoAdapter2.getListInfo().size();i++)
+				{
+					if(selectedInfoAdapter2.getListInfo().get(i).isSelected()){
+						sa = true;
+						for (HishopAttributes ha : listHishopAttributes) {
+							if(selectedInfoAdapter2.getListInfo().get(i).getAttributeId().equals(ha.getAttributeId())){
+								seleStr = ha.getAttributeName()+":";
+							}
+						}
+						seleStr = selectedInfoAdapter2.getListInfo().get(i).getValueStr()+";";
+					}
+				}
+				if(!sa){
+					Toast.makeText(context,"请选择属性",Toast.LENGTH_SHORT).show();
+					return;
+				}
+				Toast.makeText(context,seleStr,Toast.LENGTH_SHORT).show();
 				int number = Integer.parseInt(d_result.getText().toString());
-				callBack.confirm(number,"","");
+				callBack.confirm(number,"",1,1);
 				dismiss();
 			}
 		});

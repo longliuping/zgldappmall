@@ -406,7 +406,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
     String strNorms = "";
     String ids = "";
     @Override
-    public void confirm(int number, String strNorms, String ids) {
+    public void confirm(int number, String strNorms, Integer valueId,Integer attributeId) {
 
         this.number = number;
         this.strNorms = strNorms;
