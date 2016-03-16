@@ -66,7 +66,6 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
     ImageView right, right1, back;
 
     // product detail
-    ImageView item_image;
     TextView item_title, item_sale_price,item_market_price;
 
     Button add_car, cart, correlation_add;
@@ -161,7 +160,6 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         findViewById(R.id.back).setOnClickListener(this);
 
         // product detail
-        item_image = (ImageView) findViewById(R.id.item_image);
         item_title = (TextView) findViewById(R.id.item_title);
         item_sale_price = (TextView) findViewById(R.id.item_sale_price);
         item_market_price = (TextView) findViewById(R.id.item_market_price);
@@ -398,6 +396,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
             for (int i = 0; i < mImageViews.length; i++) {
                 ImageView imageView = new ImageView(this);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setAdjustViewBounds(true);
                 mImageViews[i] = imageView;
             }
             mViewPager.setTransitionEffect(JazzyProductDetailViewPager.TransitionEffect.Standard);

@@ -15,13 +15,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical" >
-            <ImageView
-                android:id="@+id/item_image"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/item_text"
-                />
 
             <RelativeLayout
                 android:layout_width="fill_parent"
