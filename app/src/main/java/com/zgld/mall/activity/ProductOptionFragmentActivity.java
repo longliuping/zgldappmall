@@ -344,7 +344,7 @@ public class ProductOptionFragmentActivity extends BaseFragmentActivity implemen
     String ids = "";
 
     @Override
-    public void confirm(int number, String strNorms, String ids) {
+    public void confirm(int number, String strNorms, Integer valueId,Integer attributeId) {
         // TODO Auto-generated method stub
         this.number = number;
         this.strNorms = strNorms;
