@@ -37,4 +37,13 @@ public class HishopShoppingCarts extends AbstractHishopShoppingCarts implements
 	public void setHishopProducts(HishopProducts hishopProducts) {
 		this.hishopProducts = hishopProducts;
 	}
+	boolean checked;
+
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
 }

@@ -14,10 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zgld.mall.R;
+import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.City;
 import com.zgld.mall.beans.County;
+import com.zgld.mall.beans.GsonObject;
 import com.zgld.mall.beans.Province;
 import com.zgld.mall.utils.Contents;
+
+import org.json.JSONObject;
 
 /**
  * 添加地址
@@ -30,23 +34,28 @@ public class AddAddressActivity extends BaseActivity implements OnClickListener 
     @Override
     public void handleMsg(Message msg) {
         // TODO Auto-generated method stub
-        if (msg.getData() == null || msg.getData().getString(Contents.JSON) == null) {
-            return;
-        }
-        String json = msg.getData().getString(Contents.JSON);
-        switch (msg.what) {
-            case 202:
-                if (json != null && json.trim().equals("1")) {
-                    Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK);
-                    finish();
-                } else if (json != null && json.trim().equals("-1")) {
-                    Toast.makeText(this, getString(R.string.already_exists), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
+       try{
+           if (msg.getData() == null || msg.getData().getString(Contents.JSON) == null) {
+               return;
+           }
+           String json = msg.getData().getString(Contents.JSON);
+           switch (msg.what) {
+               case 202:
+                   JSONObject jo = new JSONObject(json);
+                   if (jo.getInt("status")==200) {
+                       Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show();
+                       setResult(RESULT_OK);
+                       finish();
+                   } else if (json != null && json.trim().equals("-1")) {
+                       Toast.makeText(this, getString(R.string.already_exists), Toast.LENGTH_SHORT).show();
+                   } else {
+                       Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                   }
+                   break;
+           }
+       }catch (Exception e){
+           e.printStackTrace();
+       }
     }
 
     @Override
@@ -123,25 +132,24 @@ public class AddAddressActivity extends BaseActivity implements OnClickListener 
                     break;
                 }
                 Map<String, String> m = new HashMap<String, String>();
-//                m.put("userId", Contents.getUser(this).getUserId());
-                m.put("shipTo", name.getText().toString());
-                m.put("address", detail.getText().toString());
-                m.put("zipCode", zip_code.getText().toString());
-                m.put("cellPhone", phone.getText().toString());
-                m.put("telPhone", landline.getText().toString());
+                m.put("address.shipTo", name.getText().toString());
+                m.put("address.address", detail.getText().toString());
+                m.put("address.zipcode", zip_code.getText().toString());
+                m.put("address.cellPhone", phone.getText().toString());
+                m.put("address.telPhone", landline.getText().toString());
                 if (county.getId() <= 0) {
                     if (city.getId() <= 0) {
-                        m.put("regionId", province.getId() + "");
+                        m.put("address.regionId", province.getId() + "");
                     } else {
-                        m.put("regionId", city.getId() + "");
+                        m.put("address.regionId", city.getId() + "");
                     }
                 } else {
-
-                    m.put("regionId", county.getId() + "");
+                    m.put("address.regionId", county.getId() + "");
                 }
-                m.put("shippingRegion", address.getText().toString());
-//                m.put("token", Contents.getUser(this).getToken());
-                getData(com.android.volley.Request.Method.POST, 202, "User/UserShippingAddressesAdd", m, null, 1);
+                AspnetUsers user = Contents.getUser(this);
+                m.put("token",user.getUserToken().getAccountToken());
+                m.put("userId",user.getUserId()+"");
+                getData(com.android.volley.Request.Method.POST, 202, "add_user_shipping_addresses.html", m, null, 1);
                 break;
         }
     }

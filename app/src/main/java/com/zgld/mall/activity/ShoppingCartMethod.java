@@ -226,30 +226,6 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 			bottom.setVisibility(View.GONE);
 			null_data_default.setVisibility(View.VISIBLE);
 		} else {
-
-//			getData(Method.GET, 202, "ShopingCart/Query?token=1&UserId=" + Contents.getUser(activity).getUserId()
-//					+ "&size=100&pageIndex=1&&startDate=", null, null, 1);
-//			ShopingCar car = new ShopingCar();
-//			List<ShopingCartItem> listItem = new ArrayList<>();
-//			listItem.add(new ShopingCartItem());
-//			listItem.add(new ShopingCartItem());
-//			listItem.add(new ShopingCartItem());
-//			listItem.add(new ShopingCartItem());
-//			listItem.add(new ShopingCartItem());
-//			listItem.add(new ShopingCartItem());
-//			car.setCartItems(listItem);
-//			listInfo = new ArrayList<>();
-//			listInfo.add(car);
-//			infoAdapter = new ShoppingCarExpandableListAdapter(activity, listInfo, ShoppingCartMethod.this);
-//			listview.getRefreshableView().setAdapter(infoAdapter);
-//			int groupCount = listview.getRefreshableView().getCount();
-//			for (int i = 0; i < groupCount; i++) {
-//				listview.getRefreshableView().expandGroup(i);
-//			}
-//
-//			item_car_checkbox.setChecked(false);
-//			infoAdapter.notifyDataSetChanged();
-//			getData(int method, int tag, String url, Map m, String title, int pageIndex) {
 			AspnetUsers user = Contents.getUser(activity);
 			Map<String,String> m = new HashMap<>();
 			UserToken userToken = user.getUserToken();
@@ -364,7 +340,6 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 
 					item_car_checkbox.setChecked(false);
 					infoAdapter.notifyDataSetChanged();
-					totalMoney();
 
 					infoAdapter.notifyDataSetChanged();
 					pageIndex++;
@@ -384,9 +359,6 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 						Toast.makeText(activity, activity.getString(R.string.delete_cart_product_failed),
 								Toast.LENGTH_SHORT).show();
 					}
-					// pageIndex = 1;
-					totalMoney();
-					// initData();
 					bindData();
 					break;
 				case 209:
@@ -468,47 +440,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 				String OwnerUserId = "";
 				Map<String, String> muser = new HashMap<String, String>();
 				for (int i = 0; i < listInfo.size(); i++) {
-//					if (OwnerUserId.equals(listInfo.get(i).getOwnerUserId())) {
-//						shopingCar = new ShopingCar();
-//						OKOrderActivity.listInfo.add(shopingCar);
-//					}
-//					for (int j = 0; j < listInfo.get(i).getCartItems().size(); j++) {
-//						ShopingCartItem info = listInfo.get(i).getCartItems().get(j);
-//						if (listInfo.get(i).getCartItems().get(j).isChecked()) {
-//							shopingCar.setBrandName(listInfo.get(i).getBrandName());
-//							shopingCar.setOwnerUserId(listInfo.get(i).getOwnerUserId());
-//							shopingCar.setSupplierId(listInfo.get(i).getSupplierId());
-//							shopingCar.setSupplierName(listInfo.get(i).getSupplierName());
-//							if (info.getStock() < Integer.parseInt(info.getQuantity())) {
-//								stockstr += "产品" + info.getProductName() + ",库存不足";
-//							}
-//							if (!muser.containsKey(info.getOwnerUserId().trim())) {
-//								muser.put(info.getOwnerUserId().trim(), info.getOwnerUserId().trim());
-//							}
-//							indexAll.add(info.getProductId());
-//							shopingCar.getCartItems().add(info);
-//							// param.append(info.getProductId() + "," +
-//							// info.getQuantity() + ",");
-//							param.append(info.getCartsId() + "," + info.getQuantity() + ",");
-//							totalProductNumber += Integer.parseInt(info.getQuantity());
-//							if (info.getSalePrice() == null) {
-//								info.setSalePrice("1");
-//							}
-//							if (info.getQuantity() == null) {
-//								info.setQuantity("1");
-//							}
-//							totalPrice += Double.parseDouble(info.getSalePrice())
-//									* Integer.parseInt(info.getQuantity());
-//							if (info.getMarketPrice() == null) {
-//								info.setMarketPrice("1");
-//							}
-//							if (info.getQuantity() == null) {
-//								info.setQuantity("1");
-//							}
-//							totalMarketPrice += Double.parseDouble(info.getMarketPrice())
-//									* Integer.parseInt(info.getQuantity());
-//						}
-//					}
+
 				}
 				if (!TextUtils.isEmpty(stockstr)) {
 					Toast.makeText(activity, stockstr, Toast.LENGTH_SHORT).show();
@@ -569,41 +501,39 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 	@Override
 	public void childViewOnCheckedChangeListener(int groupPosition, int childPosition, boolean isChecked) {
 		// TODO Auto-generated method stub
-//		listInfo.get(groupPosition).getCartItems().get(childPosition).setChecked(isChecked);
-//		if (!isChecked) {
-//			listInfo.get(groupPosition).setChecked(isChecked);
-//			item_car_checkbox.setChecked(isChecked);
-//		} else {
-//			// 如果全部选中,，分组也选中
-//			if (groupChecked(groupPosition)) {
-//				listInfo.get(groupPosition).setChecked(isChecked);
-//				if (checkAllChecked(groupPosition)) {
-//					item_car_checkbox.setChecked(isChecked);
-//				}
-//			}
-//		}
-		totalMoney();
+		listInfo.get(groupPosition).getListHishopProducts().get(childPosition).setChecked(isChecked);
+		if (!isChecked) {
+			listInfo.get(groupPosition).setChecked(isChecked);
+			item_car_checkbox.setChecked(isChecked);
+		} else {
+			// 如果全部选中,，分组也选中
+			if (groupChecked(groupPosition)) {
+				listInfo.get(groupPosition).setChecked(isChecked);
+				if (checkAllChecked(groupPosition)) {
+					item_car_checkbox.setChecked(isChecked);
+				}
+			}
+		}
 		infoAdapter.notifyDataSetChanged();
 	}
 
 	@Override
 	public void groupViewOnCheckedChangeListener(int groupPosition, boolean isChecked) {
 		// TODO Auto-generated method stub
-//		listInfo.get(groupPosition).setChecked(isChecked);
-//		for (int i = 0; i < listInfo.get(groupPosition).getCartItems().size(); i++) {
-//			listInfo.get(groupPosition).getCartItems().get(i).setChecked(isChecked);
-//		}
-//		if (!isChecked) {
-//			item_car_checkbox.setChecked(isChecked);
-//		} else {
-//			if (groupChecked(groupPosition)) {
-//				listInfo.get(groupPosition).setChecked(isChecked);
-//				if (checkAllChecked(groupPosition)) {
-//					item_car_checkbox.setChecked(isChecked);
-//				}
-//			}
-//		}
-		totalMoney();
+		listInfo.get(groupPosition).setChecked(isChecked);
+		for (int i = 0; i < listInfo.get(groupPosition).getListHishopProducts().size(); i++) {
+			listInfo.get(groupPosition).getListHishopProducts().get(i).setChecked(isChecked);
+		}
+		if (!isChecked) {
+			item_car_checkbox.setChecked(isChecked);
+		} else {
+			if (groupChecked(groupPosition)) {
+				listInfo.get(groupPosition).setChecked(isChecked);
+				if (checkAllChecked(groupPosition)) {
+					item_car_checkbox.setChecked(isChecked);
+				}
+			}
+		}
 		infoAdapter.notifyDataSetChanged();
 	}
 
@@ -615,14 +545,14 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 	 */
 	boolean groupChecked(int groupPosition) {
 		boolean result = false;
-//		for (int i = 0; i < listInfo.get(groupPosition).getCartItems().size(); i++) {
-//			if (!listInfo.get(groupPosition).getCartItems().get(i).isChecked()) {
-//				result = listInfo.get(groupPosition).isChecked();
-//				break;
-//			} else {
-//				result = true;
-//			}
-//		}
+		for (int i = 0; i < listInfo.get(groupPosition).getListHishopProducts().size(); i++) {
+			if (!listInfo.get(groupPosition).getListHishopProducts().get(i).isChecked()) {
+				result = listInfo.get(groupPosition).isChecked();
+				break;
+			} else {
+				result = true;
+			}
+		}
 		return result;
 	}
 
@@ -636,19 +566,19 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 		boolean result = true;
 		for (int i = 0; i < listInfo.size(); i++) {
 			if (result) {
-//				if (!listInfo.get(i).isChecked()) {
-//					result = false;
-//					break;
-//				} else {
-//					for (int j = 0; j < listInfo.get(i).getCartItems().size(); j++) {
-//						if (result) {
-//							if (!listInfo.get(i).getCartItems().get(j).isChecked()) {
-//								result = false;
-//								break;
-//							}
-//						}
-//					}
-//				}
+				if (!listInfo.get(i).isChecked()) {
+					result = false;
+					break;
+				} else {
+					for (int j = 0; j < listInfo.get(i).getListHishopProducts().size(); j++) {
+						if (result) {
+							if (!listInfo.get(i).getListHishopProducts().get(j).isChecked()) {
+								result = false;
+								break;
+							}
+						}
+					}
+				}
 			}
 		}
 		return result;
@@ -662,12 +592,12 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 	boolean checkedProduct() {
 		boolean result = false;
 		for (int i = 0; i < listInfo.size(); i++) {
-//			for (int j = 0; j < listInfo.get(i).getCartItems().size(); j++) {
-//				if (listInfo.get(i).getCartItems().get(j).isChecked()) {
-//					result = true;
-//					return true;
-//				}
-//			}
+			for (int j = 0; j < listInfo.get(i).getListHishopProducts().size(); j++) {
+				if (listInfo.get(i).getListHishopProducts().get(j).isChecked()) {
+					result = true;
+					return true;
+				}
+			}
 		}
 		return result;
 	}
@@ -676,13 +606,12 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < listInfo.size(); i++) {
-//			listInfo.get(i).setChecked(isChecked);
-//			for (int j = 0; j < listInfo.get(i).getCartItems().size(); j++) {
-//				listInfo.get(i).getCartItems().get(j).setChecked(isChecked);
-//			}
+			listInfo.get(i).setChecked(isChecked);
+			for (int j = 0; j < listInfo.get(i).getListHishopProducts().size(); j++) {
+				listInfo.get(i).getListHishopProducts().get(j).setChecked(isChecked);
+			}
 		}
 		infoAdapter.notifyDataSetChanged();
-		totalMoney();
 	}
 
 	@Override
@@ -740,7 +669,8 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 	public void reduceNumber(int groupPosition, int childPosition, int newNumber) {
 		// TODO Auto-generated method stub
 //		listInfo.get(groupPosition).getListHishopProducts().get(childPosition).setQuantity(newNumber + "");
-		totalMoney();
+		listInfo.get(groupPosition).setQuantity(newNumber);
+//		totalMoney();
 		infoAdapter.notifyDataSetChanged();
 	}
 
@@ -748,56 +678,8 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 	public void addNumber(int groupPosition, int childPosition, int newNumber) {
 		// TODO Auto-generated method stub
 //		listInfo.get(groupPosition).getListHishopProducts().get(childPosition).setQuantity(newNumber + "");
-		totalMoney();
+		listInfo.get(groupPosition).setQuantity(newNumber);
 		infoAdapter.notifyDataSetChanged();
-	}
-
-	/**
-	 * 统计钱和产品数量
-	 * 
-	 */
-	void totalMoney() {
-		Map<String, String> m = new HashMap<String, String>();// 商家
-		int totalMarketPrice = 0;// 价格
-		int totalProductNumber = 0;// 总数量
-		int totalPostage = 0;// 运费
-		if (listInfo != null && listInfo.size() > 0) {
-			bottom.setVisibility(View.VISIBLE);
-		} else {
-			bottom.setVisibility(View.GONE);
-		}
-		for (int j = 0; j < listInfo.size(); j++) {
-			for (int i = 0; i < listInfo.get(j).getListHishopProducts().size(); i++) {
-				HishopProducts info = listInfo.get(j).getListHishopProducts().get(i);
-//				if (info.isChecked()) {
-//					if (!m.containsKey(info.getSupplierName())) {
-//						m.put(info.getSupplierName(), info.getSupplierName());
-//					}
-//					if (!TextUtils.isEmpty(info.getPostage())) {
-//						totalPostage += Integer.parseInt(info.getPostage());
-//					}
-//					totalProductNumber += Integer.parseInt(info.getQuantity());
-//					if (info.getSalePrice() == null) {
-//						info.setSalePrice("1");
-//					}
-//					if (info.getQuantity() == null) {
-//						info.setQuantity("1");
-//					}
-//					if (info.getMarketPrice() == null) {
-//						info.setMarketPrice("1");
-//					}
-//					if (info.getQuantity() == null) {
-//						info.setQuantity("1");
-//					}
-//					totalMarketPrice += Double.parseDouble(info.getSalePrice()) * Double.parseDouble(info.getQuantity());
-//				}
-			}
-		}
-		item_payment_amount.setText(activity.getString(R.string.pay_price)
-				+ PriceUtil.priceY((totalMarketPrice + totalPostage) + ""));
-		item_total_amount.setText(activity.getString(R.string.total_price)
-				+ PriceUtil.priceY((totalMarketPrice + totalPostage) + ""));
-
 	}
 
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {

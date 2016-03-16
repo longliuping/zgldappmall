@@ -15,9 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zgld.mall.R;
-import com.zgld.mall.beans.Address;
 import com.zgld.mall.beans.City;
 import com.zgld.mall.beans.County;
+import com.zgld.mall.beans.HishopUserShippingAddresses;
 import com.zgld.mall.beans.Province;
 import com.zgld.mall.utils.Contents;
 
@@ -28,7 +28,7 @@ import com.zgld.mall.utils.Contents;
 public class ModifyUserAddressActivity extends BaseActivity implements OnClickListener {
     EditText address, name, phone, landline, detail, zip_code;
     Button complete;
-    Address info = new Address();
+    HishopUserShippingAddresses info = new HishopUserShippingAddresses();
 
     @Override
     public void handleMsg(Message msg) {
@@ -64,7 +64,7 @@ public class ModifyUserAddressActivity extends BaseActivity implements OnClickLi
                 finish();
             }
         });
-        info = (Address) this.getIntent().getSerializableExtra(Contents.INFO);
+        info = (HishopUserShippingAddresses) this.getIntent().getSerializableExtra(Contents.INFO);
         if (info == null) {
             finish();
             return;
@@ -91,7 +91,7 @@ public class ModifyUserAddressActivity extends BaseActivity implements OnClickLi
         name.setText(info.getShipTo());
         phone.setText(info.getCellPhone());
         landline.setText(info.getTelPhone());
-        address.setText(info.getShippingRegion());
+//        address.setText(info.getShippingRegion());
         detail.setText(info.getAddress());
         zip_code.setText(info.getZipcode());
     }

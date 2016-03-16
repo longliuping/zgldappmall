@@ -179,7 +179,7 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 		if (info != null) {
 			holder.item_car_manufactor_name.setText(info.getSupplier().getSupplierName());
 			holder.item_car_manufactor_detail.setText(info.getSupplier().getSupplierName());
-//			holder.item_car_manufactor.setChecked(info.isChecked());
+			holder.item_car_manufactor.setChecked(info.isChecked());
 
 			final GroupViewHolder h = holder;
 			holder.item_car_manufactor.setOnClickListener(new OnClickListener() {
@@ -245,7 +245,7 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 //			holder.d_result.setText(info.getQuantity() + "");
 			SysApplication.DisplayImage(info.getImageUrl1(), holder.item_image);
 			final int number = Integer.parseInt(holder.d_result.getText().toString());
-//			holder.item_car_checkbox.setChecked(info.isChecked());
+			holder.item_car_checkbox.setChecked(info.isChecked());
 			holder.item_image.setOnClickListener(new OnClickListener() {
 
 				@Override

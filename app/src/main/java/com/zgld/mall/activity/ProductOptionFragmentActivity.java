@@ -1,7 +1,6 @@
 package com.zgld.mall.activity;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,10 +19,8 @@ import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zgld.mall.AppManager;
 import com.zgld.mall.R;
-import com.zgld.mall.beans.Address;
-import com.zgld.mall.beans.HishopProducts;
+import com.zgld.mall.beans.HishopUserShippingAddresses;
 import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.fragment.ProductDescriptionFragment;
 import com.zgld.mall.fragment.ProductParamFragment;
@@ -32,7 +29,6 @@ import com.zgld.mall.indicator.FragmentPagerAdp;
 import com.zgld.mall.indicator.TabInfoBean;
 import com.zgld.mall.indicator.TitleIndicator;
 import com.zgld.mall.pop.PublishSelectPicPopupWindow;
-import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 
 /**
@@ -337,7 +333,7 @@ public class ProductOptionFragmentActivity extends BaseFragmentActivity implemen
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 200) {
-                Address addressInfo = (Address) data.getSerializableExtra("info");
+                HishopUserShippingAddresses addressInfo = (HishopUserShippingAddresses) data.getSerializableExtra("info");
 
             }
         }

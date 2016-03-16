@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.zgld.mall.R;
 import com.zgld.mall.adapter.OKOrderAdapter;
+import com.zgld.mall.beans.HishopUserShippingAddresses;
 import com.zgld.mall.beans.ShopingCar;
 import com.zgld.mall.beans.ShopingCartItem;
 import com.zgld.mall.utils.Contents;
@@ -41,7 +42,7 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
 
     RelativeLayout next;
     TextView name, address, address_title;
-    Address addressInfo;
+    HishopUserShippingAddresses addressInfo;
     int totalProductNumber = 0;// 总数量
     int totalMarketPrice = 0;// 价格
     int totalPostage = 0;// 运费
@@ -147,7 +148,7 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 200) {
-                addressInfo = (Address) data.getSerializableExtra("info");
+                addressInfo = (HishopUserShippingAddresses) data.getSerializableExtra("info");
                 bindAddress();
             }
         }
@@ -155,8 +156,8 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
 
     void bindAddress() {
         if (address != null) {
-//            name.setText("收货人:" + addressInfo.getShipTo() + "   " + addressInfo.getCellPhone());
-//            address.setText("" + addressInfo.getAddress());
+            name.setText("收货人:" + addressInfo.getShipTo() + "   " + addressInfo.getCellPhone());
+            address.setText("" + addressInfo.getAddress());
             address_title.setVisibility(View.GONE);
         }
     }

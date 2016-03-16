@@ -15,7 +15,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.zgld.mall.R;
-import com.zgld.mall.beans.Address;
+import com.zgld.mall.beans.HishopUserShippingAddresses;
 
 public class AddressAdapter extends BaseAdapter {
 	public interface AddressAdapterListener {
@@ -27,11 +27,11 @@ public class AddressAdapter extends BaseAdapter {
 	}
 
 	Context context;
-	List<Address> listInfo;
+	List<HishopUserShippingAddresses> listInfo;
 	LayoutInflater layoutInflater;
 	AddressAdapterListener listener;
 
-	public AddressAdapter(Context context, List<Address> listInfo, AddressAdapterListener listener) {
+	public AddressAdapter(Context context, List<HishopUserShippingAddresses> listInfo, AddressAdapterListener listener) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		this.listInfo = listInfo;
@@ -79,7 +79,7 @@ public class AddressAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		Address info = listInfo.get(position);
+		HishopUserShippingAddresses info = listInfo.get(position);
 		if (info != null) {
 
 			holder.name.setText("收货人:" + info.getShipTo() + "  " + info.getCellPhone());

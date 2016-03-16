@@ -1,7 +1,10 @@
 package com.zgld.mall.activity;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -9,7 +12,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zgld.mall.R;
 import com.zgld.mall.adapter.AddressAdapter;
-import com.zgld.mall.beans.Address;
+import com.zgld.mall.beans.AspnetUsers;
+import com.zgld.mall.beans.HishopUserShippingAddresses;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.CustomDialog;
 
@@ -23,6 +27,9 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * 地址管理
  *
@@ -30,53 +37,62 @@ import android.widget.TextView;
 public class AddressManagerActivity extends BaseActivity implements OnItemClickListener, OnRefreshListener2,
         AddressAdapter.AddressAdapterListener {
     PullToRefreshListView listview;
-    List<Address> listInfo = new ArrayList<Address>();
+    List<HishopUserShippingAddresses> listInfo = new ArrayList<HishopUserShippingAddresses>();
     AddressAdapter infoAdapter;
 
     @Override
     public void handleMsg(Message msg) {
         // TODO Auto-generated method stub
-        listview.onRefreshComplete();
-        Bundle bundle = msg.getData();
-        String json = "";
-        if (bundle == null) {
-            return;
-        }
-        json = bundle.getString(Contents.JSON);
-        if (json == null) {
-            return;
-        }
-        Gson gson = new Gson();
-        Type entityType = null;
-        switch (msg.what) {
-            case 201:
-                listInfo = new ArrayList<Address>();
-                entityType = new TypeToken<List<Address>>() {
-                }.getType();
-                List<Address> list = gson.fromJson(json, entityType);
-                if (list != null) {
-                    for (int i = 0; i < list.size(); i++) {
-                        Address info = list.get(i);
-                        listInfo.add(info);
-                    }
-                }
-                infoAdapter = new AddressAdapter(this, listInfo, this);
-                listview.setAdapter(infoAdapter);
-                infoAdapter.notifyDataSetChanged();
-                if (listInfo == null || listInfo.size() <= 0) {
-                    startActivityForResult(new Intent(AddressManagerActivity.this, AddAddressActivity.class), 200);
-                }
-                break;
-            case 202:
-                initData();
-                if (json != null && json.trim().equals("1")) {
-                    listInfo.remove(deletePosition);
-                    Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
+      try{
+          listview.onRefreshComplete();
+          Bundle bundle = msg.getData();
+          String json = "";
+          if (bundle == null) {
+              return;
+          }
+          json = bundle.getString(Contents.JSON);
+          if(bundle.getInt("status")!=200)
+          {
+              return;
+          }
+          if (json == null) {
+              return;
+          }
+          Gson gson = new Gson();
+          Type entityType = null;
+          JSONArray jsonArray = new JSONObject(json).getJSONObject("data").getJSONArray("listInfo");
+          switch (msg.what) {
+              case 201:
+                  listInfo = new ArrayList<HishopUserShippingAddresses>();
+                  entityType = new TypeToken<List<HishopUserShippingAddresses>>() {
+                  }.getType();
+                  List<HishopUserShippingAddresses> list = gson.fromJson(jsonArray.toString(), entityType);
+                  if (list != null) {
+                      for (int i = 0; i < list.size(); i++) {
+                          HishopUserShippingAddresses info = list.get(i);
+                          listInfo.add(info);
+                      }
+                  }
+                  infoAdapter = new AddressAdapter(this, listInfo, this);
+                  listview.setAdapter(infoAdapter);
+                  infoAdapter.notifyDataSetChanged();
+                  if (listInfo == null || listInfo.size() <= 0) {
+                      startActivityForResult(new Intent(AddressManagerActivity.this, AddAddressActivity.class), 200);
+                  }
+                  break;
+              case 202:
+                  initData();
+                  if (json != null && json.trim().equals("1")) {
+                      listInfo.remove(deletePosition);
+                      Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show();
+                  } else {
+                      Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                  }
+                  break;
+          }
+      }catch (Exception e){
+          e.printStackTrace();
+      }
     }
 
     @Override
@@ -123,8 +139,11 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
     }
 
     void initData() {
-//        getData(com.android.volley.Request.Method.POST, 201, "User/GetUserShipping?token="
-//                + Contents.getUser(this).getToken() + "&UserId=" + Contents.getUser(this).getUserId(), null, null, 1);
+        Map<String,String> m = new HashMap<>();
+        AspnetUsers user = Contents.getUser(this);
+        m.put("token",user.getUserToken().getAccountToken());
+        m.put("userId",user.getUserId()+"");
+        getData(com.android.volley.Request.Method.POST, 201, "user_shipping_addresses.html", m, null, 1);
     }
 
     @Override
@@ -149,7 +168,7 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
     @Override
     public void selectedChecked(int position) {
         // TODO Auto-generated method stub
-        Address info = listInfo.get(position);
+        HishopUserShippingAddresses info = listInfo.get(position);
         Intent intent = new Intent();
         intent.putExtra(Contents.INFO, info);
         setResult(RESULT_OK, intent);

@@ -104,6 +104,7 @@
                 android:layout_toRightOf="@id/item_car_checkbox"
                 android:text="付款金额:￥0.00"
                 android:textColor="#FC490B"
+                android:visibility="gone"
                 android:textSize="16sp" />
 
             <TextView
@@ -114,6 +115,7 @@
                 android:layout_toRightOf="@id/item_car_checkbox"
                 android:text="合计金额:￥0.00"
                 android:textColor="#717171"
+                android:visibility="gone"
                 android:textSize="16sp" />
 
             <TextView
