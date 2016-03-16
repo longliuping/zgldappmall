@@ -69,7 +69,7 @@ public class ProductOptionFragmentActivity extends BaseFragmentActivity implemen
         initStyle();
         setContentView(R.layout.activity_product_option_fragment);
         intent = getIntent();
-//        info = (Supplier) intent.getSerializableExtra(Contents.INFO);
+        info = (Supplier) intent.getSerializableExtra(Contents.INFO);
         initView();
         initFragment();
     }
@@ -103,7 +103,9 @@ public class ProductOptionFragmentActivity extends BaseFragmentActivity implemen
         if (intent != null) {
             mCurrentTab = intent.getIntExtra(Contents.POSITION, mCurrentTab);
         }
-        myAdapter = new FragmentPagerAdp(this, getSupportFragmentManager(), mTabs);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("info",info);
+        myAdapter = new FragmentPagerAdp(this, getSupportFragmentManager(), mTabs,bundle);
 
         mPager.setAdapter(myAdapter);
         mPager.setOnPageChangeListener(this);

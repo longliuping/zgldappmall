@@ -26,20 +26,12 @@ import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.zgld.mall.AppManager;
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
-import com.zgld.mall.adapter.LoveProductListAdapter;
-import com.zgld.mall.adapter.ProductCommentAdapter;
-import com.zgld.mall.beans.HishopProducts;
-import com.zgld.mall.beans.Product;
-import com.zgld.mall.beans.ProductComment;
 import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.jazzy.JazzPageChangeListener;
 import com.zgld.mall.jazzy.JazzProductDetailAdapter;
 import com.zgld.mall.jazzy.JazzyProductDetailViewPager;
 import com.zgld.mall.pop.PublishSelectPicPopupWindow;
-import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
-import com.zgld.mall.widget.MyGridView;
-import com.zgld.mall.widget.MyListView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,16 +46,9 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         PullToRefreshBase.OnRefreshListener2, PublishSelectPicPopupWindow.PublishSelectPicPopupWindowListener, JazzProductDetailAdapter.JazzProductDetailAdapterListener {
     Supplier info;
     int productId = 0;
-    MyGridView gridview;
-    LoveProductListAdapter loveProductListAdapter;
     PullToRefreshScrollView scrollview;
-    List<Product> listProduct = new ArrayList<Product>();
 
-    MyListView listview;
-    List<ProductComment> listProductComments = new ArrayList<ProductComment>();
-    ProductCommentAdapter productCommentAdapter;
-
-    ImageView right, right1, back;
+    ImageView back;
 
     // product detail
     TextView item_title, item_sale_price,item_market_price;
@@ -73,7 +58,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
     ImageView item_user_head;
     TextView item_user_name;
     TextView item_user_shop_address;
-    View share, item_user_data_base;
+    View item_user_data_base;
 
     // TextView title;
 
@@ -146,15 +131,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         scrollview.setFocusableInTouchMode(true);
         scrollview.requestFocus();
         scrollview.setOnRefreshListener(this);
-        scrollview.setMode(PullToRefreshBase.Mode.BOTH);
-        gridview = (MyGridView) findViewById(R.id.gridview);
-        gridview.setOnItemClickListener(this);
-        loveProductListAdapter = new LoveProductListAdapter(this, listProduct);
 
-        listProductComments = new ArrayList<ProductComment>();
-        listview = (MyListView) findViewById(R.id.listview);
-        productCommentAdapter = new ProductCommentAdapter(this, listProductComments);
-        listview.setAdapter(productCommentAdapter);
         item_user_data_base = findViewById(R.id.item_user_data_base);
         item_user_data_base.setOnClickListener(this);
         findViewById(R.id.back).setOnClickListener(this);
@@ -176,9 +153,6 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         item_user_head = (ImageView) findViewById(R.id.item_user_head);
         item_user_name = (TextView) findViewById(R.id.item_user_name);
         item_user_shop_address = (TextView) findViewById(R.id.item_user_shop_address);
-        share = findViewById(R.id.share);
-        share.setVisibility(View.VISIBLE);
-        share.setOnClickListener(this);
         initData();
     }
 
@@ -300,18 +274,6 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                     startActivity(intent);
                 }
                 break;
-//            case R.id.product_pay:
-//                if (Contents.getUser(this) == null) {
-//                    Contents.loginPage(this,null,200);
-//                    return;
-//                }
-//                if (info != null) {
-//                    Toast.makeText(this, getString(R.string.can_not_sell_their_own_products), Toast.LENGTH_SHORT).show();
-//                    break;
-//                } else {
-//                    showPop();
-//                }
-//                break;
         }
     }
 
@@ -384,9 +346,9 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                 imageView.setLayoutParams(params);
                 mIndicators[i] = imageView;
                 if (i == 0) {
-                    mIndicators[i].setBackgroundResource(R.drawable.jazz_default);
+                    mIndicators[i].setImageResource(R.drawable.jazz_default);
                 } else {
-                    mIndicators[i].setBackgroundResource(R.drawable.jazz_pressed);
+                    mIndicators[i].setImageResource(R.drawable.jazz_pressed);
                 }
                 mIndicator.addView(imageView);
             }
@@ -395,7 +357,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
 
             for (int i = 0; i < mImageViews.length; i++) {
                 ImageView imageView = new ImageView(this);
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setScaleType(ImageView.ScaleType.CENTER);
                 imageView.setAdjustViewBounds(true);
                 mImageViews[i] = imageView;
             }

@@ -41,7 +41,7 @@ public class ImageBrowserAdapter extends PagerAdapter {
 		// imageLoader.DisplayImageAbstract(
 		// mPhotos.get(position % mPhotos.size()), photoView, false);
 		SysApplication.DisplayAbstractImage(mPhotos.get(position % mPhotos.size()), photoView);
-		container.addView(photoView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		container.addView(photoView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		return photoView;
 	}
 

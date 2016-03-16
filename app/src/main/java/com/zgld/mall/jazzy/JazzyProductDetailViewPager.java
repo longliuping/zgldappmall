@@ -490,7 +490,7 @@ public class JazzyProductDetailViewPager extends ViewPager {
 		}
 		// heightMeasureSpec = MeasureSpec.makeMeasureSpec(height,
 		// MeasureSpec.EXACTLY);
-		heightMeasureSpec = MeasureSpec.makeMeasureSpec((d.getHeight() / 2), MeasureSpec.EXACTLY);
+		heightMeasureSpec = MeasureSpec.makeMeasureSpec((d.getHeight() / 2)+150, MeasureSpec.EXACTLY);
 
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}

@@ -6,6 +6,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshWebView;
 import com.zgld.mall.R;
 import com.zgld.mall.beans.HishopProducts;
+import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.utils.Contents;
 
 import android.app.Activity;
@@ -20,7 +21,7 @@ import android.webkit.WebSettings.LayoutAlgorithm;
 public class ProductDescriptionFragment extends ProductBaseFragment implements OnRefreshListener2 {
 	View view;
 	PullToRefreshWebView textView;
-	HishopProducts info = new HishopProducts();
+	Supplier info = new Supplier();
 	Activity activity;
 
 	@Override
@@ -34,7 +35,7 @@ public class ProductDescriptionFragment extends ProductBaseFragment implements O
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-//		info = (HishopProducts) activity.getIntent().getSerializableExtra("info");
+		info = (Supplier) activity.getIntent().getSerializableExtra("info");
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class ProductDescriptionFragment extends ProductBaseFragment implements O
 		if (view == null) {
 			view = inflater.inflate(R.layout.fragment_product_description, null);
 			isPrepared = true;
-//			lazyLoad();
+			lazyLoad();
 		} else {
 			ViewGroup group = (ViewGroup) view.getParent();
 			if (group != null) {
@@ -50,13 +51,6 @@ public class ProductDescriptionFragment extends ProductBaseFragment implements O
 			}
 		}
 		return view;
-	}
-
-	private void initData() {
-		if (info != null) {
-			getData(Method.GET, 595, "CloudsProduct/GetProductDescription?ProductId=" + info.getProductId(), null,
-					null, 1);
-		}
 	}
 
 	@Override
@@ -108,18 +102,35 @@ public class ProductDescriptionFragment extends ProductBaseFragment implements O
 		}
 		textView = (PullToRefreshWebView) view.findViewById(R.id.product_details);
 		textView.setOnRefreshListener(this);
-		initData();
+		WebSettings settings = textView.getRefreshableView().getSettings();
+		// 支持javascript
+		settings.setJavaScriptEnabled(true);
+		// 设置可以支持缩放
+		// textView.getSettings().setSupportZoom(true);
+		// 设置出现缩放工具
+		// textView.getSettings().setBuiltInZoomControls(true);
+		// 扩大比例的缩放
+		settings.setUseWideViewPort(true);
+		// 自适应屏幕
+		settings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+		settings.setLoadWithOverviewMode(true);
+		settings.setDefaultTextEncodingName("utf-8");
+		settings.setAppCacheEnabled(true);
+		settings.setCacheMode(settings.LOAD_CACHE_ELSE_NETWORK);
+		String style = "<div style=\"width:100%; text-align:center;\" >";
+		textView.getRefreshableView().loadDataWithBaseURL(Contents.BASE_IMAGE_PATH, style + info.getHishopProducts().getDescription() + "</div>",
+				"text/html", "utf-8", "");
 	}
 
 	@Override
 	public void onPullDownToRefresh(PullToRefreshBase refreshView) {
 		// TODO Auto-generated method stub
-		initData();
+		textView.onRefreshComplete();
 	}
 
 	@Override
 	public void onPullUpToRefresh(PullToRefreshBase refreshView) {
 		// TODO Auto-generated method stub
-		initData();
+		textView.onRefreshComplete();
 	}
 }
