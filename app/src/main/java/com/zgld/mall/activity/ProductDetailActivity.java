@@ -147,7 +147,6 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         correlation_add = (Button) findViewById(R.id.correlation_add);
         correlation_add.setOnClickListener(this);
         findViewById(R.id.item_product_param).setOnClickListener(this);
-        findViewById(R.id.product_norms).setOnClickListener(this);
         findViewById(R.id.product_details).setOnClickListener(this);
         findViewById(R.id.product_evaluation).setOnClickListener(this);
         item_user_head = (ImageView) findViewById(R.id.item_user_head);
@@ -222,16 +221,6 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                 // finish();
                 startActivity(new Intent(this, ShoppingCartActivity.class));
                 break;
-            case R.id.correlation_add:
-                if (Contents.getUser(this) == null) {
-                    Contents.loginPage(this,null,200);
-                    return;
-                }
-                if (info != null) {
-                    Toast.makeText(this, getString(R.string.can_not_add_their_own_products), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                break;
             case R.id.back:
                 finish();
                 break;
@@ -242,14 +231,6 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                     intent.putExtras(bundle);
                     intent.setClass(this, ProductOptionFragmentActivity.class);
                     startActivity(intent);
-                }
-                break;
-            case R.id.product_norms:
-                if (info != null) {
-                    Toast.makeText(this, getString(R.string.can_not_sell_their_own_products), Toast.LENGTH_SHORT).show();
-                    break;
-                } else {
-                    showPop();
                 }
                 break;
             case R.id.product_evaluation:
@@ -285,7 +266,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
             // 实例化SelectPicPopupWindow
             menuWindow = new PublishSelectPicPopupWindow(this, info, this);
             // 显示窗口
-            menuWindow.showAtLocation(this.findViewById(R.id.product_norms),
+            menuWindow.showAtLocation(this.findViewById(R.id.item_product_param),
                     Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
             menuWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
@@ -428,5 +409,8 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
     public void confirm(int number, String strNorms, String ids) {
 
         this.number = number;
+        this.strNorms = strNorms;
+        this.ids = ids;
+
     }
 }

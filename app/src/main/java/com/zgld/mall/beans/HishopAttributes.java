@@ -14,4 +14,13 @@ public class HishopAttributes extends AbstractHishopAttributes implements
 	/** default constructor */
 	public HishopAttributes() {
 	}
+	List<HishopAttributeValues> listHishopAttributeValues;
+
+	public List<HishopAttributeValues> getListHishopAttributeValues() {
+		return listHishopAttributeValues;
+	}
+
+	public void setListHishopAttributeValues(List<HishopAttributeValues> listHishopAttributeValues) {
+		this.listHishopAttributeValues = listHishopAttributeValues;
+	}
 }

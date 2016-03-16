@@ -23,27 +23,38 @@ import android.widget.Toast;
 
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
+import com.zgld.mall.adapter.SelectedInfoAdapter;
+import com.zgld.mall.beans.HishopAttributeValues;
+import com.zgld.mall.beans.HishopAttributes;
 import com.zgld.mall.beans.HishopProducts;
+import com.zgld.mall.beans.HishopSkuitems;
+import com.zgld.mall.beans.HishopSkus;
 import com.zgld.mall.beans.Product;
 import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.utils.PriceUtil;
 
 import org.json.JSONObject;
 
-public class PublishSelectPicPopupWindow extends PopupWindow {
+public class PublishSelectPicPopupWindow extends PopupWindow implements SelectedInfoAdapter.SelectedInfoAdapterListener {
+	@Override
+	public void deleteInfo(int attributeId, int position) {
+
+	}
+
 	public interface PublishSelectPicPopupWindowListener {
 		void confirm(int number, String strNorms, String ids);
 	}
-
 	private View mMenuView;
 	View close, ok, d_add, d_reduce;
 	ImageView image;
 	TextView title, price;
 	EditText d_result;
 	PublishSelectPicPopupWindowListener callBack;
-
+	TextView gridview_color_name,gridview_size_name;
+	GridView gridview_color,gridview_size;
 	TextView style;
-
+	SelectedInfoAdapter selectedInfoAdapter1;
+	SelectedInfoAdapter selectedInfoAdapter2;
 	@SuppressWarnings("deprecation")
 	public PublishSelectPicPopupWindow(final Activity context, Supplier info,
 			final PublishSelectPicPopupWindowListener callBack) {
@@ -52,6 +63,74 @@ public class PublishSelectPicPopupWindow extends PopupWindow {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.callBack = callBack;
 		mMenuView = inflater.inflate(R.layout.product_detail_param, null);
+
+		List<HishopSkus> listHishopSkus = info.getHishopProducts().getListHishopSkus();
+		List<HishopSkuitems> listHishopSkuitems = info.getHishopProducts().getListHishopSkuitems();
+		List<HishopAttributes> listHishopAttributes = info.getHishopProducts().getListHishopAttributes();
+		List<HishopAttributeValues> listHishopAttributeValues = info.getHishopProducts().getListHishopAttributeValues();
+		if(listHishopSkus!=null && listHishopAttributes!=null && listHishopAttributeValues!=null){
+			for (int i = 0;i<listHishopAttributes.size();i++){
+				HishopAttributes hishopAttributes = listHishopAttributes.get(i);
+				List<HishopAttributeValues> lv = new ArrayList<>();
+				for (int j=1;j<listHishopAttributeValues.size();j++){
+					HishopAttributeValues hishopAttributeValues = listHishopAttributeValues.get(j);
+					if(hishopAttributeValues.getAttributeId().equals(hishopAttributes.getAttributeId())){
+						lv.add(hishopAttributeValues);
+					}
+				}
+				hishopAttributes.setListHishopAttributeValues(lv);
+				listHishopAttributes.set(i,hishopAttributes);
+
+				switch (i){
+					case 0:
+						gridview_color_name = (TextView) mMenuView.findViewById(R.id.gridview_color_name);
+						gridview_color_name.setText(hishopAttributes.getAttributeName());
+						gridview_color = (GridView) mMenuView.findViewById(R.id.gridview_color);
+						selectedInfoAdapter1 = new SelectedInfoAdapter(context,hishopAttributes.getAttributeId(),lv,this);
+						gridview_color.setAdapter(selectedInfoAdapter1);
+						gridview_color.setOnItemClickListener(new OnItemClickListener() {
+							@Override
+							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+								Toast.makeText(context,selectedInfoAdapter1.getListInfo().get(position).getAttributeId()+"  "+selectedInfoAdapter1.getListInfo().get(position).getValueId(),Toast.LENGTH_SHORT).show();
+								for (int i=0;i<selectedInfoAdapter1.getListInfo().size();i++){
+									selectedInfoAdapter1.getListInfo().get(i).setSelected(false);
+								}
+								if (selectedInfoAdapter1.getListInfo().get(position).isSelected()) {
+									selectedInfoAdapter1.getListInfo().get(position).setSelected(false);
+								} else {
+									selectedInfoAdapter1.getListInfo().get(position).setSelected(true);
+								}
+								selectedInfoAdapter1.notifyDataSetChanged();
+							}
+						});
+						break;
+					case 1:
+						gridview_size_name = (TextView) mMenuView.findViewById(R.id.gridview_size_name);
+						gridview_size_name.setText(hishopAttributes.getAttributeName());
+						gridview_size = (GridView) mMenuView.findViewById(R.id.gridview_size);
+						selectedInfoAdapter2 = new SelectedInfoAdapter(context,hishopAttributes.getAttributeId(),lv,this);
+						gridview_size.setAdapter(selectedInfoAdapter2);
+						gridview_size.setOnItemClickListener(new OnItemClickListener() {
+							@Override
+							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+								Toast.makeText(context,selectedInfoAdapter2.getListInfo().get(position).getAttributeId()+"  "+selectedInfoAdapter2.getListInfo().get(position).getValueId(),Toast.LENGTH_SHORT).show();
+								for (int i=0;i<selectedInfoAdapter2.getListInfo().size();i++){
+									selectedInfoAdapter2.getListInfo().get(i).setSelected(false);
+								}
+								if (selectedInfoAdapter2.getListInfo().get(position).isSelected()) {
+									selectedInfoAdapter2.getListInfo().get(position).setSelected(false);
+								} else {
+									selectedInfoAdapter2.getListInfo().get(position).setSelected(true);
+								}
+								selectedInfoAdapter2.notifyDataSetChanged();
+							}
+						});
+						break;
+				}
+			}
+		}
+
+
 		d_result = (EditText) mMenuView.findViewById(R.id.d_result);
 		style = (TextView) mMenuView.findViewById(R.id.style);
 		close = mMenuView.findViewById(R.id.close);
@@ -70,7 +149,9 @@ public class PublishSelectPicPopupWindow extends PopupWindow {
 		image = (ImageView) mMenuView.findViewById(R.id.image);
 		title = (TextView) mMenuView.findViewById(R.id.title);
 		price = (TextView) mMenuView.findViewById(R.id.price);
-
+		title.setText(info.getHishopProducts().getProductName());
+		price.setText(PriceUtil.priceY(info.getHishopProducts().getListHishopSkus().get(0).getSalePrice() + ""));
+		SysApplication.DisplayImage(info.getHishopProducts().getImageUrl1(),image);
 		ok.setOnClickListener(new OnClickListener() {
 
 			@Override

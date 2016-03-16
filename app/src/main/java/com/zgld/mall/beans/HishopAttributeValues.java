@@ -19,5 +19,13 @@ public class HishopAttributeValues extends AbstractHishopAttributeValues
 	public void setAttributeId(Integer attributeId) {
 		this.attributeId = attributeId;
 	}
-	
+	boolean selected;
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 }
