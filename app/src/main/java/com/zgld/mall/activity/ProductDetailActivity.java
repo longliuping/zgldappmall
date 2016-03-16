@@ -25,6 +25,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.zgld.mall.AppManager;
 import com.zgld.mall.R;
+import com.zgld.mall.SysApplication;
 import com.zgld.mall.adapter.LoveProductListAdapter;
 import com.zgld.mall.adapter.ProductCommentAdapter;
 import com.zgld.mall.beans.HishopProducts;
@@ -52,7 +53,7 @@ import java.util.Map;
 public class ProductDetailActivity extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener,
         PullToRefreshBase.OnRefreshListener2, PublishSelectPicPopupWindow.PublishSelectPicPopupWindowListener, JazzProductDetailAdapter.JazzProductDetailAdapterListener {
     Supplier info;
-    String ProductId = null;
+    int productId = 0;
     MyGridView gridview;
     LoveProductListAdapter loveProductListAdapter;
     PullToRefreshScrollView scrollview;
@@ -66,14 +67,13 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
 
     // product detail
     ImageView item_image;
-    TextView item_title, item_detail, item_sale_price, item_market_price, item_return_price;
+    TextView item_title, item_sale_price,item_market_price;
 
     Button add_car, cart, correlation_add;
-    View immediately_pay;
-    LinearLayout item_love;
     PublishSelectPicPopupWindow menuWindow;
     ImageView item_user_head;
     TextView item_user_name;
+    TextView item_user_shop_address;
     View share, item_user_data_base;
 
     // TextView title;
@@ -94,7 +94,6 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
      */
     private ImageView[] mIndicators;
     protected Handler mHandler = null;
-    View product_pay;
 
     @Override
     public void handleMsg(Message msg) {
@@ -113,6 +112,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                     String gsonStr = jsonObject.toString();
                     info = new Gson().fromJson(gsonStr,new TypeToken<Supplier>(){}.getType());
                     initJazzView();
+                    initBData();
                     break;
             }
         } catch (Exception e) {
@@ -126,10 +126,13 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initStyle();
-        AppManager.getAppManager().addActivity(this);
         setContentView(R.layout.activity_product_detail);
-        ProductId = this.getIntent().getStringExtra(Contents.PRODUCTID);
-        ProductId = "45";
+        productId = this.getIntent().getIntExtra(Contents.PRODUCTID,0);
+        if(productId<=0)
+        {
+            finish();
+            return;
+        }
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -160,12 +163,8 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         // product detail
         item_image = (ImageView) findViewById(R.id.item_image);
         item_title = (TextView) findViewById(R.id.item_title);
-        item_detail = (TextView) findViewById(R.id.item_detail);
         item_sale_price = (TextView) findViewById(R.id.item_sale_price);
         item_market_price = (TextView) findViewById(R.id.item_market_price);
-        item_return_price = (TextView) findViewById(R.id.item_return_price);
-        immediately_pay = findViewById(R.id.immediately_pay);
-        immediately_pay.setOnClickListener(this);
         add_car = (Button) findViewById(R.id.add_car);
         add_car.setOnClickListener(this);
         cart = (Button) findViewById(R.id.cart);
@@ -173,39 +172,31 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         correlation_add = (Button) findViewById(R.id.correlation_add);
         correlation_add.setOnClickListener(this);
         findViewById(R.id.item_product_param).setOnClickListener(this);
-        item_love = (LinearLayout) findViewById(R.id.item_love);
-        item_love.setOnClickListener(this);
         findViewById(R.id.product_norms).setOnClickListener(this);
         findViewById(R.id.product_details).setOnClickListener(this);
         findViewById(R.id.product_evaluation).setOnClickListener(this);
         item_user_head = (ImageView) findViewById(R.id.item_user_head);
         item_user_name = (TextView) findViewById(R.id.item_user_name);
+        item_user_shop_address = (TextView) findViewById(R.id.item_user_shop_address);
         share = findViewById(R.id.share);
         share.setVisibility(View.VISIBLE);
         share.setOnClickListener(this);
-        product_pay = findViewById(R.id.product_pay);
-        product_pay.setOnClickListener(this);
-        // initBData();
         initData();
     }
 
     private void initBData() {
-        initJazzView();
+        item_user_name.setText(info.getSupplierName());
+        item_user_shop_address.setText(info.getSupplierDescribe());
+        item_title.setText(info.getHishopProducts().getProductName());
+        item_sale_price.setText("销售价："+info.getHishopProducts().getListHishopSkus().get(0).getSalePrice()+"");
+        item_market_price.setText("市场价:"+info.getHishopProducts().getMarketPrice());
+        SysApplication.DisplayImage(info.getSupplierUrl1(), item_user_head);
     }
 
     private void initData() {
         // 产品详细
-        getData(com.android.volley.Request.Method.GET, 205, "product_detail.html?id=" + ProductId, null,
-                null, 1);// + "&userId=" + Contents.getUser(this).getUserId()
-        // 喜欢
-//		getData(com.android.volley.Request.Method.GET, 201,
-//				"Products/GetProducts?putawayType=-1&pageSize=6&pageIndex=1&startDate=&sort=2", null, null, 1);
-        // 评论
-//        Map<String, String> m = new HashMap<String, String>();
-//        m.put("productId", ProductId);
-//        m.put("Size", 10 + "");
-//        m.put("pageIndex", 1 + "");
-//        getData(com.android.volley.Request.Method.POST, 666, "ProductReviews/QueryProductReview", m, null, 1);
+        getData(com.android.volley.Request.Method.GET, 205, "product_detail.html?id=" + productId, null,
+                null, 1);
     }
 
     @Override
@@ -236,7 +227,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                 if (info != null) {
                     bundle.putSerializable("info", info);
                     intent.putExtras(bundle);
-//                    intent.setClass(this, ProductOptionFragmentActivity.class);
+                    intent.setClass(this, ProductOptionFragmentActivity.class);
                     startActivity(intent);
                 }
                 break;
@@ -269,22 +260,16 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                     return;
                 }
                 break;
-            case R.id.item_love:
-                if (Contents.getUser(this) == null) {
-                    Contents.loginPage(this,null,200);
-                    return;
-                }
-                break;
             case R.id.back:
                 finish();
                 break;
             case R.id.product_details:
                 if (info != null) {
-//                    bundle.putSerializable("info", info);
-//                    bundle.putInt(Contents.POSITION, Contents.TAB_PRODUCT_DETAIL);
-//                    intent.putExtras(bundle);
-//                    intent.setClass(this, ProductOptionFragmentActivity.class);
-//                    startActivity(intent);
+                    bundle.putSerializable("info", info);
+                    bundle.putInt(Contents.POSITION, Contents.TAB_PRODUCT_DETAIL);
+                    intent.putExtras(bundle);
+                    intent.setClass(this, ProductOptionFragmentActivity.class);
+                    startActivity(intent);
                 }
                 break;
             case R.id.product_norms:
@@ -297,23 +282,11 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                 break;
             case R.id.product_evaluation:
                 if (info != null) {
-//                    bundle.putSerializable("info", info);
-//                    bundle.putInt(Contents.POSITION, Contents.TAB_PRODUCT_REVIEW);
-//                    intent.putExtras(bundle);
-//                    intent.setClass(this, ProductOptionFragmentActivity.class);
-//                    startActivity(intent);
-                }
-                break;
-            case R.id.immediately_pay:
-                if (Contents.getUser(this) == null) {
-                    Contents.loginPage(this,null,200);
-                    return;
-                }
-                if (info != null) {
-                    Toast.makeText(this, getString(R.string.can_not_sell_their_own_products), Toast.LENGTH_SHORT).show();
-                    break;
-                } else {
-                    showPop();
+                    bundle.putSerializable("info", info);
+                    bundle.putInt(Contents.POSITION, Contents.TAB_PRODUCT_REVIEW);
+                    intent.putExtras(bundle);
+                    intent.setClass(this, ProductOptionFragmentActivity.class);
+                    startActivity(intent);
                 }
                 break;
             case R.id.item_user_data_base:
@@ -329,18 +302,18 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                     startActivity(intent);
                 }
                 break;
-            case R.id.product_pay:
-                if (Contents.getUser(this) == null) {
-                    Contents.loginPage(this,null,200);
-                    return;
-                }
-                if (info != null) {
-                    Toast.makeText(this, getString(R.string.can_not_sell_their_own_products), Toast.LENGTH_SHORT).show();
-                    break;
-                } else {
-                    showPop();
-                }
-                break;
+//            case R.id.product_pay:
+//                if (Contents.getUser(this) == null) {
+//                    Contents.loginPage(this,null,200);
+//                    return;
+//                }
+//                if (info != null) {
+//                    Toast.makeText(this, getString(R.string.can_not_sell_their_own_products), Toast.LENGTH_SHORT).show();
+//                    break;
+//                } else {
+//                    showPop();
+//                }
+//                break;
         }
     }
 
@@ -378,33 +351,22 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         }
     }
 
-    int number = 1;
-    String strNorms = "";
-    String ids = "";
-
-    @Override
-    public void confirm(int number) {
-        // TODO Auto-generated com.android.volley.Request.Method stub
-        this.number = number;
-
-    }
-
     void initJazzView() {
         if (info != null) {
             mViewPager = (JazzyProductDetailViewPager) findViewById(R.id.index_product_images_container);
             mIndicator = (LinearLayout) findViewById(R.id.index_product_images_indicator);
             mImageUrls = new ArrayList<String>();
             if (!TextUtils.isEmpty(info.getHishopProducts().getImageUrl1())) {
-                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getHishopProducts().getImageUrl1());
+                mImageUrls.add(info.getHishopProducts().getImageUrl1());
             }
             if (!TextUtils.isEmpty(info.getHishopProducts().getImageUrl2())) {
-                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getHishopProducts().getImageUrl2());
+                mImageUrls.add(info.getHishopProducts().getImageUrl2());
             }
             if (!TextUtils.isEmpty(info.getHishopProducts().getImageUrl3())) {
-                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getHishopProducts().getImageUrl3());
+                mImageUrls.add(info.getHishopProducts().getImageUrl3());
             }
             if (!TextUtils.isEmpty(info.getHishopProducts().getImageUrl4())) {
-                mImageUrls.add(Contents.BASE_IMAGE_PATH + info.getHishopProducts().getImageUrl4());
+                mImageUrls.add(info.getHishopProducts().getImageUrl4());
             }
 
             mIndicators = new ImageView[mImageUrls.size()];
@@ -498,5 +460,12 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         intent.putExtra(Contents.POSITION, position);
         startActivity(intent);
     }
+    int number = 1;
+    String strNorms = "";
+    String ids = "";
+    @Override
+    public void confirm(int number, String strNorms, String ids) {
 
+        this.number = number;
+    }
 }

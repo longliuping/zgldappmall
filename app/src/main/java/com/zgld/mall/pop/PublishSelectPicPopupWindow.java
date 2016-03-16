@@ -32,7 +32,7 @@ import org.json.JSONObject;
 
 public class PublishSelectPicPopupWindow extends PopupWindow {
 	public interface PublishSelectPicPopupWindowListener {
-		void confirm(int number);
+		void confirm(int number, String strNorms, String ids);
 	}
 
 	private View mMenuView;
@@ -77,7 +77,7 @@ public class PublishSelectPicPopupWindow extends PopupWindow {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				int number = Integer.parseInt(d_result.getText().toString());
-				callBack.confirm(number);
+				callBack.confirm(number,"","");
 				dismiss();
 			}
 		});

@@ -5,16 +5,12 @@ import android.os.AsyncTask;
 import android.os.Message;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -32,26 +28,17 @@ import com.zgld.mall.SysApplication;
 import com.zgld.mall.activity.ProductDetailActivity;
 import com.zgld.mall.beans.HishopProductTypes;
 import com.zgld.mall.beans.HishopProducts;
-import com.zgld.mall.beans.Product;
-import com.zgld.mall.beans.TypeInfo;
 import com.zgld.mall.pulltorefresh.LocalFileUtils;
-import com.zgld.mall.widget.FullyGridLayoutManager;
-import com.zgld.mall.widget.FullyLinearLayoutManager;
-import com.zgld.mall.widget.GridSpacingItemDecoration;
+import com.zgld.mall.utils.Contents;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements AdapterView.OnItemClickListener {
     PullToRefreshScrollView home_fragment_scrollview;
     private GridView home_fragment_gridview1,home_fragment_gridview2,home_fragment_gridview3,home_fragment_gridview4,home_fragment_gridview5,home_fragment_gridview6;
     // 自定义可添加头部、尾部 RecyclerView数据适配器包装类
-//    private WrapAdapter<RecyclerViewAdapter> mWrapAdapter;
     private MyGridViewAdapter adapter1,adapter2,adapter3,adapter4,adapter5,adapter6;
     private AdLoopView mAdLoopView;
     TextView item_name1,item_name2,item_name3,item_name4,item_name5,item_name6;
@@ -183,48 +170,17 @@ public class HomeFragment extends BaseFragment {
             }
         });
         home_fragment_gridview1 = (GridView) view.findViewById(R.id.home_fragment_gridview1);
-        home_fragment_gridview1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getActivity(), ProductDetailActivity.class));
-            }
-        });
+        home_fragment_gridview1.setOnItemClickListener(this);
         home_fragment_gridview2 = (GridView) view.findViewById(R.id.home_fragment_gridview2);
-        home_fragment_gridview2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getActivity(), ProductDetailActivity.class));
-            }
-        });
+        home_fragment_gridview2.setOnItemClickListener(this);
         home_fragment_gridview3 = (GridView) view.findViewById(R.id.home_fragment_gridview3);
-        home_fragment_gridview3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getActivity(), ProductDetailActivity.class));
-            }
-        });
+        home_fragment_gridview3.setOnItemClickListener(this);
         home_fragment_gridview4 = (GridView) view.findViewById(R.id.home_fragment_gridview4);
-        home_fragment_gridview4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getActivity(), ProductDetailActivity.class));
-            }
-        });
+        home_fragment_gridview4.setOnItemClickListener(this);
         home_fragment_gridview5 = (GridView) view.findViewById(R.id.home_fragment_gridview5);
-        home_fragment_gridview5.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getActivity(), ProductDetailActivity.class));
-            }
-        });
+        home_fragment_gridview5.setOnItemClickListener(this);
         home_fragment_gridview6 = (GridView) view.findViewById(R.id.home_fragment_gridview6);
-        home_fragment_gridview6.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getActivity(), ProductDetailActivity.class));
-            }
-        });
-//        pageNumber++;
+        home_fragment_gridview6.setOnItemClickListener(this);
         adapter1 = new MyGridViewAdapter(new ArrayList<HishopProducts>());
         adapter2 = new MyGridViewAdapter(new ArrayList<HishopProducts>());
         adapter3 = new MyGridViewAdapter(new ArrayList<HishopProducts>());
@@ -268,6 +224,34 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(activity, ProductDetailActivity.class);
+        HishopProducts products = null;
+        switch (parent.getId()){
+            case R.id.home_fragment_gridview1:
+                products = (HishopProducts) adapter1.getItem(position);
+                break;
+            case R.id.home_fragment_gridview2:
+                products = (HishopProducts) adapter2.getItem(position);
+                break;
+            case R.id.home_fragment_gridview3:
+                products = (HishopProducts) adapter3.getItem(position);
+                break;
+            case R.id.home_fragment_gridview4:
+                products = (HishopProducts) adapter4.getItem(position);
+                break;
+            case R.id.home_fragment_gridview5:
+                products = (HishopProducts) adapter5.getItem(position);
+                break;
+            case R.id.home_fragment_gridview6:
+                products = (HishopProducts) adapter6.getItem(position);
+                break;
+        }
+        intent.putExtra(Contents.PRODUCTID,products.getProductId());
+        startActivity(intent);
+    }
+
     private class GetDataTask extends AsyncTask<Void, Void, String[]> {
 
         @Override
@@ -281,18 +265,8 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         protected void onPostExecute(String[] result) {
-//            if(pageNumber==1){
-//                listInfo.clear();
-//            }
-//            Product product = new Product();
-//            product.setName("男装");
-//            product.setName("JackSoney");
-//            listInfo.add(product);
-//            mAdapter.notifyDataSetChanged();
-
             // Call onRefreshComplete when the list has been refreshed.
             home_fragment_scrollview.onRefreshComplete();
-            pageNumber ++;
             super.onPostExecute(result);
         }
     }

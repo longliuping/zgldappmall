@@ -31,23 +31,12 @@
 	        android:layout_marginLeft="10dp"
 	        />
 	    <TextView 
-	        android:id="@+id/item_user_sales_number"
+	        android:id="@+id/item_user_shop_address"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="总销量 20"
+	        android:text="贵阳市"
 	        android:textColor="#727272"
 	        android:layout_toRightOf="@id/item_user_head"
-	        android:layout_below="@id/item_user_name"
-	        android:layout_marginLeft="10dp"
-	        android:layout_marginTop="10dp"
-	        />
-	    <TextView 
-	        android:id="@+id/item_user_myfans_number"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="被关注 20"
-	        android:textColor="#727272"
-	        android:layout_toRightOf="@id/item_user_sales_number"
 	        android:layout_below="@id/item_user_name"
 	        android:layout_marginLeft="10dp"
 	        android:layout_marginTop="10dp"
