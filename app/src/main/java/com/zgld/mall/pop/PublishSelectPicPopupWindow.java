@@ -171,10 +171,10 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 
 						for (HishopAttributes ha : listHishopAttributes) {
 							if(selectedInfoAdapter1.getListInfo().get(i).getAttributeId().equals(ha.getAttributeId())){
-								seleStr = ha.getAttributeName()+":";
+								seleStr += ha.getAttributeName()+":";
 							}
 						}
-						seleStr = selectedInfoAdapter1.getListInfo().get(i).getValueStr()+";";
+						seleStr += selectedInfoAdapter1.getListInfo().get(i).getValueStr()+";";
 					}
 				}
 				if(!sa){
@@ -188,10 +188,10 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 						sa = true;
 						for (HishopAttributes ha : listHishopAttributes) {
 							if(selectedInfoAdapter2.getListInfo().get(i).getAttributeId().equals(ha.getAttributeId())){
-								seleStr = ha.getAttributeName()+":";
+								seleStr += ha.getAttributeName()+":";
 							}
 						}
-						seleStr = selectedInfoAdapter2.getListInfo().get(i).getValueStr()+";";
+						seleStr += selectedInfoAdapter2.getListInfo().get(i).getValueStr()+";";
 					}
 				}
 				if(!sa){
