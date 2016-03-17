@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zgld.mall.R;
+import com.zgld.mall.beans.HishopSkus;
 import com.zgld.mall.beans.HishopUserShippingAddresses;
 import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.fragment.ProductDescriptionFragment;
@@ -344,7 +345,7 @@ public class ProductOptionFragmentActivity extends BaseFragmentActivity implemen
     String ids = "";
 
     @Override
-    public void confirm(int number, String strNorms, Integer valueId,Integer attributeId) {
+    public void confirm(int number, String strNorms,HishopSkus hishopSkus, Integer valueId,Integer attributeId) {
         // TODO Auto-generated method stub
         this.number = number;
         this.strNorms = strNorms;

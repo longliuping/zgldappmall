@@ -43,12 +43,12 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 	private Integer valueId;
 	private Integer attributeId;
 	public interface PublishSelectPicPopupWindowListener {
-		void confirm(int number, String strNorms, Integer valueId,Integer attributeId);
+		void confirm(int number, String strNorms,HishopSkus hishopSkus, Integer valueId,Integer attributeId);
 	}
 	private View mMenuView;
 	View close, ok, d_add, d_reduce;
 	ImageView image;
-	TextView title, price;
+	TextView title, sale_price,market_price,sale_model;
 	EditText d_result;
 	PublishSelectPicPopupWindowListener callBack;
 	TextView gridview_color_name,gridview_size_name;
@@ -56,6 +56,8 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 	TextView style;
 	SelectedInfoAdapter selectedInfoAdapter1;
 	SelectedInfoAdapter selectedInfoAdapter2;
+	List<HishopSkuitems> listHishopSkuitems = new ArrayList<>();
+	List<HishopSkus> listHishopSkus = new ArrayList<>();
 	@SuppressWarnings("deprecation")
 	public PublishSelectPicPopupWindow(final Activity context, Supplier info,
 			final PublishSelectPicPopupWindowListener callBack) {
@@ -65,8 +67,8 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 		this.callBack = callBack;
 		mMenuView = inflater.inflate(R.layout.product_detail_param, null);
 
-		List<HishopSkus> listHishopSkus = info.getHishopProducts().getListHishopSkus();
-		List<HishopSkuitems> listHishopSkuitems = info.getHishopProducts().getListHishopSkuitems();
+		listHishopSkus = info.getHishopProducts().getListHishopSkus();
+		listHishopSkuitems = info.getHishopProducts().getListHishopSkuitems();
 		final List<HishopAttributes> listHishopAttributes = info.getHishopProducts().getListHishopAttributes();
 		List<HishopAttributeValues> listHishopAttributeValues = info.getHishopProducts().getListHishopAttributeValues();
 		if(listHishopSkus!=null && listHishopAttributes!=null && listHishopAttributeValues!=null){
@@ -94,6 +96,7 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
 								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
+								setDetail(getSkus(getSkuId()));
 								for (int i=0;i<selectedInfoAdapter1.getListInfo().size();i++){
 									selectedInfoAdapter1.getListInfo().get(i).setSelected(false);
 								}
@@ -117,6 +120,7 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
 								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
+								setDetail(getSkus(getSkuId()));
 								for (int i=0;i<selectedInfoAdapter2.getListInfo().size();i++){
 									selectedInfoAdapter2.getListInfo().get(i).setSelected(false);
 								}
@@ -151,10 +155,14 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 		d_reduce = mMenuView.findViewById(R.id.d_reduce);
 		image = (ImageView) mMenuView.findViewById(R.id.image);
 		title = (TextView) mMenuView.findViewById(R.id.title);
-		price = (TextView) mMenuView.findViewById(R.id.price);
+		sale_price = (TextView) mMenuView.findViewById(R.id.sale_price);
 		title.setText(info.getHishopProducts().getProductName());
-		price.setText(PriceUtil.priceY(info.getHishopProducts().getListHishopSkus().get(0).getSalePrice() + ""));
-		SysApplication.DisplayImage(info.getHishopProducts().getImageUrl1(),image);
+		sale_price.setText("销售价："+PriceUtil.priceY(info.getHishopProducts().getListHishopSkus().get(0).getSalePrice() + ""));
+		market_price = (TextView) mMenuView.findViewById(R.id.market_price);
+		market_price.setText("市场价：" + PriceUtil.priceY(info.getHishopProducts().getMarketPrice() + ""));
+		sale_model =  (TextView)mMenuView.findViewById(R.id.sale_model);
+		sale_model.setText("商品规格："+info.getHishopProducts().getListHishopSkus().get(0).getSku());
+		SysApplication.DisplayImage(info.getHishopProducts().getImageUrl1(), image);
 		ok.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -197,7 +205,7 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 					return;
 				}
 				int number = Integer.parseInt(d_result.getText().toString());
-				callBack.confirm(number,seleStr,valueId,attributeId);
+				callBack.confirm(number,seleStr,getSkus(getSkuId()),valueId,attributeId);
 				dismiss();
 			}
 		});
@@ -256,5 +264,29 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 		});
 
 	}
-
+	public void setDetail(HishopSkus hishopSkus){
+		if(hishopSkus!=null) {
+			sale_model.setText("商品货号：" + hishopSkus.getSku());
+			sale_price.setText("销售价："+ PriceUtil.priceY(hishopSkus.getSalePrice() + ""));
+		}
+	}
+	public String getSkuId(){
+		String skuId = null;
+		for (int i=0;i<listHishopSkuitems.size();i++){
+			HishopSkuitems items = listHishopSkuitems.get(i);
+			if(items.getAttributeId().equals(attributeId) && items.getValueId().equals(valueId)) {
+				skuId =  items.getSkuId();
+			}
+		}
+		return skuId;
+	}
+	public HishopSkus getSkus(String skuId){
+		HishopSkus skus = null;
+		for (int i=0;i<listHishopSkus.size();i++){
+			if(listHishopSkus.get(i).getSkuId().equals(skuId)){
+				skus = listHishopSkus.get(i);
+			}
+		}
+		return skus;
+	}
 }

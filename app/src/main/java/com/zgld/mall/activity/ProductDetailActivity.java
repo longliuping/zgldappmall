@@ -26,6 +26,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.zgld.mall.AppManager;
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
+import com.zgld.mall.beans.HishopSkus;
 import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.jazzy.JazzPageChangeListener;
 import com.zgld.mall.jazzy.JazzProductDetailAdapter;
@@ -406,7 +407,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
     String strNorms = "";
     String ids = "";
     @Override
-    public void confirm(int number, String strNorms, Integer valueId,Integer attributeId) {
+    public void confirm(int number, String strNorms,HishopSkus hishopSkus, Integer valueId,Integer attributeId) {
 
         this.number = number;
         this.strNorms = strNorms;

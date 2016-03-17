@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop" />
 
@@ -33,7 +33,7 @@
             android:textColor="#010101" />
 
         <TextView
-            android:id="@+id/price"
+            android:id="@+id/sale_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
@@ -42,17 +42,37 @@
             android:layout_toRightOf="@id/image"
             android:singleLine="true"
             android:text="￥50.00"
-            android:textColor="#FF0000" />
-
-        <TextView
-            android:id="@+id/style"
+            android:textColor="#02A6FF" />
+        <com.zgld.mall.widget.OriginalPriceTextView
+            android:id="@+id/market_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/price"
+            android:layout_below="@id/sale_price"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/image"
             android:singleLine="true"
+            android:textColor="#9C9C9C" />
+        <TextView
+            android:id="@+id/sale_model"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/market_price"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/image"
+            android:singleLine="true"
+            android:textColor="#FF0000" />
+        <TextView
+            android:id="@+id/style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sale_model"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/image"
+            android:singleLine="true"
+            android:visibility="gone"
             android:textColor="#727272" />
 
         <TextView
