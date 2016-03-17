@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -26,6 +27,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.zgld.mall.AppManager;
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
+import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.HishopSkus;
 import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.jazzy.JazzPageChangeListener;
@@ -98,6 +100,9 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                     info = new Gson().fromJson(gsonStr,new TypeToken<Supplier>(){}.getType());
                     initJazzView();
                     initBData();
+                    break;
+                case 207:
+
                     break;
             }
         } catch (Exception e) {
@@ -403,15 +408,21 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         intent.putExtra(Contents.POSITION, position);
         startActivity(intent);
     }
-    int number = 1;
-    String strNorms = "";
-    String ids = "";
+
     @Override
     public void confirm(int number, String strNorms,HishopSkus hishopSkus, Integer valueId,Integer attributeId) {
-
-        this.number = number;
-        this.strNorms = strNorms;
-        this.ids = ids;
-
+        Map<String,String> m = new HashMap<>();
+        AspnetUsers users = Contents.getUser(this);
+        if(users!=null) {
+            m.put("skuId", hishopSkus.getSkuId());
+            m.put("productId", hishopSkus.getProductId()+"");
+            m.put("number", number+"");
+            m.put("token", users.getUserToken().getAccountToken());
+            m.put("userId", users.getUserId()+"");
+            getData(Request.Method.POST, 207, "add_product_car.html", m, null
+                    , 1);
+        }else{
+            Contents.loginPage(this,null,200);
+        }
     }
 }
