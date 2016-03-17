@@ -75,7 +75,7 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 			for (int i = 0;i<listHishopAttributes.size();i++){
 				HishopAttributes hishopAttributes = listHishopAttributes.get(i);
 				List<HishopAttributeValues> lv = new ArrayList<>();
-				for (int j=1;j<listHishopAttributeValues.size();j++){
+				for (int j=0;j<listHishopAttributeValues.size();j++){
 					HishopAttributeValues hishopAttributeValues = listHishopAttributeValues.get(j);
 					if(hishopAttributeValues.getAttributeId().equals(hishopAttributes.getAttributeId())){
 						lv.add(hishopAttributeValues);
@@ -161,7 +161,7 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 		market_price = (TextView) mMenuView.findViewById(R.id.market_price);
 		market_price.setText("市场价：" + PriceUtil.priceY(info.getHishopProducts().getMarketPrice() + ""));
 		sale_model =  (TextView)mMenuView.findViewById(R.id.sale_model);
-		sale_model.setText("商品规格："+info.getHishopProducts().getListHishopSkus().get(0).getSku());
+		sale_model.setText("商品货号："+info.getHishopProducts().getListHishopSkus().get(0).getSku());
 		SysApplication.DisplayImage(info.getHishopProducts().getImageUrl1(), image);
 		ok.setOnClickListener(new OnClickListener() {
 
@@ -205,8 +205,8 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 					return;
 				}
 				int number = Integer.parseInt(d_result.getText().toString());
-				callBack.confirm(number,seleStr,getSkus(getSkuId()),valueId,attributeId);
 				dismiss();
+				callBack.confirm(number, seleStr, getSkus(getSkuId()), valueId, attributeId);
 			}
 		});
 		d_add.setOnClickListener(new OnClickListener() {
