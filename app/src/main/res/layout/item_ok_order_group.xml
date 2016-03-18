@@ -6,7 +6,7 @@
     android:background="#F5FAFB" >
     <View
             android:layout_width="fill_parent"
-            android:layout_height="25dp"
+            android:layout_height="10dp"
             android:background="#EFEFF0" />
     <RelativeLayout 
 	    android:id="@+id/top"

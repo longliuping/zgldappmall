@@ -184,7 +184,8 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 		dialog.dismiss();
 		new UserDataShare(this).logout();
 		BroadcastUtils.sendUserLogout(this);
-		startActivity(new Intent(this, LoginActivity.class));
+//		startActivity(new Intent(this, LoginActivity.class));
+		Contents.loginPage(this,null,200);
 		// AppManager.getAppManager().finishAllActivity();
 	}
 }

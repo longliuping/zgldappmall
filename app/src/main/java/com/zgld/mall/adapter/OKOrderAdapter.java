@@ -1,5 +1,6 @@
 package com.zgld.mall.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -18,8 +19,11 @@ import android.widget.TextView;
 
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
-import com.zgld.mall.beans.ShopingCar;
-import com.zgld.mall.beans.ShopingCartItem;
+import com.zgld.mall.activity.ProductDetailActivity;
+import com.zgld.mall.beans.HishopProducts;
+import com.zgld.mall.beans.HishopShoppingCarts;
+import com.zgld.mall.beans.HishopSkuitems;
+import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.PriceUtil;
 
 public class OKOrderAdapter extends BaseExpandableListAdapter {
@@ -27,23 +31,16 @@ public class OKOrderAdapter extends BaseExpandableListAdapter {
 		void remark(int groupPosition, int childPosition, String remark);
 	}
 
-	List<ShopingCar> listInfo;
+	ArrayList<HishopShoppingCarts> listInfo = new ArrayList<>();
 	LayoutInflater layoutInflater;
 	Context context;
-	int totalProductNumber = 0;// 总数量
-	int totalMarketPrice = 0;// 价格
-	int totalPostage = 0;// 运费
 	BaseExpandableListAdapterListener listener;
 
-	public OKOrderAdapter(Context context, List<ShopingCar> listInfo, int totalProductNumber, int totalMarketPrice,
-			int totalPostage, BaseExpandableListAdapterListener listener) {
+	public OKOrderAdapter(Context context, ArrayList<HishopShoppingCarts> listInfo, BaseExpandableListAdapterListener listener) {
 		// TODO Auto-generated constructor stub
 		this.listInfo = listInfo;
 		layoutInflater = LayoutInflater.from(context);
 		this.context = context;
-		this.totalMarketPrice = totalMarketPrice;
-		this.totalPostage = totalPostage;
-		this.totalProductNumber = totalProductNumber;
 		this.listener = listener;
 	}
 
@@ -76,17 +73,16 @@ public class OKOrderAdapter extends BaseExpandableListAdapter {
 	 */
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		// return listInfo.get(groupPosition).getProducts().size();
-		return listInfo.get(groupPosition).getCartItems().size();
+		return listInfo.get(groupPosition).getListHishopProducts().size();
 	}
+
 
 	/**
 	 * 获取一级标签下二级标签的内容
 	 */
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		// return listInfo.get(groupPosition).getProducts().get(childPosition);
-		return listInfo.get(groupPosition).getCartItems().get(childPosition);
+		return listInfo.get(groupPosition).getListHishopProducts().get(childPosition);
 	}
 
 	/**
@@ -123,9 +119,12 @@ public class OKOrderAdapter extends BaseExpandableListAdapter {
 		} else {
 			holder = (GroupViewHolder) convertView.getTag();
 		}
-		ShopingCar info = listInfo.get(groupPosition);
+		HishopShoppingCarts info = listInfo.get(groupPosition);
 		if (info != null) {
-			holder.item_car_manufactor_name.setText(info.getSupplierName() + ">");
+
+			if(info.getSupplier()!=null){
+				holder.item_car_manufactor_name.setText(info.getSupplier().getSupplierName());
+			}
 		}
 		return convertView;
 	}
@@ -165,42 +164,26 @@ public class OKOrderAdapter extends BaseExpandableListAdapter {
 		}
 		final ChildViewHoldeer h = holder;
 		holder.bottom.setVisibility(View.GONE);
-		final ShopingCartItem info = listInfo.get(groupPosition).getCartItems().get(childPosition);
+		final HishopProducts info = listInfo.get(groupPosition).getListHishopProducts().get(childPosition);
 		if (info != null) {
 			if (isLastChild) {
 				holder.bottom.setVisibility(View.VISIBLE);
 			}
 			holder.item_title.setText(info.getProductName());
-			if (info.getNorms() != null) {
-				holder.item_detail.setText(String.valueOf(info.getNorms().trim()));
-			}
-			// imageLoader.DisplayImage(info.getImageUrl1(), holder.item_image,
-			// false);
 			SysApplication.DisplayImage(info.getImageUrl1(), holder.item_image);
-			holder.item_number_base.setText(totalProductNumber + "");
-			if (TextUtils.isEmpty(info.getMarketPrice())) {
-				info.setMarketPrice("0");
-			}
-			if (TextUtils.isEmpty(info.getQuantity())) {
-				info.setQuantity("1");
-			}
-			if (TextUtils.isEmpty(info.getPostage())) {
-				info.setPostage("0");
-			}
-			holder.item_number.setText("X" + info.getQuantity());
-			holder.item_price.setText(PriceUtil.priceY(info.getSalePrice()));
-			holder.item_market_price.setText(PriceUtil.priceY(info.getSalePrice()));
-			holder.item_postage_base.setText(PriceUtil.priceY(info.getPostage()));
-			holder.item_price_base.setText(PriceUtil.priceY(totalMarketPrice + ""));
+			holder.item_number_base.setText(listInfo.get(groupPosition).getQuantity() + "");
+			holder.item_number.setText("X" + listInfo.get(groupPosition).getQuantity());
+			holder.item_price.setText(PriceUtil.priceY(info.getHishopSkus().getSalePrice()+""));
+			holder.item_market_price.setText(PriceUtil.priceY(info.getMarketPrice()+""));
+			holder.item_price_base.setText(PriceUtil.priceY((info.getHishopSkus().getSalePrice() * listInfo.get(groupPosition).getQuantity()) + ""));
 			holder.item_image.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					// Intent intent = new Intent(context,
-					// ProductDetailActivity.class);
-					// intent.putExtra("ProductId", info.getProductId());
-					// context.startActivity(intent);
+//					 Intent intent = new Intentt(context, ProductDetailActivity.class);
+//					 intent.putExtra(Contents.PRODUCTID, info.getProductId());
+//					 context.startActivity(intent);
 				}
 			});
 			holder.item_remake.addTextChangedListener(new TextWatcher() {
@@ -223,6 +206,17 @@ public class OKOrderAdapter extends BaseExpandableListAdapter {
 					listener.remark(groupPosition, childPosition, s.toString());
 				}
 			});
+			List<HishopSkuitems> listHishopSkuitems = info.getListHishopSkuitems();
+			if(listHishopSkuitems!=null){
+				StringBuffer str = new StringBuffer("");
+				for (int i =0;i<listHishopSkuitems.size();i++){
+					HishopSkuitems item = listHishopSkuitems.get(i);
+					str.append(item.getHishopAttributes().getAttributeName()+":");
+					str.append(item.getHishopAttributeValues().getValueStr()+";");
+				}
+				str.delete(str.toString().length()-1,str.toString().length());
+				holder.item_detail.setText(str.toString());
+			}
 		}
 		return convertView;
 	}

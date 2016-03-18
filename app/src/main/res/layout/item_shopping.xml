@@ -138,15 +138,6 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/car_delete" />
 
-            <ImageView
-                android:id="@+id/item_love"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/item_market_price"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@id/item_delete"
-                android:background="@drawable/car_love" />
         </RelativeLayout>
 
         <View

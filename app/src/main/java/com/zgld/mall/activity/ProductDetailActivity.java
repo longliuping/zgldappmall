@@ -35,6 +35,7 @@ import com.zgld.mall.jazzy.JazzProductDetailAdapter;
 import com.zgld.mall.jazzy.JazzyProductDetailViewPager;
 import com.zgld.mall.pop.PublishSelectPicPopupWindow;
 import com.zgld.mall.utils.Contents;
+import com.zgld.mall.utils.PriceUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -165,8 +166,8 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         item_user_name.setText(info.getSupplierName());
         item_user_shop_address.setText(info.getSupplierDescribe());
         item_title.setText(info.getHishopProducts().getProductName());
-        item_sale_price.setText("销售价："+info.getHishopProducts().getListHishopSkus().get(0).getSalePrice()+"");
-        item_market_price.setText("市场价:"+info.getHishopProducts().getMarketPrice());
+        item_sale_price.setText("销售价："+ PriceUtil.priceY(info.getHishopProducts().getListHishopSkus().get(0).getSalePrice()+""));
+        item_market_price.setText("市场价:"+PriceUtil.priceY(info.getHishopProducts().getMarketPrice()+""));
         SysApplication.DisplayImage(info.getSupplierUrl1(), item_user_head);
     }
 
@@ -258,7 +259,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
 //                    intent.putExtra("UserId", info.getUserId());
 //                    intent.putExtra("UserName", info.getUserName());
 //                    intent.putExtra("HeadImg", info.getHeadImg());
-                    startActivity(intent);
+//                    startActivity(intent);
                 }
                 break;
         }

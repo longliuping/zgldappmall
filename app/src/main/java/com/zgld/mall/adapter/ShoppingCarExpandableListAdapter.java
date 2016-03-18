@@ -14,10 +14,11 @@ import android.widget.TextView;
 
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
+import com.zgld.mall.activity.ProductDetailActivity;
 import com.zgld.mall.beans.HishopProducts;
 import com.zgld.mall.beans.HishopShoppingCarts;
-import com.zgld.mall.beans.ShopingCar;
-import com.zgld.mall.beans.ShopingCartItem;
+import com.zgld.mall.beans.HishopSkuitems;
+import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.PriceUtil;
 
 import java.util.List;
@@ -178,9 +179,8 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 		HishopShoppingCarts info = listInfo.get(groupPosition);
 		if (info != null) {
 			holder.item_car_manufactor_name.setText(info.getSupplier().getSupplierName());
-			holder.item_car_manufactor_detail.setText(info.getSupplier().getSupplierName());
+			holder.item_car_manufactor_detail.setText(info.getSupplier().getSupplierDescribe());
 			holder.item_car_manufactor.setChecked(info.isChecked());
-
 			final GroupViewHolder h = holder;
 			holder.item_car_manufactor.setOnClickListener(new OnClickListener() {
 
@@ -196,7 +196,7 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 
 	class ChildViewHoldeer {
 		CheckBox item_car_checkbox;
-		ImageView item_delete, item_love, item_image;
+		ImageView item_delete, item_image;
 		TextView d_reduce, d_add;
 		EditText d_result;
 		TextView item_title, item_detail, item_price, item_market_price;
@@ -215,7 +215,6 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 			convertView = LayoutInflater.from(context).inflate(R.layout.item_shopping, null);
 			holder.item_car_checkbox = (CheckBox) convertView.findViewById(R.id.item_car_checkbox);
 			holder.item_delete = (ImageView) convertView.findViewById(R.id.item_delete);
-			holder.item_love = (ImageView) convertView.findViewById(R.id.item_love);
 			holder.d_reduce = (TextView) convertView.findViewById(R.id.d_reduce);
 			holder.d_add = (TextView) convertView.findViewById(R.id.d_add);
 			holder.d_result = (EditText) convertView.findViewById(R.id.d_result);
@@ -237,12 +236,9 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 		final HishopProducts info = listInfo.get(groupPosition).getListHishopProducts().get(childPosition);
 		if (info != null) {
 			holder.item_title.setText(info.getProductName());
-//			if (info.getNorms() != null) {
-//				holder.item_detail.setText(String.valueOf(info.get));
-//			}
 			holder.item_price.setText(PriceUtil.priceY(info.getHishopSkus().getSalePrice()+""));
-			holder.item_market_price.setText(PriceUtil.priceY(info.getHishopSkus().getSalePrice()+""));
-//			holder.d_result.setText(info.getQuantity() + "");
+			holder.item_market_price.setText(PriceUtil.priceY(info.getMarketPrice()+""));
+			holder.d_result.setText(listInfo.get(groupPosition).getQuantity() + "");
 			SysApplication.DisplayImage(info.getImageUrl1(), holder.item_image);
 			final int number = Integer.parseInt(holder.d_result.getText().toString());
 			holder.item_car_checkbox.setChecked(info.isChecked());
@@ -251,9 +247,9 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-//					Intent intent = new Intent(context, ProductDetailActivity.class);
-//					intent.putExtra("ProductId", info.getProductId());
-//					contextxt.startActivity(intent);
+					Intent intent = new Intent(context, ProductDetailActivity.class);
+					intent.putExtra(Contents.PRODUCTID, info.getProductId());
+					context.startActivity(intent);
 				}
 			});
 			holder.d_add.setOnClickListener(new OnClickListener() {
@@ -278,14 +274,6 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 					}
 				}
 			});
-			holder.item_love.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					listener.loveProduct(groupPosition, childPosition);
-				}
-			});
 			holder.item_delete.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -304,6 +292,17 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 							h.item_car_checkbox.isChecked());
 				}
 			});
+			List<HishopSkuitems> listHishopSkuitems = info.getListHishopSkuitems();
+			if(listHishopSkuitems!=null){
+				StringBuffer str = new StringBuffer("");
+				for (int i =0;i<listHishopSkuitems.size();i++){
+						HishopSkuitems item = listHishopSkuitems.get(i);
+						str.append(item.getHishopAttributes().getAttributeName()+":");
+						str.append(item.getHishopAttributeValues().getValueStr()+";");
+				}
+				str.delete(str.toString().length()-1,str.toString().length());
+				holder.item_detail.setText(str.toString());
+			}
 		}
 		return convertView;
 	}

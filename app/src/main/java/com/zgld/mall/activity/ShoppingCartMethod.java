@@ -34,17 +34,13 @@ import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.zgld.mall.R;
 import com.zgld.mall.adapter.ShoppingCarExpandableListAdapter;
 import com.zgld.mall.beans.AspnetUsers;
-import com.zgld.mall.beans.HishopProductTypes;
 import com.zgld.mall.beans.HishopProducts;
 import com.zgld.mall.beans.HishopShoppingCarts;
-import com.zgld.mall.beans.ShopingCar;
-import com.zgld.mall.beans.ShopingCartItem;
 import com.zgld.mall.beans.UserToken;
 import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.ConfirmDialog;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.CustomDialog;
-import com.zgld.mall.utils.PriceUtil;
 import com.zgld.mall.volley.AsyncGameRunner;
 import com.zgld.mall.volley.NetWorkTools;
 import com.zgld.mall.volley.RequestListenr;
@@ -67,7 +63,6 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 
 	protected ConfirmDialog confirmDialog = null;
 	Activity activity;
-//	List<ShopingCar> listInfo;
 	List<HishopShoppingCarts> listInfo;
 	PullToRefreshExpandableListView listview;
 	ShoppingCarExpandableListAdapter infoAdapter;
@@ -78,7 +73,6 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 	RelativeLayout bottom;
 	List<String> indexAll = new ArrayList<String>();
 	View null_data_default;
-	ShopingCar shopingCar = new ShopingCar();
 	CustomDialog dialog;
 	LayoutInflater inflater;
 	View back;
@@ -139,7 +133,6 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 				return true;
 			}
 		});
-		// listview.setMode(Mode.BOTH);
 		listview.setOnRefreshListener(this);
 		item_car_checkbox = (CheckBox) view.findViewById(R.id.item_car_checkbox);
 		item_car_checkbox.setOnCheckedChangeListener(this);
@@ -230,13 +223,14 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 			Map<String,String> m = new HashMap<>();
 			UserToken userToken = user.getUserToken();
 			m.put("token",userToken.getAccountToken());
-			m.put("userId",user.getUserId()+"");
+			m.put("userId", user.getUserId() + "");
 			getData(Method.POST, 201, "user_car_product.html", m, null, 1);
 		}
 	}
 
 	Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
+			listview.onRefreshComplete();
 			try {
 				Bundle bundle = msg.getData();
 				String json = "";
@@ -262,8 +256,6 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 
 			item_car_checkbox.setChecked(false);
 			infoAdapter.notifyDataSetChanged();
-					System.out.println("");
-					System.out.println("");
 					break;
 				case 202:
 					try {
@@ -293,43 +285,11 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 						listview.getRefreshableView().setAdapter(infoAdapter);
 					}
 					List<HishopShoppingCarts> list = gson.fromJson(jsonArray.toString(), entityType);
-					shopingCar = new ShopingCar();
 					String OwnerUserId = "";
 					if (list == null || list.size() <= 0) {
-						// Toast.makeText(activity,
-						// activity.getString(R.string.no_data),
-						// Toast.LENGTH_SHORT).show();
-					}
-					if (list != null && list.size() > 0) {
-//						OwnerUserId = list.get(0).getOwnerUserId();
-//						for (int i = 0; i < list.size(); i++) {
-//							HishopShoppingCarts info = list.get(i);
-//							if (OwnerUserId == null) {
-//								OwnerUserId = "";
-//							}
-//							if (info.getOwnerUserId() == null) {
-//								info.setOwnerUserId("");
-//							}
-//							if (info.getOwnerUserId().equals(OwnerUserId + "")) {
-//								shopingCar.setChecked(false);
-//								shopingCar.setBrandName(info.getBrandName());
-//								shopingCar.setOwnerUserId(info.getOwnerUserId());
-//								shopingCar.setSupplierId(info.getSupplierId());
-//								shopingCar.setSupplierName(info.getSupplierName());
-//								shopingCar.getCartItems().add(info);
-//							} else {
-//								listInfo.add(shopingCar);
-//								shopingCar = new ShopingCar();
-//								OwnerUserId = info.getOwnerUserId();
-//								shopingCar.setChecked(false);
-//								shopingCar.setBrandName(info.getBrandName());
-//								shopingCar.setOwnerUserId(info.getOwnerUserId());
-//								shopingCar.setSupplierId(info.getSupplierId());
-//								shopingCar.setSupplierName(info.getSupplierName());
-//								shopingCar.getCartItems().add(info);
-//							}
-//						}
-//						listInfo.add(shopingCar);
+						 Toast.makeText(activity,
+						 activity.getString(R.string.no_data),
+						 Toast.LENGTH_SHORT).show();
 					}
 					infoAdapter = new ShoppingCarExpandableListAdapter(activity, listInfo, ShoppingCartMethod.this);
 					listview.getRefreshableView().setAdapter(infoAdapter);
@@ -345,41 +305,6 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 					pageIndex++;
 					bindData();
 					break;
-				case 203:
-					if (json != null && json.trim().equals("1")) {
-						// listInfo.remove(deleteGroupPosition);
-//						listInfo.get(deleteGroupPosition).getCartItems().remove(deleteChildPosition);
-//						if (listInfo.get(deleteGroupPosition).getCartItems().size() <= 0) {
-//							listInfo.remove(deleteGroupPosition);
-//						}
-						infoAdapter.notifyDataSetChanged();
-						Toast.makeText(activity, activity.getString(R.string.delete_cart_product_success),
-								Toast.LENGTH_SHORT).show();
-					} else {
-						Toast.makeText(activity, activity.getString(R.string.delete_cart_product_failed),
-								Toast.LENGTH_SHORT).show();
-					}
-					bindData();
-					break;
-				case 209:
-					if (json != null && Integer.parseInt(json) > 0) {
-//						Intent intent = new Intent(activity, OKOrderActivity.class);
-//						activity.startActivityForResult(intent, 200);
-					} else {
-						Toast.makeText(activity, activity.getString(R.string.network_connection_timeout),
-								Toast.LENGTH_SHORT).show();
-					}
-					break;
-				case 210:
-					if (json != null && json.trim().equals("1")) {
-						Toast.makeText(activity, activity.getString(R.string.success), Toast.LENGTH_SHORT).show();
-					} else if (json != null && json.trim().equals("-1")) {
-						Toast.makeText(activity, activity.getString(R.string.already_exists), Toast.LENGTH_SHORT)
-								.show();
-					} else {
-						Toast.makeText(activity, activity.getString(R.string.failed), Toast.LENGTH_SHORT).show();
-					}
-					break;
 				}
 				bindData();
 			} catch (Exception e) {
@@ -388,7 +313,6 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 			} finally {
 				listview.onRefreshComplete();
 			}
-
 			super.handleMessage(msg);
 		}
 	};
@@ -429,37 +353,34 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 			if (!checkedProduct()) {
 				Toast.makeText(activity, "请选择要结算的产品", Toast.LENGTH_SHORT).show();
 			} else {
-				String stockstr = "";
-				int totalPrice = 0;// 总价格
-				int totalMarketPrice = 0;
-				int totalProductNumber = 0;// 总数量
-				int favorablePrice = 0;
-				StringBuffer param = new StringBuffer();
-//				OKOrderActivity.listInfo = new ArrayList<ShopingCar>();
-				ShopingCar shopingCar = new ShopingCar();
-				String OwnerUserId = "";
-				Map<String, String> muser = new HashMap<String, String>();
+				ArrayList<HishopShoppingCarts> listCarts = new ArrayList<>();
 				for (int i = 0; i < listInfo.size(); i++) {
-
+					HishopShoppingCarts infoCar = listInfo.get(i);
+					HishopShoppingCarts infoObj = new HishopShoppingCarts();
+					List<HishopProducts> listHishopProducts = new ArrayList<>();
+					for (int j = 0; j < infoCar.getListHishopProducts().size(); j++) {
+						HishopProducts infoPro = infoCar.getListHishopProducts().get(j);
+						if (infoCar.getListHishopProducts().get(j).isChecked()) {
+							infoPro.setListHishopSkuitems(infoCar.getListHishopProducts().get(j).getListHishopSkuitems());
+							listHishopProducts.add(infoPro);
+						}
+					}
+					if(listHishopProducts.size()>0){
+						infoObj.setQuantity(infoCar.getQuantity());
+						infoObj.setChecked(infoCar.isChecked());
+						infoObj.setAddTime(infoCar.getAddTime());
+						infoObj.setProductId(infoCar.getProductId());
+						infoObj.setSkuId(infoCar.getSkuId());
+						infoObj.setUserId(infoCar.getUserId());
+						infoObj.setListHishopProducts(listHishopProducts);
+						infoObj.setSupplier(infoCar.getSupplier());
+						listCarts.add(infoObj);
+					}
 				}
-				if (!TextUtils.isEmpty(stockstr)) {
-					Toast.makeText(activity, stockstr, Toast.LENGTH_SHORT).show();
-					return;
-				}
-//				if (muser.size() > 1) {
-//					Toast.makeText(activity, "不能选择多个商家的产品进行结算", Toast.LENGTH_SHORT).show();
-//					return;
-//				}
-//				OKOrderActivity.listInfo.add(shopingCar);
-				if (param.length() > 0) {
-					param.deleteCharAt(param.length() - 1);// 删除最后一个,符号
-				}
-				Map<String, String> m = new HashMap<String, String>();
-//				m.put("userId", Contents.getUser(activity).getUserId());
-//				m.put("token", Contents.getUser(activity).getToken());
-				m.put("proQuantityStr", param.toString());
-//				getData(Method.POST, 209, "ShopingCart/ShopingCartUpdateALL", m, null, 1);
 				Intent intent = new Intent(activity, OKOrderActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("listInfo", listCarts);
+				intent.putExtras(bundle);
 				activity.startActivityForResult(intent, 200);
 			}
 			break;
@@ -659,10 +580,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 	@Override
 	public void loveProduct(int groupPosition, int childPosition) {
 		// TODO Auto-generated method stub
-//		getData(com.android.volley.Request.Method.GET, 210, "UserOrProduct/ProductLikeUpdate?userId="
-//						+ Contents.getUser(activity).getUserId() + "&token=" + Contents.getUser(activity).getToken()
-//						+ "&productId=" + listInfo.get(groupPosition).getCartItems().get(childPosition).getProductId(), null,
-//				null, 1);
+
 	}
 
 	@Override
@@ -699,7 +617,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 			if(action.equals(BroadcastUtils.USER_LOGIN))
 			{
 				pageIndex=1;
-//				initView();
+				initView();
 			}
 		}
 

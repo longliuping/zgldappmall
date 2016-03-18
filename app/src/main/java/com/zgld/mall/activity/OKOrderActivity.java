@@ -1,8 +1,6 @@
 package com.zgld.mall.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.location.Address;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
@@ -17,9 +15,10 @@ import android.widget.Toast;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.zgld.mall.R;
 import com.zgld.mall.adapter.OKOrderAdapter;
+import com.zgld.mall.beans.HishopProducts;
+import com.zgld.mall.beans.HishopShoppingCarts;
 import com.zgld.mall.beans.HishopUserShippingAddresses;
-import com.zgld.mall.beans.ShopingCar;
-import com.zgld.mall.beans.ShopingCartItem;
+import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.PriceUtil;
 
@@ -38,13 +37,14 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
     TextView item_pay;
     TextView item_payment_amount, item_total_amount;
     RelativeLayout bottom;
-    public static List<ShopingCar> listInfo = new ArrayList<ShopingCar>();
-
+//    public static List<ShopingCar> listInfo = new ArrayList<ShopingCar>();
+    ArrayList<HishopShoppingCarts> listInfo = new ArrayList<>();
     RelativeLayout next;
     TextView name, address, address_title;
     HishopUserShippingAddresses addressInfo;
     int totalProductNumber = 0;// 总数量
-    int totalMarketPrice = 0;// 价格
+    int totalMarketPrice = 0;// 市场总价
+    int totalSalePrice = 0;//销售总价
     int totalPostage = 0;// 运费
     String remark = "";
 
@@ -54,6 +54,19 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
         super.onCreate(savedInstanceState);
         initStyle();
         setContentView(R.layout.activity_okorder);
+        listInfo = (ArrayList<HishopShoppingCarts>)this.getIntent().getSerializableExtra("listInfo");
+        if(listInfo==null || listInfo.size()<=0){
+            finish();
+            return;
+        }
+        for (int i = 0;i<listInfo.size();i++){
+            HishopShoppingCarts car = listInfo.get(i);
+            for (int j = 0;j<car.getListHishopProducts().size();j++){
+                HishopProducts pro = car.getListHishopProducts().get(j);
+                totalSalePrice+=pro.getHishopSkus().getSalePrice()*car.getQuantity();
+                totalMarketPrice+=pro.getMarketPrice()*car.getQuantity();
+            }
+        }
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -82,7 +95,7 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
         item_total_amount = (TextView) findViewById(R.id.item_total_amount);
         bottom = (RelativeLayout) findViewById(R.id.bottom);
         totalMoney();
-        infoAdapter = new OKOrderAdapter(this, listInfo, totalProductNumber, totalMarketPrice, totalPostage, this);
+        infoAdapter = new OKOrderAdapter(this, listInfo, this);
         listview.setAdapter(infoAdapter);
         int groupCount = listview.getCount();
         for (int i = 0; i < groupCount; i++) {
@@ -178,34 +191,24 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
                 Map<String, String> m = new HashMap<String, String>();
                 StringBuffer productId = new StringBuffer();
                 StringBuffer cartsId = new StringBuffer();
-                for (int i = 0; i < listInfo.size(); i++) {
-                    for (int j = 0; j < listInfo.get(i).getCartItems().size(); j++) {
-                        productId.append(listInfo.get(i).getCartItems().get(j).getProductId() + ",");
-                        cartsId.append(listInfo.get(i).getCartItems().get(j).getCartsId() + ",");
-                    }
-                }
+//                for (int i = 0; i < listInfo.size(); i++) {
+//                    for (int j = 0; j < listInfo.get(i).getCartItems().size(); j++) {
+//                        productId.append(listInfo.get(i).getCartItems().get(j).getProductId() + ",");
+//                        cartsId.append(listInfo.get(i).getCartItems().get(j).getCartsId() + ",");
+//                    }
+//                }
                 if (!TextUtils.isEmpty(productId)) {
                     productId.deleteCharAt(productId.length() - 1);
                 }
                 if (!TextUtils.isEmpty(cartsId)) {
                     cartsId.deleteCharAt(cartsId.length() - 1);
                 }
-//                m.put("token", Contents.getUser(this).getToken());
-//                m.put("userId", Contents.getUser(this).getUserId());
-                m.put("ownerUserId", listInfo.get(0).getOwnerUserId().trim() + "");
                 m.put("productId", productId.toString());
                 m.put("remark", remark);
                 m.put("Remark", remark);
                 m.put("shippingModeId", "3");
                 m.put("paymentTypeId", "1");
-//                m.put("shippingRegion", addressInfo.getShippingId() + "");
                 m.put("cartsId", cartsId.toString());
-                // m.put("buyCategories", value)
-                if (TextUtils.isEmpty(listInfo.get(0).getCartItems().get(0).getPutawayType())) {
-                    m.put("buyCategories", "1");
-                } else {
-                    m.put("buyCategories", listInfo.get(0).getCartItems().get(0).getPutawayType());
-                }
                 getData(com.android.volley.Request.Method.POST, 205, "Orders/OrdersAdd", m, null, pageIndex);
                 break;
         }
@@ -216,38 +219,10 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
      *
      */
     void totalMoney() {
-        Map<String, String> m = new HashMap<String, String>();// 商家
-        for (int i = 0; i < listInfo.size(); i++) {
-            for (int j = 0; j < listInfo.get(i).getCartItems().size(); j++) {
-                ShopingCartItem info = listInfo.get(i).getCartItems().get(j);
-                if (info.isChecked()) {
-                    if (!m.containsKey(info.getSupplierName())) {
-                        m.put(info.getSupplierName(), info.getSupplierName());
-                    }
-                    if (!TextUtils.isEmpty(info.getPostage())) {
-                        totalPostage += Integer.parseInt(info.getPostage());
-                    }
-                    totalProductNumber += Integer.parseInt(info.getQuantity());
-                    if (info.getSalePrice() == null) {
-                        info.setSalePrice("1");
-                    }
-                    if (info.getQuantity() == null) {
-                        info.setQuantity("1");
-                    }
-                    if (info.getMarketPrice() == null) {
-                        info.setMarketPrice("1");
-                    }
-                    if (info.getQuantity() == null) {
-                        info.setQuantity("1");
-                    }
-                    totalMarketPrice += Double.parseDouble(info.getSalePrice()) * Double.parseDouble(info.getQuantity());
-                }
-            }
-        }
         item_payment_amount.setText(getString(R.string.pay_price)
-                + PriceUtil.priceY((totalMarketPrice + totalPostage) + ""));
+                + PriceUtil.priceY((totalSalePrice) + ""));
         item_total_amount.setText(getString(R.string.total_price)
-                + PriceUtil.priceY((totalMarketPrice + totalPostage) + ""));
+                + PriceUtil.priceY((totalMarketPrice) + ""));
 
     }
 
