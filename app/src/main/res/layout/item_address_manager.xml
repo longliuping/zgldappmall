@@ -42,7 +42,6 @@
 	    android:src="@drawable/item_address_delete"
 	    android:layout_alignParentRight="true"
 	    android:layout_centerVertical="true"
-		android:visibility="gone"
 	    />
 	<ImageView 
 	    android:id="@+id/item_edit"
@@ -52,6 +51,5 @@
 	    android:layout_toLeftOf="@id/item_delete"
 	    android:layout_marginRight="10dp"
 	    android:layout_centerVertical="true"
-		android:visibility="gone"
 	    />
 </RelativeLayout>

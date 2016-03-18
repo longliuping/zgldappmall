@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -14,6 +15,7 @@ import com.zgld.mall.R;
 import com.zgld.mall.adapter.AddressAdapter;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.HishopUserShippingAddresses;
+import com.zgld.mall.beans.UserToken;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.CustomDialog;
 
@@ -60,9 +62,9 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
           }
           Gson gson = new Gson();
           Type entityType = null;
-          JSONArray jsonArray = new JSONObject(json).getJSONObject("data").getJSONArray("listInfo");
           switch (msg.what) {
               case 201:
+                  JSONArray jsonArray = new JSONObject(json).getJSONObject("data").getJSONArray("listInfo");
                   listInfo = new ArrayList<HishopUserShippingAddresses>();
                   entityType = new TypeToken<List<HishopUserShippingAddresses>>() {
                   }.getType();
@@ -82,11 +84,10 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
                   break;
               case 202:
                   initData();
-                  if (json != null && json.trim().equals("1")) {
+                  JSONObject jsonObject = new JSONObject(json);
+                  if(jsonObject.getInt("status")==200) {
                       listInfo.remove(deletePosition);
-                      Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-                  } else {
-                      Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                      deletePosition = 0;
                   }
                   break;
           }
@@ -178,7 +179,7 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
     @Override
     public void updateAddress(int position) {
         // TODO Auto-generated method stub
-        Intent intent = new Intent(this, ModifyUserAddressActivity.class);
+        Intent intent = new Intent(this, UpdateUserAddressActivity.class);
         intent.putExtra(Contents.INFO, listInfo.get(position));
         startActivityForResult(intent, 200);
     }
@@ -197,10 +198,13 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
                     public void customDialogClickRight() {
                         // TODO Auto-generated method stub
                         dialog.dismiss();
-//                        getData(com.android.volley.Request.Method.GET, 202, "User/UserShippingAddressesDel?token="
-//                                + Contents.getUser(AddressManagerActivity.this).getToken() + "&userId="
-//                                + Contents.getUser(AddressManagerActivity.this).getUserId() + "&shippingId="
-//                                + listInfo.get(position).getShippingId(), null, null, 1);
+                        Map<String,String> m = new HashMap<>();
+                        AspnetUsers user = Contents.getUser(AddressManagerActivity.this);
+                        UserToken userToken = user.getUserToken();
+                        m.put("token",userToken.getAccountToken());
+                        m.put("userId", user.getUserId() + "");
+                        m.put("address.shippingId",listInfo.get(deletePosition).getShippingId()+"");
+                        getData(Request.Method.POST, 202, "delete_user_shipping_addresses.html", m, null, 1);
                     }
 
                     @Override

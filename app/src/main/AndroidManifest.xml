@@ -101,7 +101,8 @@
         <activity android:name=".activity.CityActivity" />
         <activity android:name=".activity.CountyActivity" />
         <activity android:name=".activity.ModifyUserAddressActivity" />
-        <activity android:name=".activity.ProductOptionFragmentActivity"></activity>
+        <activity android:name=".activity.ProductOptionFragmentActivity" />
+        <activity android:name=".activity.UpdateUserAddressActivity"></activity>
     </application>
 
 </manifest>
