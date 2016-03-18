@@ -34,7 +34,7 @@
                         android:id="@+id/address_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="选择地址"
+                        android:text="请选择收货地址"
                         android:layout_centerVertical="true"
                         />
                     <TextView
@@ -95,20 +95,11 @@
             <TextView
                 android:id="@+id/item_payment_amount"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="付款金额:￥0.00"
-                android:textColor="#FC490B"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/item_total_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/item_payment_amount"
+                android:layout_height="match_parent"
                 android:text="合计金额:￥0.00"
-                android:textColor="#717171"
+                android:textColor="#FC490B"
+                android:gravity="center_vertical"
                 android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/item_pay"
                 android:layout_width="70dp"

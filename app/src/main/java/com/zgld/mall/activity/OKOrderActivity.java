@@ -35,9 +35,8 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
     int pageIndex = 1;
 
     TextView item_pay;
-    TextView item_payment_amount, item_total_amount;
+    TextView item_payment_amount;
     RelativeLayout bottom;
-//    public static List<ShopingCar> listInfo = new ArrayList<ShopingCar>();
     ArrayList<HishopShoppingCarts> listInfo = new ArrayList<>();
     RelativeLayout next;
     TextView name, address, address_title;
@@ -45,7 +44,6 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
     int totalProductNumber = 0;// 总数量
     int totalMarketPrice = 0;// 市场总价
     int totalSalePrice = 0;//销售总价
-    int totalPostage = 0;// 运费
     String remark = "";
 
     @Override
@@ -92,7 +90,6 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
         item_pay = (TextView) findViewById(R.id.item_pay);
         item_pay.setOnClickListener(this);
         item_payment_amount = (TextView) findViewById(R.id.item_payment_amount);
-        item_total_amount = (TextView) findViewById(R.id.item_total_amount);
         bottom = (RelativeLayout) findViewById(R.id.bottom);
         totalMoney();
         infoAdapter = new OKOrderAdapter(this, listInfo, this);
@@ -221,8 +218,6 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
     void totalMoney() {
         item_payment_amount.setText(getString(R.string.pay_price)
                 + PriceUtil.priceY((totalSalePrice) + ""));
-        item_total_amount.setText(getString(R.string.total_price)
-                + PriceUtil.priceY((totalMarketPrice) + ""));
 
     }
 

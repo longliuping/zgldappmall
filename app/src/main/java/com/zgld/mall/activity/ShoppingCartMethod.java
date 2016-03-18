@@ -209,8 +209,8 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 	}
 
 	private void initData() {
-		listInfo = new ArrayList<>();
-		if (NetWorkTools.isHasNet(activity)) {
+//		listInfo = new ArrayList<>();
+		if (!NetWorkTools.isHasNet(activity)) {
 			listview.onRefreshComplete();
 		}
 		if (Contents.getUser(activity) == null) {
@@ -240,27 +240,27 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 				json = bundle.getString(Contents.JSON);
 				Gson gson = new Gson();
 				Type entityType = null;
-				JSONArray jsonArray = new JSONObject(json).getJSONObject("data").getJSONArray("listInfo");
+				JSONArray jsonArray = null;
+				JSONObject jsonObject = new JSONObject(json);
+				Toast.makeText(activity,jsonObject.getString("msg"),Toast.LENGTH_SHORT).show();
 				switch (msg.what) {
 				case 201:
+					jsonArray = new JSONObject(json).getJSONObject("data").getJSONArray("listInfo");
 					listInfo = new Gson().fromJson(jsonArray.toString(),new TypeToken<List<HishopShoppingCarts>>() {
 				}.getType());
-					System.out.println("");
-					System.out.println("");
 					infoAdapter = new ShoppingCarExpandableListAdapter(activity, listInfo, ShoppingCartMethod.this);
-			listview.getRefreshableView().setAdapter(infoAdapter);
-			int groupCount = listview.getRefreshableView().getCount();
-			for (int i = 0; i < groupCount; i++) {
-				listview.getRefreshableView().expandGroup(i);
-			}
+					listview.getRefreshableView().setAdapter(infoAdapter);
+					int groupCount = listview.getRefreshableView().getCount();
+					for (int i = 0; i < groupCount; i++) {
+						listview.getRefreshableView().expandGroup(i);
+					}
 
-			item_car_checkbox.setChecked(false);
-			infoAdapter.notifyDataSetChanged();
+					item_car_checkbox.setChecked(false);
+					infoAdapter.notifyDataSetChanged();
 					break;
 				case 202:
 					try {
 						if (!TextUtils.isEmpty(json)) {
-							JSONObject jsonObject = new JSONObject(json);
 							jsonArray = jsonObject.getJSONArray(Contents.DATA);
 						}
 					} catch (JSONException e) {
@@ -305,6 +305,18 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 					pageIndex++;
 					bindData();
 					break;
+					case 203:
+						if(jsonObject.getInt("status")==200){
+							if(listInfo.get(deleteGroupPosition).getListHishopProducts().size()>=deleteChildPosition){
+								listInfo.get(deleteGroupPosition).getListHishopProducts().remove(deleteChildPosition);
+								deleteChildPosition = 0;
+								if(listInfo.get(deleteGroupPosition).getListHishopProducts().size()<=0){
+									listInfo.remove(deleteGroupPosition);
+								}
+								infoAdapter.notifyDataSetChanged();
+							}
+						}
+						break;
 				}
 				bindData();
 			} catch (Exception e) {
@@ -560,12 +572,11 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 
 					private void deleteProduct() {
 						Map<String, String> m = new HashMap<String, String>();
-//						m.put("token", Contents.getUser(activity).getToken());
-//						m.put("UserId", Contents.getUser(activity).getUserId() + "");
-						// m.put("productId",
-						// listInfo.get(groupPosition).getCartItems().get(childPosition).getProductId());
-//						m.put("CartId", listInfo.get(groupPosition).getListHishopProducts().get(childPosition).getCartsId());
-						getData(Method.POST, 203, "ShopingCart/ShopingCartDel", m, null, 1);
+						m.put("token", Contents.getUser(activity).getUserToken().getAccountToken());
+						m.put("userId", Contents.getUser(activity).getUserId() + "");
+						 m.put("productId", listInfo.get(groupPosition).getListHishopProducts().get(childPosition).getProductId() + "");
+						m.put("skuId", listInfo.get(groupPosition).getListHishopProducts().get(childPosition).getHishopSkus().getSkuId());
+						getData(Method.POST, 203, "delete_car_product.html", m, null, 1);
 					}
 
 					@Override
