@@ -300,8 +300,7 @@ public class ShoppingCarExpandableListAdapter extends BaseExpandableListAdapter 
 						str.append(item.getHishopAttributes().getAttributeName()+":");
 						str.append(item.getHishopAttributeValues().getValueStr()+";");
 				}
-				str.delete(str.toString().length()-1,str.toString().length());
-				holder.item_detail.setText(str.toString());
+				holder.item_detail.setText(str.toString()+"商品货号:"+info.getHishopSkus().getSku());
 			}
 		}
 		return convertView;

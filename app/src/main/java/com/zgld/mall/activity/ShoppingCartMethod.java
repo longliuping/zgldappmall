@@ -243,6 +243,14 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 				JSONArray jsonArray = null;
 				JSONObject jsonObject = new JSONObject(json);
 				Toast.makeText(activity,jsonObject.getString("msg"),Toast.LENGTH_SHORT).show();
+				if(jsonObject.getInt("status")==201){
+					listInfo = new ArrayList<>();
+					infoAdapter = new ShoppingCarExpandableListAdapter(activity, listInfo, ShoppingCartMethod.this);
+					infoAdapter.notifyDataSetChanged();
+					Contents.setUser(null);
+					bindData();
+					Contents.loginPage(activity,null,200);
+				}
 				switch (msg.what) {
 				case 201:
 					jsonArray = new JSONObject(json).getJSONObject("data").getJSONArray("listInfo");
