@@ -151,10 +151,10 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 //			});
 //			UmengUpdateAgent.forceUpdate(this);
 //			break;
-//		case R.id.logout:
-//			dialog = new CustomDialog(this, R.style.mystyle, R.layout.customdialog, R.array.title_logout, this);
-//			dialog.show();
-//			break;
+		case R.id.logout:
+			dialog = new CustomDialog(this, R.style.mystyle, R.layout.customdialog, R.array.title_logout, this);
+			dialog.show();
+			break;
 //		case R.id.about:
 //			startActivity(new Intent(this, AboutActivity.class));
 //			break;
@@ -193,9 +193,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 		dialog.dismiss();
 		new UserDataShare(this).logout();
 		BroadcastUtils.sendUserLogout(this);
-//		startActivity(new Intent(this, LoginActivity.class));
 		Contents.loginPage(this,null,200);
-		// AppManager.getAppManager().finishAllActivity();
 	}
 
 	@Override

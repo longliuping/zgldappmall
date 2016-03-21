@@ -55,7 +55,7 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 		// 用putString的方法保存数据
 		editor.putString(NAME, name);
 		editor.putString(PWD, pwd);
-		editor.putString(USERID, userId);
+//		editor.putInt(USERID, Integer.parseInt(userId));
 		editor.putBoolean(ISLOGIN, true);
 		// 提交当前数据
 		editor.commit();
@@ -70,9 +70,9 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 		// 使用getString方法获得value，注意第2个参数是value的默认值
 		String name = haredPreferences.getString(NAME, "");
 		String pwd = haredPreferences.getString(PWD, "");
-		String userId = haredPreferences.getString(USERID, "0");
-		if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(pwd) && !TextUtils.isEmpty(userId)) {
-			return new String[] { name, pwd, userId };
+//		int userId = haredPreferences.getInt(USERID,0);
+		if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(pwd)) {
+			return new String[] { name, pwd};
 		} else {
 			return null;
 		}
@@ -91,7 +91,8 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 			info.setUserName(haredPreferences.getString("userName", ""));
 			info.setGender(haredPreferences.getInt("gender", 0));
 			info.setHead(haredPreferences.getString("head", ""));
-			info.setUserId(haredPreferences.getInt("userId", 0));
+			int userId = haredPreferences.getInt("userId", 0);
+			info.setUserId(userId);
 
 			UserToken token = new UserToken();
 			token.setAccountToken(haredPreferences.getString("accountToken",""));
