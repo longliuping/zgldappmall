@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class Contents {
     public static final String BASE_URL = "http://114.215.198.143:89/webapi/json/";
-    public static final String BASE_IMAGE_PATH = "http://image.kuaidiantong.cn/";
+    public static final String BASE_IMAGE_PATH = "http://www.jym1798.com:99/";
     public static final String UPLOAD_USER_IMAGE = "http://www.zncdk.com/ComImgUpload.ashx";// upload
     public static final String DATA = "data";
     public static final String INFO = "info";
@@ -90,6 +90,15 @@ public class Contents {
 //        Contents.setUser(new UserInfo());
         return user;
 
+    }
+    public static String getSex(Integer sex){
+        if(sex==null){
+            return "";
+        }else if(sex==1){
+            return "男";
+        }else{
+            return  "女";
+        }
     }
     /**
      * 跳转到登录页面

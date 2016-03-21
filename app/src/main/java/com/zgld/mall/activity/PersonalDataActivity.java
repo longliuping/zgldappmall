@@ -9,69 +9,80 @@ import android.os.Environment;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
 import com.zgld.mall.UserDataShare;
+import com.zgld.mall.adapter.PersonalDataAdapter;
 import com.zgld.mall.beans.AspnetUsers;
+import com.zgld.mall.beans.Personal;
 import com.zgld.mall.beans.ProductImageUpload;
 import com.zgld.mall.utils.BitmapUtil;
 import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.CustomDialog;
 
+import org.json.JSONObject;
+
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class PersonalDataActivity extends BaseActivity implements View.OnClickListener, CustomDialog.CustomDialogListener {
-    View user_data_address_base, user_address_base, wechat_base, name_base, sex_base, single_base, phone_base, head_base;
-    TextView sex, single, phone, nick, wechat, address;
-    ImageView head;
+public class PersonalDataActivity extends BaseActivity implements View.OnClickListener, CustomDialog.CustomDialogListener,AdapterView.OnItemClickListener {
     ProductImageUpload productImageUpload;
     int regionID = 0;
     CustomDialog dialog;
     private Context mContext=null;
+    ListView listview;
+    List<Personal> listInfo = new ArrayList<>();
+    PersonalDataAdapter infoAdapter;
     @Override
     public void handleMsg(Message msg) {
-        if (msg.getData() == null) {
-            return;
-        }
-        String json = msg.getData().getString(Contents.JSON);
-        if (json == null) {
-            return;
-        }
-        switch (msg.what) {
-            case 201:
-                if (json != null && json.trim().equals("1")) {
-                    Toast.makeText(this, getString(R.string.update_success), Toast.LENGTH_SHORT).show();
-//                    Contents.getUser(this).setHeadImg(productImageUpload.getImageUrl());
-//                    new UserDataShare(this).saveUserData(Contents.getUser(this));
-                    bindData();
-//                    SysApplication.DisplayUserImageClick(productImageUpload.getImageUrl(), head);
-                    BroadcastUtils.sendUpdateHomeUser(this);
-                    setResult(RESULT_OK);
-
-                } else {
-                    Toast.makeText(this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case 402:
-                if (json != null && json.trim().equals("1")) {
-                    Toast.makeText(this, getString(R.string.update_success), Toast.LENGTH_SHORT).show();
+        try {
+            String json = msg.getData().getString(Contents.JSON);
+            if (json == null) {
+                return;
+            }
+            switch (msg.what) {
+                case 201:
+                    if(msg.getData().getInt("status")==200){
+                        JSONObject jsonObject = new JSONObject(json).getJSONObject("data").getJSONObject("info");
+                        Gson gson = new Gson();
+                        AspnetUsers user = gson.fromJson(jsonObject.toString(), new TypeToken<AspnetUsers>() {
+                        }.getType());
+                        new UserDataShare(this).saveUserData(user);
+                        initData();
+                        BroadcastUtils.sendUpdateHomeUser(this);
+                        setResult(RESULT_OK);
+                    }
+                    break;
+                case 402:
+                    if (json != null && json.trim().equals("1")) {
+                        Toast.makeText(this, getString(R.string.update_success), Toast.LENGTH_SHORT).show();
 //                    Contents.getUser(this).setRegionId(regionID + "");
 //                    new UserDataShare(this).saveUserData(Contents.getUser(this));
-                    bindData();
-                    setResult(RESULT_OK);
-                } else {
-                    Toast.makeText(this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
-                }
-                break;
+                        initData();
+                        setResult(RESULT_OK);
+                    } else {
+                        Toast.makeText(this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,40 +99,18 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
         });
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(getString(R.string.title_personal_data));
-        user_data_address_base = findViewById(R.id.user_data_address_base);
-        user_data_address_base.setOnClickListener(this);
-        user_address_base = findViewById(R.id.user_address_base);
-        user_address_base.setOnClickListener(this);
-        wechat_base = findViewById(R.id.wechat_base);
-        wechat_base.setOnClickListener(this);
-        name_base = findViewById(R.id.name_base);
-        name_base.setOnClickListener(this);
-        sex_base = findViewById(R.id.sex_base);
-        sex_base.setOnClickListener(this);
-        single_base = findViewById(R.id.single_base);
-        single_base.setOnClickListener(this);
-        phone_base = findViewById(R.id.phone_base);
-        phone_base.setOnClickListener(this);
-        head_base = findViewById(R.id.head_base);
-        head_base.setOnClickListener(this);
-
-        head = (ImageView) findViewById(R.id.head);
-        sex = (TextView) findViewById(R.id.sex);
-        single = (TextView) findViewById(R.id.single);
-        phone = (TextView) findViewById(R.id.phone);
-        nick = (TextView) findViewById(R.id.nick);
-        wechat = (TextView) findViewById(R.id.wechat);
-        address = (TextView) findViewById(R.id.address);
-        bindData();
+        listview = (ListView) findViewById(R.id.listview);
+        listview.setOnItemClickListener(this);
+        initData();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.head_base:// 上传头像
-                dialog = new CustomDialog(mContext, R.style.mystyle, R.layout.customdialog, R.array.title_upload_image, this);
-                dialog.show();
-                break;
+//            case R.id.head_base:// 上传头像
+//                dialog = new CustomDialog(mContext, R.style.mystyle, R.layout.customdialog, R.array.title_upload_image, this);
+//                dialog.show();
+//                break;
 //            case R.id.name_base:// 昵称
 //                startActivityForResult(new Intent(mContext, ModifyUserNickActivity.class), 202);
 //                break;
@@ -170,31 +159,17 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
         if (requestCode == 206) {
             setProvince();
         }
-        bindData();
+        initData();
     }
-    Bitmap bitmap = null;
     private void uploadPhoto(Bundle extras) {
-        bitmap = extras.getParcelable("data");
-        Contents.result = BitmapUtil.bitmapToBase64(bitmap);
-//        new AsyncUpImgTask(this, new AsyncUpImgTask.CallbackPic() {
-//
-//            @Override
-//            public void success(String json) {
-//                Gson gson = new Gson();
-//                Type entityType = null;
-//                entityType = new TypeToken<ProductImageUpload>() {
-//                }.getType();
-//                productImageUpload = gson.fromJson(json, entityType);
-//                if (productImageUpload == null) {
-//                    Toast.makeText(getApplicationContext(), "图片上传失败", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    saveData();
-//                }
-//            }
-//
-//        }, System.currentTimeMillis() + ".png", ViewUtil.Bitmap2Bytes(bitmap), Contents.UPLOAD_USER_IMAGE
-//                + "?token=" + Contents.getUser(this).getToken() + "&userid="
-//                + Contents.getUser(this).getUserId()).execute("");
+        Map<String,String> m = new HashMap<>();
+        AspnetUsers user = Contents.getUser(this);
+        Bitmap bitmap = extras.getParcelable("data");
+        String result = BitmapUtil.bitmapToBase64(bitmap);
+        m.put("userinfo.head",result);
+        m.put("token", user.getUserToken().getAccountToken());
+        m.put("userId", user.getUserId() + "");
+        getData(Request.Method.POST, 201, "user/update_user_head.html",m,null,1);
     }
 
     private void setProvince() {
@@ -233,75 +208,25 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
 //        Contents.listProvince=null;
     }
 
-    private void saveData() {
-        SysApplication.DisplayUserImageClick(productImageUpload.getImageUrl(), head);
-        Map<String, String> m = new HashMap<String, String>();
-//        m.put("gender", Contents.getUser(this).getGender());
-//        m.put("token", Contents.getUser(this).getToken());
-//        m.put("userId", Contents.getUser(this).getUserId());
-//        m.put("nickName", Contents.getUser(this).getNickname());
-//        m.put("personalSignature", Contents.getUser(this).getPersonalSignature());
-//        m.put("cellPhone", Contents.getUser(this).getCellPhone());
-//        m.put("regionId", Contents.getUser(this).getRegionId());
-//        m.put("wechat", Contents.getUser(this).getWeChat());
-//        m.put("address", Contents.getUser(this).getAddress());
-//        m.put("headImg", productImageUpload.getImageUrl());
-        getData(com.android.volley.Request.Method.POST, 201, "User/UserUpdateInfo", m, null, 1);
-    }
 
-    void bindData() {
+    void initData() {
         AspnetUsers user = new UserDataShare(this).getUserData();
-//        if (TextUtils.isEmpty(user.getGender())) {
-//            sex.setText("男");
-//        } else if (user.getGender().equals("1")) {
-//            sex.setText("男");
-//        } else if (user.getGender().equals("0")) {
-//            sex.setText("女");
-//        } else {
-//            sex.setText("女");
-//        }
-//        single.setText(user.getPersonalSignature());
-//        phone.setText(user.getCellPhone());
-//        SysApplication.DisplayUserImageClick(user.getHeadImg(), head);
-//        nick.setText(user.getNickname());
-//        wechat.setText(user.getWeChat());
-//        address.setText(user.getAddress());
-//        DatabaseHelper databaseHelper = null;
-//        SQLiteDatabase db = null;
-//        try {
-//            databaseHelper = new DatabaseHelper(this);
-//            db = databaseHelper.getWritableDatabase();
-//            if (TextUtils.isEmpty(user.getRegionId())) {
-//                return;
-//            }
-//            int regionid = Integer.parseInt(user.getRegionId());
-//            Cursor cursor = db.rawQuery("select * from " + Table.county + " where id = " + regionid, null);
-//            String ad = "";
-//            if (cursor.moveToNext()) {
-//                ad = cursor.getString(cursor.getColumnIndex(Table.County.name));
-//                regionid = cursor.getInt(cursor.getColumnIndex(Table.County.id));
-//            }
-//            cursor = db.rawQuery("select * from " + Table.city + " where id = " + regionid, null);
-//            if (cursor.moveToNext()) {
-//                ad = cursor.getString(cursor.getColumnIndex(Table.City.name)) + ad;
-//                regionid = cursor.getInt(cursor.getColumnIndex(Table.City.id));
-//            }
-//            cursor = db.rawQuery("select * from " + Table.province + " where id = " + regionid, null);
-//            if (cursor.moveToNext()) {
-//                ad = cursor.getString(cursor.getColumnIndex(Table.Province.name)) + ad;
-//                regionid = cursor.getInt(cursor.getColumnIndex(Table.Province.id));
-//            }
-//            address.setText(ad);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (db != null) {
-//                db.close();
-//            }
-//            if (databaseHelper != null) {
-//                databaseHelper.close();
-//            }
-//        }
+        if(user!=null){
+            int types[] = new int[]{2,1,1,1,1,1,1,1,1,1};
+            String names[] = new String[]{"上传头像","登录名","昵称","性别","个性签名","手机号码","座机","地址","QQ"};
+            String values[] = new String[]{user.getHead()+"",user.getUserName(),"哈哈",Contents.getSex(user.getGender()),"布置了","18888552254","0851220011","大学生创业园","1001010"};
+            listInfo = new ArrayList<>();
+            for (int i=0;i<8;i++)
+            {
+                Personal info = new Personal();
+                info.setType(types[i]);
+                info.setName(names[i]);
+                info.setValue(values[i]);
+                listInfo.add(info);
+            }
+            infoAdapter = new PersonalDataAdapter(this,listInfo);
+            listview.setAdapter(infoAdapter);
+        }
     }
 
     @Override
@@ -330,6 +255,17 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
             startActivityForResult(intent, Contents.PHOTOHRAPH);
         } else {
             Toast.makeText(PersonalDataActivity.this, getString(R.string.selected_sdcard_not_exists), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Map<String,String> m = new HashMap<>();
+        switch (position){
+            case 0:
+                dialog = new CustomDialog(mContext, R.style.mystyle, R.layout.customdialog, R.array.title_upload_image, this);
+                dialog.show();
+                break;
         }
     }
 }

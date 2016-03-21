@@ -11,7 +11,12 @@ import android.widget.Toast;
 import com.zgld.mall.R;
 import com.zgld.mall.utils.ConfirmDialog;
 import com.zgld.mall.utils.Contents;
+import com.zgld.mall.volley.AsyncGameRunner;
+import com.zgld.mall.volley.NetWorkTools;
 import com.zgld.mall.volley.RequestListenr;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by LongLiuPing on 2016/3/3.阿巴斯
@@ -73,4 +78,25 @@ public abstract class BaseFragmentActivity extends FragmentActivity  implements 
             Toast.makeText(this, getString(R.string.network_connection_timeout), Toast.LENGTH_SHORT).show();
         }
     }
+    public void getData(int method, int tag, String url, Map m, String title, int pageIndex) {
+        if (NetWorkTools.isHasNet(getApplicationContext())) {
+            if (pageIndex == 1) {
+                if (confirmDialog == null) {
+                    confirmDialog = new ConfirmDialog(this, title);
+                }
+                if (confirmDialog.isShowing()) {
+                    confirmDialog.dismiss();
+                }
+                confirmDialog.show();
+            }
+            AsyncGameRunner.request(method, tag, Contents.BASE_URL + url, this, this, m);
+        } else {
+            if (time + 2000 < new Date().getTime()) {
+                time = new Date().getTime();
+                Toast.makeText(this, getString(R.string.no_wifi_or_open_mobile_data), Toast.LENGTH_SHORT).show();
+            }
+            handler.sendEmptyMessage(Contents.TAG_ERROES);
+        }
+    }
+    long time = 0;
 }

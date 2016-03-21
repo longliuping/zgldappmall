@@ -149,7 +149,7 @@ public class AddAddressActivity extends BaseActivity implements OnClickListener 
                 AspnetUsers user = Contents.getUser(this);
                 m.put("token",user.getUserToken().getAccountToken());
                 m.put("userId",user.getUserId()+"");
-                getData(com.android.volley.Request.Method.POST, 202, "add_user_shipping_addresses.html", m, null, 1);
+                getData(com.android.volley.Request.Method.POST, 202, "addresses/add_user_shipping_addresses.html", m, null, 1);
                 break;
         }
     }

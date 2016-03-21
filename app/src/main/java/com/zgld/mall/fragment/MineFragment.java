@@ -17,8 +17,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zgld.mall.R;
+import com.zgld.mall.SysApplication;
 import com.zgld.mall.activity.BuyersOrdersFragmentActivity;
+import com.zgld.mall.activity.LoginActivity;
+import com.zgld.mall.activity.PersonalDataActivity;
 import com.zgld.mall.activity.SettingActivity;
+import com.zgld.mall.beans.AspnetUsers;
+import com.zgld.mall.utils.Contents;
 
 import org.w3c.dom.Text;
 
@@ -31,7 +36,7 @@ import java.util.List;
  * Use the {@link MineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MineFragment extends BaseFragment {
+public class MineFragment extends BaseFragment implements View.OnClickListener{
     String menuString[] = {"我的订单","我的收藏","设置"};
     int menuInt[] = {R.drawable.me_order,R.drawable.me_love,R.drawable.me_setting};
     ListView list_menu;
@@ -62,42 +67,88 @@ public class MineFragment extends BaseFragment {
     }
 
     Activity activity;
+    View null_user;
+    View default_user;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.activity = this.getActivity();
     }
-
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_mine, container, false);
+        view =inflater.inflate(R.layout.fragment_mine, container, false);
         view.findViewById(R.id.back).setVisibility(View.GONE);
         TextView title = (TextView) view.findViewById(R.id.title_center);
         title.setText("我的");
+        null_user = view.findViewById(R.id.null_user);
+        default_user = view.findViewById(R.id.default_user);
+        null_user.setOnClickListener(this);
+        default_user.setOnClickListener(this);
         list_menu = (ListView) view.findViewById(R.id.list_menu);
         list_menu.setAdapter(new MenuAdapter());
         list_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0)
-                {
+                if (position == 0) {
                     startActivity(new Intent(getActivity(), BuyersOrdersFragmentActivity.class));
                 }
-                if(position==2)
-                {
+                if (position == 2) {
                     startActivity(new Intent(getActivity(), SettingActivity.class));
                 }
             }
         });
+        initData();
         return view;
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==activity.RESULT_OK){
+            if(requestCode==200){
+                initData();;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    void initData(){
+        AspnetUsers users = Contents.getUser(activity);
+        if(users!=null){
+            default_user.setVisibility(View.VISIBLE);
+            null_user.setVisibility(View.GONE);
+            TextView name = (TextView) view.findViewById(R.id.name);
+            name.setText(users.getUserName());
+            TextView cdk_number = (TextView) view.findViewById(R.id.cdk_number);
+            cdk_number.setText(users.getUserId()+"");
+            ImageView head = (ImageView) view.findViewById(R.id.head);
+            SysApplication.DisplayUserImage(users.getHead(), head);
+        }else{
+            default_user.setVisibility(View.GONE);
+            null_user.setVisibility(View.VISIBLE);
+        }
+    }
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
     }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent();
+        switch (v.getId()){
+            case R.id.null_user:
+                intent.setClass(getActivity(),LoginActivity.class);
+                startActivityForResult(intent, 200);
+                break;
+            case R.id.default_user:
+                intent.setClass(getActivity(),PersonalDataActivity.class);
+                startActivityForResult(intent, 200);
+                break;
+        }
+    }
+
     class MenuAdapter extends BaseAdapter{
 
         @Override

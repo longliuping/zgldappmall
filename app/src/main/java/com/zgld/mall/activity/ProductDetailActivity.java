@@ -173,7 +173,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
 
     private void initData() {
         // 产品详细
-        getData(com.android.volley.Request.Method.GET, 205, "product_detail.html?id=" + productId, null,
+        getData(com.android.volley.Request.Method.GET, 205, "product/product_detail.html?id=" + productId, null,
                 null, 1);
     }
 
@@ -420,7 +420,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
             m.put("number", number+"");
             m.put("token", users.getUserToken().getAccountToken());
             m.put("userId", users.getUserId()+"");
-            getData(Request.Method.POST, 207, "add_product_car.html", m, null
+            getData(Request.Method.POST, 207, "car/add_product_car.html", m, null
                     , 1);
         }else{
             Contents.loginPage(this,null,200);

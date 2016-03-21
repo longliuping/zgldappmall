@@ -162,7 +162,7 @@ County county;
                 }
                 m.put("shippingRegion", address.getText().toString());
                 m.put("shippingId", info.getShippingId() + "");
-                getData(com.android.volley.Request.Method.POST, 202, "update_user_shipping_addresses.html", m, null, 1);
+                getData(com.android.volley.Request.Method.POST, 202, "addresses/update_user_shipping_addresses.html", m, null, 1);
                 break;
         }
     }

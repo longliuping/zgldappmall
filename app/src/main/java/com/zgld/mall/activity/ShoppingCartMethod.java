@@ -224,7 +224,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 			UserToken userToken = user.getUserToken();
 			m.put("token",userToken.getAccountToken());
 			m.put("userId", user.getUserId() + "");
-			getData(Method.POST, 201, "user_car_product.html", m, null, 1);
+			getData(Method.POST, 201, "car/user_car_product.html", m, null, 1);
 		}
 	}
 
@@ -584,7 +584,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 						m.put("userId", Contents.getUser(activity).getUserId() + "");
 						 m.put("productId", listInfo.get(groupPosition).getListHishopProducts().get(childPosition).getProductId() + "");
 						m.put("skuId", listInfo.get(groupPosition).getListHishopProducts().get(childPosition).getHishopSkus().getSkuId());
-						getData(Method.POST, 203, "delete_car_product.html", m, null, 1);
+						getData(Method.POST, 203, "car/delete_car_product.html", m, null, 1);
 					}
 
 					@Override

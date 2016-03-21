@@ -200,7 +200,7 @@ public class HomeFragment extends BaseFragment implements AdapterView.OnItemClic
     }
     public void initData(){
         getData(Request.Method.GET,201,"home_banner.html",null,null,1);
-        getData(Request.Method.GET,202,"home_all_product.html",null,null,1);
+        getData(Request.Method.GET,202,"product/home_all_product.html",null,null,1);
     }
     /**
      * 初始化LoopView

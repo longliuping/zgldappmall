@@ -144,7 +144,7 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
         AspnetUsers user = Contents.getUser(this);
         m.put("token",user.getUserToken().getAccountToken());
         m.put("userId",user.getUserId()+"");
-        getData(com.android.volley.Request.Method.POST, 201, "user_shipping_addresses.html", m, null, 1);
+        getData(com.android.volley.Request.Method.POST, 201, "addresses/user_shipping_addresses.html", m, null, 1);
     }
 
     @Override
@@ -204,7 +204,7 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
                         m.put("token",userToken.getAccountToken());
                         m.put("userId", user.getUserId() + "");
                         m.put("address.shippingId",listInfo.get(deletePosition).getShippingId()+"");
-                        getData(Request.Method.POST, 202, "delete_user_shipping_addresses.html", m, null, 1);
+                        getData(Request.Method.POST, 202, "addresses/delete_user_shipping_addresses.html", m, null, 1);
                     }
 
                     @Override

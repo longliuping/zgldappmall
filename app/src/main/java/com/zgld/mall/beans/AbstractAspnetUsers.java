@@ -44,7 +44,8 @@ public abstract class AbstractAspnetUsers implements java.io.Serializable {
 	private String openId;
 	private String openIdType;
 	private String sessionId;
-	private Set aspnetUsersInRoleses = new HashSet(0);
+	private String head;
+
 
 	// Constructors
 
@@ -297,12 +298,12 @@ public abstract class AbstractAspnetUsers implements java.io.Serializable {
 		this.sessionId = sessionId;
 	}
 
-	public Set getAspnetUsersInRoleses() {
-		return this.aspnetUsersInRoleses;
+	public String getHead() {
+		return head;
 	}
 
-	public void setAspnetUsersInRoleses(Set aspnetUsersInRoleses) {
-		this.aspnetUsersInRoleses = aspnetUsersInRoleses;
+	public void setHead(String head) {
+		this.head = head;
 	}
 
 }

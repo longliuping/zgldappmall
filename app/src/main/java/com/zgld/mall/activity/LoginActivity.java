@@ -59,7 +59,7 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
         if(msg.getData().getInt("status")==200){
             switch (msg.what){
                 case 201:
-                    JSONObject jo = new JSONObject(msg.getData().getString("data")).getJSONObject("info");
+                    JSONObject jo = new JSONObject(msg.getData().getString("json")).getJSONObject("data").getJSONObject("info");
                     AspnetUsers user = new Gson().fromJson(jo.toString(), new TypeToken<AspnetUsers>() {
                     }.getType());
                     Toast.makeText(getApplicationContext(),user.getUserName(),Toast.LENGTH_SHORT).show();
@@ -67,6 +67,7 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
                     new UserDataShare(this).saveLoginInfo(et_user_name.getText().toString(), et_user_password.getText()
                                 .toString(), user.getUserId()+"");
                     BroadcastUtils.sendUpdateHomeUser(this);
+                    setResult(RESULT_OK);
                     finish();
                     break;
             }

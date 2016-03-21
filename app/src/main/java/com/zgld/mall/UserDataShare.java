@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.text.TextUtils;
 
+import com.zgld.mall.beans.AspnetMembers;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.UserToken;
 import com.zgld.mall.utils.Contents;
@@ -89,10 +90,26 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 			info.setEmail(haredPreferences.getString("email", ""));
 			info.setUserName(haredPreferences.getString("userName", ""));
 			info.setGender(haredPreferences.getInt("gender", 0));
-			info.setUserId(Integer.parseInt(haredPreferences.getString("userId", "0")));
+			info.setHead(haredPreferences.getString("head", ""));
+			info.setUserId(haredPreferences.getInt("userId", 0));
+
 			UserToken token = new UserToken();
 			token.setAccountToken(haredPreferences.getString("accountToken",""));
 			info.setUserToken(token);
+
+			AspnetMembers member = new AspnetMembers();
+			member.setReferralUserId(haredPreferences.getInt("referralUserId",0));
+			member.setTopRegionId(haredPreferences.getInt("topRegionId", 0));
+			member.setRegionId(haredPreferences.getInt("regionId", 0));
+			member.setRealName(haredPreferences.getString("realName", ""));
+			member.setAddress(haredPreferences.getString("address", ""));
+			member.setZipcode(haredPreferences.getString("zipcode", ""));
+			member.setTelPhone(haredPreferences.getString("telPhone", ""));
+			member.setCellPhone(haredPreferences.getString("cellPhone", ""));
+			member.setQq(haredPreferences.getString("qq", ""));
+			member.setWangwang(haredPreferences.getString("wangwang", ""));
+			member.setMsn(haredPreferences.getString("msn",""));
+			info.setAspnetMembers(member);
 			Contents.setUser(info);
 		}
 		return info;
@@ -111,8 +128,22 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 		editor.putString("userName", info.getUserName());
 		editor.putInt("gender", info.getGender());
 		editor.putInt("userId", info.getUserId());
+		editor.putString("head", info.getHead());
+
 		editor.putString("accountToken", info.getUserToken().getAccountToken());
 		editor.putString("tokenRemark", info.getUserToken().getTokenRemark());
+
+		editor.putInt("referralUserId",info.getAspnetMembers().getReferralUserId());
+		editor.putInt("topRegionId", info.getAspnetMembers().getTopRegionId());
+		editor.putInt("regionId",info.getAspnetMembers().getRegionId());
+		editor.putString("realName", info.getAspnetMembers().getRealName());
+		editor.putString("address",info.getAspnetMembers().getAddress());
+		editor.putString("zipcode",info.getAspnetMembers().getZipcode());
+		editor.putString("telPhone",info.getAspnetMembers().getTelPhone());
+		editor.putString("cellPhone",info.getAspnetMembers().getCellPhone());
+		editor.putString("qq",info.getAspnetMembers().getQq());
+		editor.putString("wangwang",info.getAspnetMembers().getWangwang());
+		editor.putString("msn",info.getAspnetMembers().getMsn());
 		editor.putBoolean(ISLOGIN, true);
 		// 提交当前数据
 		editor.commit();

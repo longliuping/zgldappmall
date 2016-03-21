@@ -19,7 +19,9 @@ import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.zgld.mall.R;
+import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.HishopSkus;
 import com.zgld.mall.beans.HishopUserShippingAddresses;
 import com.zgld.mall.beans.Supplier;
@@ -347,12 +349,18 @@ public class ProductOptionFragmentActivity extends BaseFragmentActivity implemen
     @Override
     public void confirm(int number, String strNorms,HishopSkus hishopSkus, Integer valueId,Integer attributeId) {
         // TODO Auto-generated method stub
-        this.number = number;
-        this.strNorms = strNorms;
-        this.ids = ids;
-        if (info != null && (info.getUserId().equals(Contents.getUser(this).getUserId()))) {
-            Toast.makeText(this, getString(R.string.can_not_sell_their_own_products), Toast.LENGTH_SHORT).show();
-            return;
+        Map<String,String> m = new HashMap<>();
+        AspnetUsers users = Contents.getUser(this);
+        if(users!=null) {
+            m.put("skuId", hishopSkus.getSkuId());
+            m.put("productId", hishopSkus.getProductId()+"");
+            m.put("number", number+"");
+            m.put("token", users.getUserToken().getAccountToken());
+            m.put("userId", users.getUserId()+"");
+            getData(Request.Method.POST, 207, "car/add_product_car.html", m, null
+                    , 1);
+        }else{
+            Contents.loginPage(this, null, 200);
         }
     }
 
