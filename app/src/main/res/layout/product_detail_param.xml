@@ -93,60 +93,12 @@
         android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" >
-        <TextView
-            android:id="@+id/gridview_color_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="顏色："
-            android:textColor="#010101"
-             />
 
-        <com.zgld.mall.widget.MyGridView
-            android:id="@+id/gridview_color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:cacheColorHint="#00000000"
-            android:horizontalSpacing="10dp"
-            android:listSelector="#00000000"
-            android:numColumns="4"
-            android:verticalSpacing="10dp" >
-        </com.zgld.mall.widget.MyGridView>
 
-        <View
-            android:id="@+id/gridview_color_line"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="#F2F2F2" />
-
-        <TextView
-            android:id="@+id/gridview_size_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="尺寸："
-            android:textColor="#010101"
-            />
-
-        <com.zgld.mall.widget.MyGridView
-            android:id="@+id/gridview_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:cacheColorHint="#00000000"
-            android:horizontalSpacing="10dp"
-            android:listSelector="#00000000"
-            android:numColumns="4"
-            android:verticalSpacing="10dp" >
-        </com.zgld.mall.widget.MyGridView>
-        <View
-            android:id="@+id/gridview_size_line"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="#F2F2F2" />
+       <com.zgld.mall.widget.MyListView
+           android:id="@+id/listview"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"></com.zgld.mall.widget.MyListView>
 
         <TextView
             android:layout_width="wrap_content"

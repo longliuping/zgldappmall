@@ -1,6 +1,5 @@
 package com.zgld.mall.adapter;
 
-import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,21 +9,20 @@ import android.widget.TextView;
 
 import com.zgld.mall.R;
 import com.zgld.mall.beans.HishopAttributeValues;
+import com.zgld.mall.beans.HishopAttributes;
 
-public class SelectedInfoAdapter extends BaseAdapter {
+import java.util.List;
 
+public class SelectedBaseInfoAdapter extends BaseAdapter {
 	Context context;
-	List<HishopAttributeValues> listInfo;
+	List<HishopAttributes> listInfo;
 	LayoutInflater layoutInflater;
 
-	public SelectedInfoAdapter(Context context,int attributeId,  List<HishopAttributeValues> listInfo) {
+	public SelectedBaseInfoAdapter(Context context, int attributeId, List<HishopAttributes> listInfo) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		this.listInfo = listInfo;
 		layoutInflater = LayoutInflater.from(context);
-	}
-	public List<HishopAttributeValues>  getListInfo(){
-		return listInfo;
 	}
 	@Override
 	public int getCount() {
@@ -54,7 +52,7 @@ public class SelectedInfoAdapter extends BaseAdapter {
 		ViewHolder holder = null;
 		if (convertView == null) {
 			holder = new ViewHolder();
-			convertView = layoutInflater.inflate(R.layout.item_selectedinfo, null);
+			convertView = layoutInflater.inflate(R.layout.item_selected_base_info, null);
 			holder.title = (TextView) convertView.findViewById(R.id.title);
 			convertView.setTag(holder);
 		} else {
@@ -62,13 +60,13 @@ public class SelectedInfoAdapter extends BaseAdapter {
 		}
 		holder.title.setTextAppearance(context, R.style.item_text_default);
 		convertView.setBackgroundResource(R.drawable.item_text_default_shape);
-		HishopAttributeValues info = listInfo.get(position);
+		HishopAttributes info = listInfo.get(position);
 		if (info != null) {
-			if (info.isSelected()) {
-				holder.title.setTextAppearance(context, R.style.item_text_selected);
-				convertView.setBackgroundResource(R.drawable.item_text_selected_shape);
-			}
-			holder.title.setText(info.getValueStr());
+//			if (info.isSelected()) {
+//				holder.title.setTextAppearance(context, R.style.item_text_selected);
+//				convertView.setBackgroundResource(R.drawable.item_text_selected_shape);
+//			}
+//			holder.title.setText(info.getValueStr());
 		}
 		return convertView;
 	}

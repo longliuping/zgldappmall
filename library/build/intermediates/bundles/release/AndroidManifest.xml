@@ -5,7 +5,7 @@
     android:versionName="2.1.1" >
 
     <uses-sdk
-        android:minSdkVersion="4"
-        android:targetSdkVersion="4" />
+        android:minSdkVersion="1"
+        android:targetSdkVersion="1" />
 
 </manifest>

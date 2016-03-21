@@ -17,12 +17,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
+import com.zgld.mall.adapter.SelectedBaseInfoAdapter;
 import com.zgld.mall.adapter.SelectedInfoAdapter;
 import com.zgld.mall.beans.HishopAttributeValues;
 import com.zgld.mall.beans.HishopAttributes;
@@ -35,11 +37,7 @@ import com.zgld.mall.utils.PriceUtil;
 
 import org.json.JSONObject;
 
-public class PublishSelectPicPopupWindow extends PopupWindow implements SelectedInfoAdapter.SelectedInfoAdapterListener {
-	@Override
-	public void deleteInfo(int attributeId, int position) {
-
-	}
+public class PublishSelectPicPopupWindow extends PopupWindow{
 	private Integer valueId;
 	private Integer attributeId;
 	public interface PublishSelectPicPopupWindowListener {
@@ -51,11 +49,10 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 	TextView title, sale_price,market_price,sale_model;
 	EditText d_result;
 	PublishSelectPicPopupWindowListener callBack;
-	TextView gridview_color_name,gridview_size_name;
-	GridView gridview_color,gridview_size;
+//	TextView gridview_color_name,gridview_size_name;
+//	GridView gridview_color,gridview_size;
 	TextView style;
-	SelectedInfoAdapter selectedInfoAdapter1;
-	SelectedInfoAdapter selectedInfoAdapter2;
+	ListView listview;
 	List<HishopSkuitems> listHishopSkuitems = new ArrayList<>();
 	List<HishopSkus> listHishopSkus = new ArrayList<>();
 	@SuppressWarnings("deprecation")
@@ -82,58 +79,59 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 					}
 				}
 				hishopAttributes.setListHishopAttributeValues(lv);
-				listHishopAttributes.set(i,hishopAttributes);
-
-				switch (i){
-					case 0:
-						gridview_color_name = (TextView) mMenuView.findViewById(R.id.gridview_color_name);
-						gridview_color_name.setText(hishopAttributes.getAttributeName());
-						gridview_color = (GridView) mMenuView.findViewById(R.id.gridview_color);
-						selectedInfoAdapter1 = new SelectedInfoAdapter(context,hishopAttributes.getAttributeId(),lv,this);
-						gridview_color.setAdapter(selectedInfoAdapter1);
-						gridview_color.setOnItemClickListener(new OnItemClickListener() {
-							@Override
-							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
-								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
-								setDetail(getSkus(getSkuId()));
-								for (int i=0;i<selectedInfoAdapter1.getListInfo().size();i++){
-									selectedInfoAdapter1.getListInfo().get(i).setSelected(false);
-								}
-								if (selectedInfoAdapter1.getListInfo().get(position).isSelected()) {
-									selectedInfoAdapter1.getListInfo().get(position).setSelected(false);
-								} else {
-									selectedInfoAdapter1.getListInfo().get(position).setSelected(true);
-								}
-								selectedInfoAdapter1.notifyDataSetChanged();
-							}
-						});
-						break;
-					case 1:
-						gridview_size_name = (TextView) mMenuView.findViewById(R.id.gridview_size_name);
-						gridview_size_name.setText(hishopAttributes.getAttributeName());
-						gridview_size = (GridView) mMenuView.findViewById(R.id.gridview_size);
-						selectedInfoAdapter2 = new SelectedInfoAdapter(context,hishopAttributes.getAttributeId(),lv,this);
-						gridview_size.setAdapter(selectedInfoAdapter2);
-						gridview_size.setOnItemClickListener(new OnItemClickListener() {
-							@Override
-							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
-								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
-								setDetail(getSkus(getSkuId()));
-								for (int i=0;i<selectedInfoAdapter2.getListInfo().size();i++){
-									selectedInfoAdapter2.getListInfo().get(i).setSelected(false);
-								}
-								if (selectedInfoAdapter2.getListInfo().get(position).isSelected()) {
-									selectedInfoAdapter2.getListInfo().get(position).setSelected(false);
-								} else {
-									selectedInfoAdapter2.getListInfo().get(position).setSelected(true);
-								}
-								selectedInfoAdapter2.notifyDataSetChanged();
-							}
-						});
-						break;
-				}
+				listHishopAttributes.set(i, hishopAttributes);
+				listview = (ListView) mMenuView.findViewById(R.id.listview);
+//				listview.setAdapter(new SelectedBaseInfoAdapter(context,listHishopAttributes));
+//				switch (i){
+//					case 0:
+//						gridview_color_name = (TextView) mMenuView.findViewById(R.id.gridview_color_name);
+//						gridview_color_name.setText(hishopAttributes.getAttributeName());
+//						gridview_color = (GridView) mMenuView.findViewById(R.id.gridview_color);
+//						selectedInfoAdapter1 = new SelectedInfoAdapter(context,hishopAttributes.getAttributeId(),lv);
+//						gridview_color.setAdapter(selectedInfoAdapter1);
+//						gridview_color.setOnItemClickListener(new OnItemClickListener() {
+//							@Override
+//							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
+//								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
+//								setDetail(getSkus(getSkuId()));
+//								for (int i=0;i<selectedInfoAdapter1.getListInfo().size();i++){
+//									selectedInfoAdapter1.getListInfo().get(i).setSelected(false);
+//								}
+//								if (selectedInfoAdapter1.getListInfo().get(position).isSelected()) {
+//									selectedInfoAdapter1.getListInfo().get(position).setSelected(false);
+//								} else {
+//									selectedInfoAdapter1.getListInfo().get(position).setSelected(true);
+//								}
+//								selectedInfoAdapter1.notifyDataSetChanged();
+//							}
+//						});
+//						break;
+//					case 1:
+//						gridview_size_name = (TextView) mMenuView.findViewById(R.id.gridview_size_name);
+//						gridview_size_name.setText(hishopAttributes.getAttributeName());
+//						gridview_size = (GridView) mMenuView.findViewById(R.id.gridview_size);
+//						selectedInfoAdapter2 = new SelectedInfoAdapter(context,hishopAttributes.getAttributeId(),lv);
+//						gridview_size.setAdapter(selectedInfoAdapter2);
+//						gridview_size.setOnItemClickListener(new OnItemClickListener() {
+//							@Override
+//							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
+//								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
+//								setDetail(getSkus(getSkuId()));
+//								for (int i=0;i<selectedInfoAdapter2.getListInfo().size();i++){
+//									selectedInfoAdapter2.getListInfo().get(i).setSelected(false);
+//								}
+//								if (selectedInfoAdapter2.getListInfo().get(position).isSelected()) {
+//									selectedInfoAdapter2.getListInfo().get(position).setSelected(false);
+//								} else {
+//									selectedInfoAdapter2.getListInfo().get(position).setSelected(true);
+//								}
+//								selectedInfoAdapter2.notifyDataSetChanged();
+//							}
+//						});
+//						break;
+//				}
 			}
 		}
 
@@ -170,36 +168,36 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 				// TODO Auto-generated method stub
 				boolean sa = false;
 				String seleStr = "";
-				for (int i=0;i<selectedInfoAdapter1.getListInfo().size();i++)
-				{
-					if(selectedInfoAdapter1.getListInfo().get(i).isSelected()){
-						sa = true;
-
-						for (HishopAttributes ha : listHishopAttributes) {
-							if(selectedInfoAdapter1.getListInfo().get(i).getAttributeId().equals(ha.getAttributeId())){
-								seleStr += ha.getAttributeName()+":";
-							}
-						}
-						seleStr += selectedInfoAdapter1.getListInfo().get(i).getValueStr()+";";
-					}
-				}
-				if(!sa){
-					Toast.makeText(context,"请选择属性",Toast.LENGTH_SHORT).show();
-					return;
-				}
-				sa = false;
-				for (int i=0;i<selectedInfoAdapter2.getListInfo().size();i++)
-				{
-					if(selectedInfoAdapter2.getListInfo().get(i).isSelected()){
-						sa = true;
-						for (HishopAttributes ha : listHishopAttributes) {
-							if(selectedInfoAdapter2.getListInfo().get(i).getAttributeId().equals(ha.getAttributeId())){
-								seleStr += ha.getAttributeName()+":";
-							}
-						}
-						seleStr += selectedInfoAdapter2.getListInfo().get(i).getValueStr()+";";
-					}
-				}
+//				for (int i=0;i<selectedInfoAdapter1.getListInfo().size();i++)
+//				{
+//					if(selectedInfoAdapter1.getListInfo().get(i).isSelected()){
+//						sa = true;
+//
+//						for (HishopAttributes ha : listHishopAttributes) {
+//							if(selectedInfoAdapter1.getListInfo().get(i).getAttributeId().equals(ha.getAttributeId())){
+//								seleStr += ha.getAttributeName()+":";
+//							}
+//						}
+//						seleStr += selectedInfoAdapter1.getListInfo().get(i).getValueStr()+";";
+//					}
+//				}
+//				if(!sa){
+//					Toast.makeText(context,"请选择属性",Toast.LENGTH_SHORT).show();
+//					return;
+//				}
+//				sa = false;
+//				for (int i=0;i<selectedInfoAdapter2.getListInfo().size();i++)
+//				{
+//					if(selectedInfoAdapter2.getListInfo().get(i).isSelected()){
+//						sa = true;
+//						for (HishopAttributes ha : listHishopAttributes) {
+//							if(selectedInfoAdapter2.getListInfo().get(i).getAttributeId().equals(ha.getAttributeId())){
+//								seleStr += ha.getAttributeName()+":";
+//							}
+//						}
+//						seleStr += selectedInfoAdapter2.getListInfo().get(i).getValueStr()+";";
+//					}
+//				}
 				if(!sa){
 					Toast.makeText(context,"请选择属性",Toast.LENGTH_SHORT).show();
 					return;
