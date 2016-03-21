@@ -9,7 +9,6 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
@@ -25,15 +24,14 @@ import android.widget.Toast;
 import com.zgld.mall.R;
 import com.zgld.mall.fragment.BbsFragment;
 import com.zgld.mall.fragment.CarFragment;
-import com.zgld.mall.fragment.HomeFragment;
+import com.zgld.mall.fragment.MainHomeFragment;
 import com.zgld.mall.fragment.MineFragment;
-import com.zgld.mall.server.BackstageService;
 
 public class MainActivity extends BaseFragmentActivity {
     private static FragmentManager manager;
     private FragmentTabHost fragmentTabHost;
     private LayoutInflater inflater;
-    private Class fragmengArray[] = { HomeFragment.class, BbsFragment.class,
+    private Class fragmengArray[] = {MainHomeFragment.class, BbsFragment.class,
             CarFragment.class, MineFragment.class };
     private int mImageViewArray[] = { R.drawable.tab_homepage, R.drawable.tab_bbs, R.drawable.tab_shop,
             R.drawable.tab_mine };

@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/transparent_status_bar"
+    android:orientation="vertical"
+    android:background="@color/back_default"
+    tools:context="com.zgld.mall.fragment.MainHomeFragment">
+    <RelativeLayout
+        android:id="@+id/head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <include  layout="@layout/include_head" ></include>
+    </RelativeLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+        android:id="@+id/home_fragment_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/list_view_back"
+        android:layout_below="@id/head"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+            <com.zgld.mall.widget.LoopViewBase
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <com.kevin.loopview.AdLoopView
+                    android:id="@+id/home_frag_rotate_vp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </com.zgld.mall.widget.LoopViewBase>
+            <com.zgld.mall.widget.MyListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></com.zgld.mall.widget.MyListView>
+        </LinearLayout>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+
+</RelativeLayout>
