@@ -12,16 +12,19 @@ import com.zgld.mall.R;
 import com.zgld.mall.beans.HishopAttributeValues;
 
 public class SelectedInfoAdapter extends BaseAdapter {
-
+	public interface SelectedInfoAdapterCallback{
+		void onItemClick(HishopAttributeValues info, int position);
+	}
 	Context context;
 	List<HishopAttributeValues> listInfo;
 	LayoutInflater layoutInflater;
-
-	public SelectedInfoAdapter(Context context,int attributeId,  List<HishopAttributeValues> listInfo) {
+	SelectedInfoAdapterCallback callback;
+	public SelectedInfoAdapter(Context context, List<HishopAttributeValues> listInfo,SelectedInfoAdapterCallback callback) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		this.listInfo = listInfo;
 		layoutInflater = LayoutInflater.from(context);
+		this.callback = callback;
 	}
 	public List<HishopAttributeValues>  getListInfo(){
 		return listInfo;
@@ -62,13 +65,24 @@ public class SelectedInfoAdapter extends BaseAdapter {
 		}
 		holder.title.setTextAppearance(context, R.style.item_text_default);
 		convertView.setBackgroundResource(R.drawable.item_text_default_shape);
-		HishopAttributeValues info = listInfo.get(position);
+		final HishopAttributeValues info = listInfo.get(position);
 		if (info != null) {
 			if (info.isSelected()) {
 				holder.title.setTextAppearance(context, R.style.item_text_selected);
 				convertView.setBackgroundResource(R.drawable.item_text_selected_shape);
 			}
 			holder.title.setText(info.getValueStr());
+			convertView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					for (int i =0;i<listInfo.size();i++){
+						listInfo.get(i).setSelected(false);
+					}
+					info.setSelected(true);
+					SelectedInfoAdapter.this.notifyDataSetChanged();
+					callback.onItemClick(info,position);
+				}
+			});
 		}
 		return convertView;
 	}

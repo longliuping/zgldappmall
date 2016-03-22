@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.zgld.mall.R;
@@ -17,12 +18,13 @@ public class SelectedBaseInfoAdapter extends BaseAdapter {
 	Context context;
 	List<HishopAttributes> listInfo;
 	LayoutInflater layoutInflater;
-
-	public SelectedBaseInfoAdapter(Context context, int attributeId, List<HishopAttributes> listInfo) {
+	SelectedInfoAdapter.SelectedInfoAdapterCallback callback;
+	public SelectedBaseInfoAdapter(Context context, List<HishopAttributes> listInfo,SelectedInfoAdapter.SelectedInfoAdapterCallback callback) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		this.listInfo = listInfo;
 		layoutInflater = LayoutInflater.from(context);
+		this.callback = callback;
 	}
 	@Override
 	public int getCount() {
@@ -43,7 +45,8 @@ public class SelectedBaseInfoAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder {
-		TextView title;
+		TextView item_name;
+		GridView item_gridview;
 	}
 
 	@Override
@@ -53,20 +56,16 @@ public class SelectedBaseInfoAdapter extends BaseAdapter {
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = layoutInflater.inflate(R.layout.item_selected_base_info, null);
-			holder.title = (TextView) convertView.findViewById(R.id.title);
+			holder.item_name = (TextView) convertView.findViewById(R.id.item_name);
+			holder.item_gridview = (GridView) convertView.findViewById(R.id.item_gridview);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.title.setTextAppearance(context, R.style.item_text_default);
-		convertView.setBackgroundResource(R.drawable.item_text_default_shape);
 		HishopAttributes info = listInfo.get(position);
 		if (info != null) {
-//			if (info.isSelected()) {
-//				holder.title.setTextAppearance(context, R.style.item_text_selected);
-//				convertView.setBackgroundResource(R.drawable.item_text_selected_shape);
-//			}
-//			holder.title.setText(info.getValueStr());
+			holder.item_name.setText(info.getAttributeName());
+			holder.item_gridview.setAdapter(new SelectedInfoAdapter(context,info.getListHishopAttributeValues(),callback));
 		}
 		return convertView;
 	}

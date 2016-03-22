@@ -12,34 +12,34 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
 import com.zgld.mall.adapter.SelectedBaseInfoAdapter;
 import com.zgld.mall.adapter.SelectedInfoAdapter;
 import com.zgld.mall.beans.HishopAttributeValues;
 import com.zgld.mall.beans.HishopAttributes;
-import com.zgld.mall.beans.HishopProducts;
 import com.zgld.mall.beans.HishopSkuitems;
 import com.zgld.mall.beans.HishopSkus;
-import com.zgld.mall.beans.Product;
 import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.utils.PriceUtil;
 
-import org.json.JSONObject;
-
-public class PublishSelectPicPopupWindow extends PopupWindow{
+public class PublishSelectPicPopupWindow extends PopupWindow implements SelectedInfoAdapter.SelectedInfoAdapterCallback {
 	private Integer valueId;
 	private Integer attributeId;
+
+	@Override
+	public void onItemClick(HishopAttributeValues info, int position) {
+		valueId = info.getValueId();
+		attributeId = info.getAttributeId();
+		setDetail(getSkus(getSkuId()));
+	}
+
 	public interface PublishSelectPicPopupWindowListener {
 		void confirm(int number, String strNorms,HishopSkus hishopSkus, Integer valueId,Integer attributeId);
 	}
@@ -49,8 +49,6 @@ public class PublishSelectPicPopupWindow extends PopupWindow{
 	TextView title, sale_price,market_price,sale_model;
 	EditText d_result;
 	PublishSelectPicPopupWindowListener callBack;
-//	TextView gridview_color_name,gridview_size_name;
-//	GridView gridview_color,gridview_size;
 	TextView style;
 	ListView listview;
 	List<HishopSkuitems> listHishopSkuitems = new ArrayList<>();
@@ -80,61 +78,10 @@ public class PublishSelectPicPopupWindow extends PopupWindow{
 				}
 				hishopAttributes.setListHishopAttributeValues(lv);
 				listHishopAttributes.set(i, hishopAttributes);
-				listview = (ListView) mMenuView.findViewById(R.id.listview);
-//				listview.setAdapter(new SelectedBaseInfoAdapter(context,listHishopAttributes));
-//				switch (i){
-//					case 0:
-//						gridview_color_name = (TextView) mMenuView.findViewById(R.id.gridview_color_name);
-//						gridview_color_name.setText(hishopAttributes.getAttributeName());
-//						gridview_color = (GridView) mMenuView.findViewById(R.id.gridview_color);
-//						selectedInfoAdapter1 = new SelectedInfoAdapter(context,hishopAttributes.getAttributeId(),lv);
-//						gridview_color.setAdapter(selectedInfoAdapter1);
-//						gridview_color.setOnItemClickListener(new OnItemClickListener() {
-//							@Override
-//							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
-//								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
-//								setDetail(getSkus(getSkuId()));
-//								for (int i=0;i<selectedInfoAdapter1.getListInfo().size();i++){
-//									selectedInfoAdapter1.getListInfo().get(i).setSelected(false);
-//								}
-//								if (selectedInfoAdapter1.getListInfo().get(position).isSelected()) {
-//									selectedInfoAdapter1.getListInfo().get(position).setSelected(false);
-//								} else {
-//									selectedInfoAdapter1.getListInfo().get(position).setSelected(true);
-//								}
-//								selectedInfoAdapter1.notifyDataSetChanged();
-//							}
-//						});
-//						break;
-//					case 1:
-//						gridview_size_name = (TextView) mMenuView.findViewById(R.id.gridview_size_name);
-//						gridview_size_name.setText(hishopAttributes.getAttributeName());
-//						gridview_size = (GridView) mMenuView.findViewById(R.id.gridview_size);
-//						selectedInfoAdapter2 = new SelectedInfoAdapter(context,hishopAttributes.getAttributeId(),lv);
-//						gridview_size.setAdapter(selectedInfoAdapter2);
-//						gridview_size.setOnItemClickListener(new OnItemClickListener() {
-//							@Override
-//							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//								valueId = selectedInfoAdapter1.getListInfo().get(position).getValueId();
-//								attributeId = selectedInfoAdapter1.getListInfo().get(position).getAttributeId();
-//								setDetail(getSkus(getSkuId()));
-//								for (int i=0;i<selectedInfoAdapter2.getListInfo().size();i++){
-//									selectedInfoAdapter2.getListInfo().get(i).setSelected(false);
-//								}
-//								if (selectedInfoAdapter2.getListInfo().get(position).isSelected()) {
-//									selectedInfoAdapter2.getListInfo().get(position).setSelected(false);
-//								} else {
-//									selectedInfoAdapter2.getListInfo().get(position).setSelected(true);
-//								}
-//								selectedInfoAdapter2.notifyDataSetChanged();
-//							}
-//						});
-//						break;
-//				}
 			}
 		}
-
+		listview = (ListView) mMenuView.findViewById(R.id.listview);
+		listview.setAdapter(new SelectedBaseInfoAdapter(context,listHishopAttributes,this));
 
 		d_result = (EditText) mMenuView.findViewById(R.id.d_result);
 		style = (TextView) mMenuView.findViewById(R.id.style);
@@ -166,40 +113,30 @@ public class PublishSelectPicPopupWindow extends PopupWindow{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				boolean sa = false;
 				String seleStr = "";
-//				for (int i=0;i<selectedInfoAdapter1.getListInfo().size();i++)
-//				{
-//					if(selectedInfoAdapter1.getListInfo().get(i).isSelected()){
-//						sa = true;
-//
-//						for (HishopAttributes ha : listHishopAttributes) {
-//							if(selectedInfoAdapter1.getListInfo().get(i).getAttributeId().equals(ha.getAttributeId())){
-//								seleStr += ha.getAttributeName()+":";
-//							}
-//						}
-//						seleStr += selectedInfoAdapter1.getListInfo().get(i).getValueStr()+";";
-//					}
-//				}
-//				if(!sa){
-//					Toast.makeText(context,"请选择属性",Toast.LENGTH_SHORT).show();
-//					return;
-//				}
-//				sa = false;
-//				for (int i=0;i<selectedInfoAdapter2.getListInfo().size();i++)
-//				{
-//					if(selectedInfoAdapter2.getListInfo().get(i).isSelected()){
-//						sa = true;
-//						for (HishopAttributes ha : listHishopAttributes) {
-//							if(selectedInfoAdapter2.getListInfo().get(i).getAttributeId().equals(ha.getAttributeId())){
-//								seleStr += ha.getAttributeName()+":";
-//							}
-//						}
-//						seleStr += selectedInfoAdapter2.getListInfo().get(i).getValueStr()+";";
-//					}
-//				}
-				if(!sa){
-					Toast.makeText(context,"请选择属性",Toast.LENGTH_SHORT).show();
+				String message = "";
+				boolean havb = true;
+				if(listHishopAttributes!=null && listHishopAttributes.size()>0) {
+					for (int i=0;i<listHishopAttributes.size();i++){
+						HishopAttributes ha = listHishopAttributes.get(i);
+						havb = false;
+						for (int j=0;j<ha.getListHishopAttributeValues().size();j++){
+							seleStr += ha.getAttributeName()+":";
+							HishopAttributeValues hav = ha.getListHishopAttributeValues().get(j);
+							if(hav.isSelected()){
+								havb = true;
+								seleStr += hav.getValueStr()+";";
+							}
+						}
+						if(!havb){
+							message = "请选择:"+ha.getAttributeName();
+							break;
+						}
+
+					}
+				}
+				if (!havb) {
+					Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 					return;
 				}
 				int number = Integer.parseInt(d_result.getText().toString());

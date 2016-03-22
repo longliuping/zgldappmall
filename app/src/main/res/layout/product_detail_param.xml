@@ -98,7 +98,10 @@
        <com.zgld.mall.widget.MyListView
            android:id="@+id/listview"
            android:layout_width="match_parent"
-           android:layout_height="wrap_content"></com.zgld.mall.widget.MyListView>
+           android:layout_height="wrap_content"
+           android:dividerHeight="0dp"
+           android:divider="#00000000"
+           android:footerDividersEnabled="false"></com.zgld.mall.widget.MyListView>
 
         <TextView
             android:layout_width="wrap_content"
