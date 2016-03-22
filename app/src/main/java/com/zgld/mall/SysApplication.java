@@ -142,7 +142,11 @@ public class SysApplication extends Application implements Thread.UncaughtExcept
 	 * @param imageView
 	 */
 	public static void DisplayImage(String url, ImageView imageView) {
-		imageLoaderCache.displayImage(url, imageView, optionsProduct, animateFirstListener);
+		if(url.indexOf("http")>=0) {
+			imageLoaderCache.displayImage(url, imageView, optionsProduct, animateFirstListener);
+		}else{
+			imageLoaderCache.displayImage(Contents.BASE_IMAGE_PATH + url, imageView, optionsProduct, animateFirstListener);
+		}
 	}
 
 	/**
@@ -152,7 +156,11 @@ public class SysApplication extends Application implements Thread.UncaughtExcept
 	 * @param imageView
 	 */
 	public static void DisplayAbstractImage(String url, ImageView imageView) {
-		imageLoaderCache.displayImage(url, imageView, options, animateFirstListener);
+		if(url.indexOf("http")>=0) {
+			imageLoaderCache.displayImage(url, imageView, options, animateFirstListener);
+		}else{
+			imageLoaderCache.displayImage(Contents.BASE_IMAGE_PATH + url, imageView, options, animateFirstListener);
+		}
 	}
 
 	/**
@@ -162,7 +170,11 @@ public class SysApplication extends Application implements Thread.UncaughtExcept
 	 * @param imageView
 	 */
 	public static void DisplayUserImageClick(final String url, ImageView imageView) {
-		imageLoaderCache.displayImage(Contents.BASE_IMAGE_PATH + url, imageView, optionsUser, animateFirstListener);
+		if(url.indexOf("http")>=0) {
+			imageLoaderCache.displayImage(url, imageView, optionsUser, animateFirstListener);
+		}else{
+			imageLoaderCache.displayImage(Contents.BASE_IMAGE_PATH + url, imageView, optionsUser, animateFirstListener);
+		}
 		if (imageView != null) {
 			imageView.setOnClickListener(new OnClickListener() {
 
