@@ -55,7 +55,7 @@ public class SupperProductActivity extends BaseActivity implements AdapterView.O
             return;
         }
         ImageView head = (ImageView) findViewById(R.id.head);
-        SysApplication.DisplayUserImage(info.getSupplierLogoUrl(), head);
+        SysApplication.DisplayUserImage(info.getSupplierUrl1(), head);
         TextView name = (TextView) findViewById(R.id.name);
         name.setText("商家名称:"+info.getSupplierName());
         TextView cdk_number = (TextView) findViewById(R.id.cdk_number);

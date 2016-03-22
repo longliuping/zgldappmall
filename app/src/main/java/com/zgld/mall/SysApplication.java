@@ -187,7 +187,11 @@ public class SysApplication extends Application implements Thread.UncaughtExcept
 	 * @param imageView
 	 */
 	public static void DisplayUserImage(final String url, ImageView imageView) {
-		imageLoaderCache.displayImage(Contents.BASE_IMAGE_PATH + url, imageView, optionsUser, animateFirstListener);
+		if(url.indexOf("http")>=0) {
+			imageLoaderCache.displayImage(url, imageView, optionsUser, animateFirstListener);
+		}else{
+			imageLoaderCache.displayImage(Contents.BASE_IMAGE_PATH + url, imageView, optionsUser, animateFirstListener);
+		}
 	}
 
 	private static ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();

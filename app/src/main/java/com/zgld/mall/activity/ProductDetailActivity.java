@@ -168,7 +168,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
         item_title.setText(info.getHishopProducts().getProductName());
         item_sale_price.setText("销售价："+ PriceUtil.priceY(info.getHishopProducts().getListHishopSkus().get(0).getSalePrice()+""));
         item_market_price.setText("市场价:"+PriceUtil.priceY(info.getHishopProducts().getMarketPrice()+""));
-        SysApplication.DisplayImage(info.getSupplierUrl1(), item_user_head);
+        SysApplication.DisplayUserImage(info.getSupplierUrl1(), item_user_head);
     }
 
     private void initData() {
