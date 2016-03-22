@@ -9,6 +9,15 @@ public class Personal implements Serializable{
     String name;
     String value;
     int type;//1文本 2图片
+    Class className;
+
+    public Class getClassName() {
+        return className;
+    }
+
+    public void setClassName(Class className) {
+        this.className = className;
+    }
 
     public String getName() {
         return name;

@@ -87,6 +87,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         default_user = view.findViewById(R.id.default_user);
         null_user.setOnClickListener(this);
         default_user.setOnClickListener(this);
+        ImageView null_user_imageview = (ImageView) view.findViewById(R.id.null_user_imageview);
+        null_user_imageview.setImageResource(R.drawable.default_avatar);
         list_menu = (ListView) view.findViewById(R.id.list_menu);
         list_menu.setAdapter(new MenuAdapter());
         list_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {

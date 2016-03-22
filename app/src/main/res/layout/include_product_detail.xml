@@ -37,7 +37,6 @@
                 android:layout_alignParentBottom="true"
                 android:gravity="center_horizontal|bottom"
                 android:textColor="#02A6FF"
-                android:text="100"
                 android:textSize="20sp" />
 
             <com.zgld.mall.widget.OriginalPriceTextView

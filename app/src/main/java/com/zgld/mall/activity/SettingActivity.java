@@ -40,8 +40,8 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 	View check_app_update, logout, about, clear, server_center, wechat, update_pwd, message;
 	ListView listview;
 	int types[] = new int[]{1,1,1,1,2,2};
-	String names[] = new String[]{"更改密码","关于我们","清楚缓存","检查升级"};
-	String values[] = new String[]{"更改密码","关于我们","清楚缓存","检查升级"};
+	String names[] = new String[]{"关于我们","清楚缓存","检查升级"};
+	String values[] = new String[]{"关于我们","清楚缓存","检查升级"};
 	Class className[] = new Class[]{ModifyUserPasswordActivity.class,AboutActivity.class,null,null};
 	List<SettingMenu> listInfo = new ArrayList<>();
 	@Override
@@ -62,7 +62,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 			}
 		});
 		listview = (ListView) findViewById(R.id.listview);
-		for (int i =0;i<4;i++){
+		for (int i =0;i<3;i++){
 			SettingMenu info = new SettingMenu();
 			info.setName(names[i]);
 			info.setType(types[i]);

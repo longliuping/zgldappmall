@@ -13,9 +13,11 @@
        android:gravity="center"
        android:orientation="vertical">
        <com.zgld.mall.widget.CircularImage
+           android:id="@+id/null_user_imageview"
            android:layout_width="60dp"
            android:layout_height="60dp"
            android:adjustViewBounds="true"
+           android:background="@color/white"
            android:src="@drawable/default_avatar"/>
        <TextView
            android:layout_width="wrap_content"
@@ -54,7 +56,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="美美"
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -63,7 +64,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="1864532145"
                 android:textColor="#979797" />
         </LinearLayout>
 

@@ -10,7 +10,6 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,14 +18,12 @@ import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
-import com.zgld.mall.SysApplication;
 import com.zgld.mall.UserDataShare;
 import com.zgld.mall.adapter.PersonalDataAdapter;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.Personal;
 import com.zgld.mall.beans.ProductImageUpload;
 import com.zgld.mall.utils.BitmapUtil;
-import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.CustomDialog;
 
@@ -211,9 +208,11 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
     void initData() {
         AspnetUsers user = new UserDataShare(this).getUserData();
         if(user!=null){
-            int types[] = new int[]{2,1,1,1,1,1,1,1,1,1};
-            String names[] = new String[]{"上传头像","登录名","昵称","性别","个性签名","手机号码","座机","地址","QQ"};
-            String values[] = new String[]{user.getHead()+"",user.getUserName(),"哈哈",Contents.getSex(user.getGender()),"布置了","18888552254","0851220011","大学生创业园","1001010"};
+            int types[] = new int[]{2,1,1,1,1,1,1,1,1,1,1};
+            String names[] = new String[]{"上传头像","登录名","昵称","性别","个性签名","电话号码","手机号码","修改密码"};
+            String values[] = new String[]{user.getHead()+"",user.getUserName(),"",Contents.getSex(user.getGender()),"",user.getAspnetMembers().getTelPhone(),user.getAspnetMembers().getCellPhone(),""};
+            Class className[] = new Class[]{null,UpdateUserNameActivity.class,UpdateUserNickActivity.class,UpdateUserSexActivity.class,UpdateUserSingleActivity.class,UpdateUserCellPhoneActivity.class,UpdateTelPhoneActivity.class,UpdateUserPasswordActivity
+            .class};
             listInfo = new ArrayList<>();
             for (int i=0;i<8;i++)
             {
@@ -221,6 +220,7 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
                 info.setType(types[i]);
                 info.setName(names[i]);
                 info.setValue(values[i]);
+                info.setClassName(className[i]);
                 listInfo.add(info);
             }
             infoAdapter = new PersonalDataAdapter(this,listInfo);
@@ -259,12 +259,17 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Map<String,String> m = new HashMap<>();
-        switch (position){
-            case 0:
+        Personal info = listInfo.get(position);
+        if(info.getType()==2){
+            if(position==0){
                 dialog = new CustomDialog(mContext, R.style.mystyle, R.layout.customdialog, R.array.title_upload_image, this);
                 dialog.show();
-                break;
+            }
+        }else{
+            Intent intent = new Intent(this,info.getClassName());
+            intent.putExtra("name","修改"+info.getName());
+            startActivityForResult(intent,200);
         }
     }
+
 }

@@ -221,11 +221,6 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                     Contents.loginPage(this,null,200);
                     return;
                 }
-                // Intent mIntent = new Intent("car");
-                // mIntent.putExtra("shop", true);
-                // mIntent.setClass(getApplicationContext(), MainActivity.class);
-                // startActivity(mIntent);
-                // finish();
                 startActivity(new Intent(this, ShoppingCartActivity.class));
                 break;
             case R.id.back:

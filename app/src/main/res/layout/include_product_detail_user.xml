@@ -34,7 +34,6 @@
 	        android:id="@+id/item_user_shop_address"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="贵阳市"
 	        android:textColor="#727272"
 	        android:layout_toRightOf="@id/item_user_head"
 	        android:layout_below="@id/item_user_name"
