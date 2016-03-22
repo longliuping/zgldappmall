@@ -7,7 +7,6 @@ import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -16,51 +15,42 @@ import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.zgld.mall.R;
-import com.zgld.mall.SysApplication;
 import com.zgld.mall.adapter.HomeProductAdapter;
+import com.zgld.mall.beans.HishopProductTypes;
 import com.zgld.mall.beans.HishopProducts;
-import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.utils.Contents;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupperProductActivity extends BaseActivity implements AdapterView.OnItemClickListener,PullToRefreshBase.OnRefreshListener2{
-    Supplier info = null;
+public class ProductTypeActivity extends BaseActivity implements AdapterView.OnItemClickListener,PullToRefreshBase.OnRefreshListener2{
+    PullToRefreshScrollView scrollview;
     GridView gridview;
+    HishopProductTypes info = null;
+    int pageNum = 1;
     HomeProductAdapter infoAdapter;
     List<HishopProducts> listInfo = new ArrayList<>();
-    PullToRefreshScrollView scrollview;
-    int pageNum = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initStyle();
-        setContentView(R.layout.activity_supper_product);
+        setContentView(R.layout.activity_product_type);
+        info = (HishopProductTypes) this.getIntent().getSerializableExtra(Contents.INFO);
+        if(info==null){
+            finish();;
+            return;
+        }
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-                ;
             }
         });
         TextView title = (TextView) findViewById(R.id.title_center);
-        title.setText("商家店铺");
-        info = (Supplier) this.getIntent().getSerializableExtra(Contents.INFO);
-        if(info==null){
-            finish();
-            return;
-        }
-        ImageView head = (ImageView) findViewById(R.id.head);
-        SysApplication.DisplayUserImage(info.getSupplierUrl1(), head);
-        TextView name = (TextView) findViewById(R.id.name);
-        name.setText("商家名称:"+info.getSupplierName());
-        TextView cdk_number = (TextView) findViewById(R.id.cdk_number);
-        cdk_number.setText("商家店铺号:"+info.getUserId());
+        title.setText(info.getTypeName());
         gridview = (GridView) findViewById(R.id.gridview);
         gridview.setOnItemClickListener(this);
         scrollview = (PullToRefreshScrollView) findViewById(R.id.scrollview);
@@ -69,10 +59,9 @@ public class SupperProductActivity extends BaseActivity implements AdapterView.O
         scrollview.requestFocus();
         scrollview.setMode(PullToRefreshBase.Mode.BOTH);
         scrollview.setOnRefreshListener(this);
-        initData();
     }
     void initData(){
-        getData(Request.Method.GET, 201, "supplier/supplier_product.html?id="+info.getUserId()+"&pageSize=18&pageNum="+pageNum, null, null, 1);
+        getData(Request.Method.GET, 201, "product/home_type_product.html?id="+info.getTypeId()+"&pageSize=18&pageNum="+pageNum, null, null, 1);
     }
     @Override
     public void handleMsg(Message msg) {
@@ -101,6 +90,7 @@ public class SupperProductActivity extends BaseActivity implements AdapterView.O
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

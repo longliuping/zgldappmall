@@ -103,7 +103,8 @@
         <activity android:name=".activity.ModifyUserAddressActivity" />
         <activity android:name=".activity.ProductOptionFragmentActivity" />
         <activity android:name=".activity.UpdateUserAddressActivity" />
-        <activity android:name=".activity.SupperProductActivity"></activity>
+        <activity android:name=".activity.SupperProductActivity" />
+        <activity android:name=".activity.ProductTypeActivity"></activity>
     </application>
 
 </manifest>
