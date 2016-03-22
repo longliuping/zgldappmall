@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zgld.mall">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -101,7 +102,8 @@
         <activity android:name=".activity.CountyActivity" />
         <activity android:name=".activity.ModifyUserAddressActivity" />
         <activity android:name=".activity.ProductOptionFragmentActivity" />
-        <activity android:name=".activity.UpdateUserAddressActivity"></activity>
+        <activity android:name=".activity.UpdateUserAddressActivity" />
+        <activity android:name=".activity.SupperProductActivity"></activity>
     </application>
 
 </manifest>

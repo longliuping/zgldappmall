@@ -50,18 +50,6 @@ public class BroadcastUtils {
 		mIntent.putExtra(UPDATE_PRODUCT, "发送广播，相当于在这里传送数据");
 		context.sendBroadcast(mIntent);
 	}
-	
-	public static String UPDATE_HOME_USER = "update_home_user";
-	/**
-	 * 更新首页用户信息广播
-	 * @param context
-	 */
-	public static void sendUpdateHomeUser(Context context)
-	{
-		Intent mIntent = new Intent(UPDATE_HOME_USER);
-		mIntent.putExtra(UPDATE_HOME_USER, "发送广播，相当于在这里传送数据");
-		context.sendBroadcast(mIntent);
-	}
 	public static String USER_LOGOUT = "user_logout";
 	/**
 	 * 用户退出登录广播
@@ -78,7 +66,7 @@ public class BroadcastUtils {
 	 * 用户登录广播
 	 * @param context
 	 */
-	public static void sendUserLoginut(Context context)
+	public static void sendUserLogin(Context context)
 	{
 		Intent mIntent = new Intent(USER_LOGIN);
 		mIntent.putExtra(USER_LOGIN, "发送广播，相当于在这里传送数据");

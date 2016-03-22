@@ -250,16 +250,11 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                 }
                 break;
             case R.id.item_user_data_base:
-                if (Contents.getUser(this) == null) {
-                    Contents.loginPage(this,null,200);
-                    return;
-                }
                 if (info != null) {
-//                    intent.setClass(this, MyShopActivity.class);
-//                    intent.putExtra("UserId", info.getUserId());
-//                    intent.putExtra("UserName", info.getUserName());
-//                    intent.putExtra("HeadImg", info.getHeadImg());
-//                    startActivity(intent);
+                    intent.setClass(this, SupperProductActivity.class);
+                    bundle.putSerializable(Contents.INFO,info);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
                 break;
         }

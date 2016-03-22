@@ -62,7 +62,6 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
                         }.getType());
                         new UserDataShare(this).saveUserData(user);
                         initData();
-                        BroadcastUtils.sendUpdateHomeUser(this);
                         setResult(RESULT_OK);
                     }
                     break;

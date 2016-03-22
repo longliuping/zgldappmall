@@ -29,7 +29,8 @@ import com.zgld.mall.beans.HishopSkus;
 import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.utils.PriceUtil;
 
-public class PublishSelectPicPopupWindow extends PopupWindow implements SelectedInfoAdapter.SelectedInfoAdapterCallback {
+public class
+		PublishSelectPicPopupWindow extends PopupWindow implements SelectedInfoAdapter.SelectedInfoAdapterCallback {
 	private Integer valueId;
 	private Integer attributeId;
 
@@ -221,6 +222,9 @@ public class PublishSelectPicPopupWindow extends PopupWindow implements Selected
 			if(listHishopSkus.get(i).getSkuId().equals(skuId)){
 				skus = listHishopSkus.get(i);
 			}
+		}
+		if(skus==null && listHishopSkus!=null){
+			skus = listHishopSkus.get(0);
 		}
 		return skus;
 	}

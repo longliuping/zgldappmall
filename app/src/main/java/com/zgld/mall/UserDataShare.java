@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.zgld.mall.beans.AspnetMembers;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.UserToken;
+import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 
 /**
@@ -149,6 +150,7 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 		// 提交当前数据
 		editor.commit();
 		Contents.setUser(info);
+		BroadcastUtils.sendUserLogin(context);
 	}
 
 	/**
@@ -160,6 +162,9 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 		return haredPreferences.getBoolean(ISLOGIN, false);
 	}
 
+	/**
+	 * 用戶退出登录
+	 */
 	public void logout() {
 		Contents.setUser(null);
 		// 实例化SharedPreferences.Editor对象（第二步）
@@ -167,6 +172,7 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 		editor.putBoolean(ISLOGIN, false);
 		// 提交当前数据
 		editor.commit();
+		BroadcastUtils.sendUserLogout(context);
 	}
 
 	@Override

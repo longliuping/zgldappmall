@@ -66,7 +66,6 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
                     new UserDataShare(this).saveUserData(user);
                     new UserDataShare(this).saveLoginInfo(et_user_name.getText().toString(), et_user_password.getText()
                                 .toString(), user.getUserId()+"");
-                    BroadcastUtils.sendUpdateHomeUser(this);
                     setResult(RESULT_OK);
                     finish();
                     break;
@@ -97,5 +96,15 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==RESULT_OK){
+            if(requestCode==200){
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

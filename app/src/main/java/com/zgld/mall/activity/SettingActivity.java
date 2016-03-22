@@ -100,7 +100,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			if (action.equals(BroadcastUtils.UPDATE_HOME_USER)) {
+			if (action.equals(BroadcastUtils.USER_LOGIN)) {
 				bindData();
 			}
 		}
@@ -109,7 +109,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 
 	public void registerBoradcastReceiver() {
 		IntentFilter myIntentFilter = new IntentFilter();
-		myIntentFilter.addAction(BroadcastUtils.UPDATE_HOME_USER);
+		myIntentFilter.addAction(BroadcastUtils.USER_LOGIN);
 		// 注册广播
 		registerReceiver(mBroadcastReceiver, myIntentFilter);
 	}
