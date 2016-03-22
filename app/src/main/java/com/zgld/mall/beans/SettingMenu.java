@@ -1,9 +1,11 @@
 package com.zgld.mall.beans;
 
+import java.io.Serializable;
+
 /**
  * Created by LongLiuPing on 2016/3/21.
  */
-public class SettingMenu {
+public class SettingMenu implements Serializable{
     int type;//1 需要跳转的 2当前页处理
     Class className;
     String name;
