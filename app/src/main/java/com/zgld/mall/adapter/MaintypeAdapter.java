@@ -2,6 +2,7 @@ package com.zgld.mall.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.zgld.mall.R;
 import com.zgld.mall.activity.ProductDetailActivity;
+import com.zgld.mall.activity.ProductTypeActivity;
 import com.zgld.mall.beans.HishopProductTypes;
 import com.zgld.mall.utils.Contents;
 
@@ -44,15 +46,17 @@ public class MaintypeAdapter extends BaseAdapter{
     class ViewHolder{
         GridView item_gridview;
         TextView item_name;
+        View item_base;
     }
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder vh = null;
         if(convertView==null){
             vh = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_main_type,null);
             vh.item_gridview = (GridView) convertView.findViewById(R.id.item_gridview);
             vh.item_name = (TextView) convertView.findViewById(R.id.item_name);
+            vh.item_base = convertView.findViewById(R.id.item_base);
             convertView.setTag(vh);
         }else{
             vh = (ViewHolder) convertView.getTag();
@@ -65,7 +69,17 @@ public class MaintypeAdapter extends BaseAdapter{
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(context, ProductDetailActivity.class);
-                    intent.putExtra(Contents.PRODUCTID,info.getHishopProducts().get(position).getProductId());
+                    intent.putExtra(Contents.PRODUCTID, info.getHishopProducts().get(position).getProductId());
+                    context.startActivity(intent);
+                }
+            });
+            vh.item_base.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ProductTypeActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Contents.INFO,listInfo.get(position));
+                    intent.putExtras(bundle);
                     context.startActivity(intent);
                 }
             });

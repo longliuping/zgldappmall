@@ -59,6 +59,7 @@ public class ProductTypeActivity extends BaseActivity implements AdapterView.OnI
         scrollview.requestFocus();
         scrollview.setMode(PullToRefreshBase.Mode.BOTH);
         scrollview.setOnRefreshListener(this);
+        initData();
     }
     void initData(){
         getData(Request.Method.GET, 201, "product/home_type_product.html?id="+info.getTypeId()+"&pageSize=18&pageNum="+pageNum, null, null, 1);

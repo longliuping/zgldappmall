@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/view_default_background"
     style="@style/transparent_status_bar">
     <include layout="@layout/include_head"></include>
     <com.handmark.pulltorefresh.library.PullToRefreshScrollView
