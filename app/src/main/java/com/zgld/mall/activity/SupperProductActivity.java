@@ -9,18 +9,32 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
 import com.zgld.mall.adapter.HomeProductAdapter;
+import com.zgld.mall.beans.HishopProducts;
 import com.zgld.mall.beans.Supplier;
 import com.zgld.mall.utils.Contents;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
-public class SupperProductActivity extends BaseActivity implements AdapterView.OnItemClickListener{
+import java.util.ArrayList;
+import java.util.List;
+
+public class SupperProductActivity extends BaseActivity implements AdapterView.OnItemClickListener,PullToRefreshBase.OnRefreshListener2{
     Supplier info = null;
     GridView gridview;
     HomeProductAdapter infoAdapter;
+    List<HishopProducts> listInfo = new ArrayList<>();
+    PullToRefreshScrollView scrollview;
+    int pageNum = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +62,55 @@ public class SupperProductActivity extends BaseActivity implements AdapterView.O
         cdk_number.setText("商家店铺号:"+info.getUserId());
         gridview = (GridView) findViewById(R.id.gridview);
         gridview.setOnItemClickListener(this);
+        scrollview = (PullToRefreshScrollView) findViewById(R.id.scrollview);
+        scrollview.setMode(PullToRefreshBase.Mode.BOTH);
+        scrollview.setOnRefreshListener(this);
+        initData();
     }
-
+    void initData(){
+        getData(Request.Method.GET, 201, "supplier/supplier_product.html?id="+info.getUserId()+"&pageSize=20&pageNum="+pageNum, null, null, 1);
+    }
     @Override
     public void handleMsg(Message msg) {
-
+        scrollview.onRefreshComplete();
+        try{
+            if(msg.getData().getInt("status")==200){
+                JSONArray jsonArray = new JSONObject(msg.getData().getString(Contents.JSON)).getJSONObject("data").getJSONArray("listInfo");
+                switch (msg.what){
+                    case 201:
+                        if(pageNum==1){
+                            listInfo = new ArrayList<>();
+                            infoAdapter = new HomeProductAdapter(this,listInfo);
+                            gridview.setAdapter(infoAdapter);
+                        }
+                        List<HishopProducts> listObj  = new Gson().fromJson(jsonArray.toString(),new TypeToken<List<HishopProducts>>() {
+                        }.getType());
+                        if(listObj!=null && listObj.size()>0){
+                            listInfo.addAll(listObj);
+                        }
+                        infoAdapter.notifyDataSetChanged();
+                        pageNum++;
+                        break;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+    }
+
+    @Override
+    public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+        pageNum = 1;
+        initData();
+    }
+
+    @Override
+    public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+        initData();
     }
 }
