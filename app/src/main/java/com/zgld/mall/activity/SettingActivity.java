@@ -39,10 +39,10 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 
 	View check_app_update, logout, about, clear, server_center, wechat, update_pwd, message;
 	ListView listview;
-	int types[] = new int[]{1,1,1,1,2,2};
+	int types[] = new int[]{1,2,2};
 	String names[] = new String[]{"关于我们","清楚缓存","检查升级"};
 	String values[] = new String[]{"关于我们","清楚缓存","检查升级"};
-	Class className[] = new Class[]{ModifyUserPasswordActivity.class,AboutActivity.class,null,null};
+	Class className[] = new Class[]{AboutActivity.class,null,null};
 	List<SettingMenu> listInfo = new ArrayList<>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -199,11 +199,38 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		SettingMenu info = listInfo.get(position);
-		Intent intent = new Intent(this,info.getClassName());
 		if(info.getType()==1){
+			Intent intent = new Intent(this,info.getClassName());
 			startActivity(intent);
 		}else{
+			if(position==1){
+				DataCleanManager.clearAllData(this);
+				Toast.makeText(this, getString(R.string.cache_success), Toast.LENGTH_SHORT).show();
+			}
+			if(position==2){
+				if (confirmDialog == null) {
+					confirmDialog = new ConfirmDialog(this, getString(R.string.check_for_updates));
+				}
+				if (confirmDialog.isShowing()) {
+					confirmDialog.dismiss();
+				}
+				confirmDialog.show();
+				UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
 
+					@Override
+					public void onUpdateReturned(int arg0, UpdateResponse arg1) {
+						// TODO Auto-generated method stub
+						if (confirmDialog != null && confirmDialog.isShowing()) {
+							confirmDialog.dismiss();
+						}
+						if (arg0 == 1) {
+							Toast.makeText(SettingActivity.this, getString(R.string.no_new_version), Toast.LENGTH_SHORT)
+									.show();
+						}
+					}
+				});
+				UmengUpdateAgent.forceUpdate(this);
+			}
 		}
 	}
 }
