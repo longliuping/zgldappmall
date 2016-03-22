@@ -30,9 +30,9 @@ public class AboutActivity extends BaseActivity {
         });
         TextView title = (TextView) findViewById(R.id.title);
         title.setText("关于我们");
-        WebView wView = (WebView) findViewById(R.id.wv1);
-        WebSettings wSet = wView.getSettings();
-        wSet.setJavaScriptEnabled(true);
-        wView.loadUrl(getString(R.string.about_address));
+//        WebView wView = (WebView) findViewById(R.id.wv1);
+//        WebSettings wSet = wView.getSettings();
+//        wSet.setJavaScriptEnabled(true);
+//        wView.loadUrl(getString(R.string.about_address));
     }
 }
