@@ -63,6 +63,9 @@ public class SupperProductActivity extends BaseActivity implements AdapterView.O
         gridview = (GridView) findViewById(R.id.gridview);
         gridview.setOnItemClickListener(this);
         scrollview = (PullToRefreshScrollView) findViewById(R.id.scrollview);
+        scrollview.setFocusable(true);
+        scrollview.setFocusableInTouchMode(true);
+        scrollview.requestFocus();
         scrollview.setMode(PullToRefreshBase.Mode.BOTH);
         scrollview.setOnRefreshListener(this);
         initData();
