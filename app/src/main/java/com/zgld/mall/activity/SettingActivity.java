@@ -20,6 +20,7 @@ import com.zgld.mall.AppManager;
 import com.zgld.mall.DataCleanManager;
 import com.zgld.mall.R;
 import com.zgld.mall.UserDataShare;
+import com.zgld.mall.adapter.HotCategoryAdapter;
 import com.zgld.mall.adapter.SettingMenuAdapter;
 import com.zgld.mall.beans.SettingMenu;
 import com.zgld.mall.utils.BroadcastUtils;
@@ -44,6 +45,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 	String values[] = new String[]{"关于我们","清楚缓存","检查升级"};
 	Class className[] = new Class[]{AboutActivity.class,null,null};
 	List<SettingMenu> listInfo = new ArrayList<>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -72,13 +74,13 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 		}
 		listview.setAdapter(new SettingMenuAdapter(this, listInfo));
 		listview.setOnItemClickListener(this);
-		logout = findViewById(R.id.logout);
-		logout.setOnClickListener(this);
-		if (!new UserDataShare(this).isLogin()) {
-			logout.setVisibility(View.GONE);
-		} else {
-			logout.setVisibility(View.VISIBLE);
-		}
+//		logout = findViewById(R.id.logout);
+//		logout.setOnClickListener(this);
+//		if (!new UserDataShare(this).isLogin()) {
+//			logout.setVisibility(View.GONE);
+//		} else {
+//			logout.setVisibility(View.VISIBLE);
+//		}
 		registerBoradcastReceiver();
 	}
 

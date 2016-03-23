@@ -33,6 +33,7 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:padding="10dp"
                 android:text="退出登录"
+                android:visibility="gone"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </ScrollView>

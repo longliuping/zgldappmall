@@ -2,6 +2,7 @@ package com.zgld.mall.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import com.zgld.mall.R;
 import com.zgld.mall.beans.GsonObject;
 import com.zgld.mall.utils.ConfirmDialog;
 import com.zgld.mall.utils.Contents;
+import com.zgld.mall.utils.CustomDialog;
 import com.zgld.mall.volley.AsyncGameRunner;
 import com.zgld.mall.volley.NetWorkTools;
 import com.zgld.mall.volley.RequestListenr;
@@ -39,6 +41,7 @@ import java.util.Map;
  */
 public abstract class BaseActivity extends Activity  implements RequestListenr {
     protected ConfirmDialog confirmDialog = null;
+    CustomDialog dialog = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +85,22 @@ public abstract class BaseActivity extends Activity  implements RequestListenr {
            msg.setData(data);
            if (confirmDialog != null && confirmDialog.isShowing()) {
                confirmDialog.dismiss();
+           }
+           if(object.getInt(Contents.STATUS)==201){
+               dialog = new CustomDialog(this, R.style.mystyle, R.layout.customdialog, R.array.title_not_user, new CustomDialog.CustomDialogListener() {
+                   @Override
+                   public void customDialogClickLeft() {
+                       dialog.dismiss();
+                       Contents.loginPage(BaseActivity.this, null, 200);
+                   }
+
+                   @Override
+                   public void customDialogClickRight() {
+                        dialog.dismiss();
+                       Contents.loginPage(BaseActivity.this,null,200);
+                   }
+               },false);
+               dialog.show();
            }
        }catch (Exception e){
         e.printStackTrace();

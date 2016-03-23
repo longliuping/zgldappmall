@@ -7,6 +7,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -19,12 +20,15 @@ import com.kevin.loopview.AdLoopView;
 import com.kevin.loopview.internal.BaseLoopAdapter;
 import com.umeng.update.UmengUpdateAgent;
 import com.zgld.mall.R;
+import com.zgld.mall.adapter.HotCategoryAdapter;
 import com.zgld.mall.adapter.MaintypeAdapter;
 import com.zgld.mall.beans.HishopProductTypes;
 import com.zgld.mall.beans.HotCategory;
 import com.zgld.mall.pulltorefresh.LocalFileUtils;
 import com.zgld.mall.utils.Contents;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainHomeFragment extends BaseFragment {
@@ -33,6 +37,9 @@ public class MainHomeFragment extends BaseFragment {
     private AdLoopView mAdLoopView;
     int pageNumber = 1;
     MaintypeAdapter infoAdapter;
+    HotCategoryAdapter hotCategoryAdapter;
+    GridView gridview;
+    List<HotCategory> listMenu = new ArrayList<>();
     public MainHomeFragment() {
         // Required empty public constructor
     }
@@ -116,13 +123,24 @@ public class MainHomeFragment extends BaseFragment {
         initLoopView();
         getDataCache(Request.Method.GET, 201, "home_banner.html", null, null, 1);
         getDataCache(Request.Method.GET, 202, "product/home_all_product.html", null, null, 1);
-//        getDataCache(Request.Method.GET,203,"home_hot_category.html",null,null,1);
+        getDataCache(Request.Method.GET, 203, "home_hot_category.html", null, null, 1);
+        String name[] = new String[]{"代金卷", "KTV", "火锅", "美发", "洗浴/汗蒸", "甜点饮品", "自助餐", "小吃快餐", "云贵菜"};
+        int img[] = new int[]{R.drawable.category1,R.drawable.category2,R.drawable.category3,R.drawable.category4,R.drawable.category5,R.drawable.category6,R.drawable.category7,R.drawable.category8,R.drawable.category9};
+        for (int i=0;i<9;i++){
+            HotCategory hot = new HotCategory();
+            hot.setHotname(name[i]);
+            hot.setResid(img[i]);
+            listMenu.add(hot);
+        }
+        gridview = (GridView) view.findViewById(R.id.gridview);
+        hotCategoryAdapter = new HotCategoryAdapter(activity,listMenu);
+        gridview.setAdapter(hotCategoryAdapter);
         initData();
     }
     public void initData(){
         getData(Request.Method.GET, 201, "home_banner.html", null, null, 1);
         getData(Request.Method.GET, 202, "product/home_all_product.html", null, null, 1);
-//        getData(Request.Method.GET, 203, "home_hot_category.html", null, null, 1);
+        getData(Request.Method.GET, 203, "home_hot_category.html", null, null, 1);
     }
     /**
      * 初始化LoopView

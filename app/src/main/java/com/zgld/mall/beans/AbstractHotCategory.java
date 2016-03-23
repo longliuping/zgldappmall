@@ -11,8 +11,17 @@ public abstract class AbstractHotCategory implements java.io.Serializable {
 
 	private Integer hotid;
 	private String hotname;
-
+	private Integer resid;
 	// Constructors
+
+
+	public Integer getResid() {
+		return resid;
+	}
+
+	public void setResid(Integer resid) {
+		this.resid = resid;
+	}
 
 	/** default constructor */
 	public AbstractHotCategory() {

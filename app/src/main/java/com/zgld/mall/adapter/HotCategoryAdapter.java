@@ -21,6 +21,10 @@ import java.util.List;
 public class HotCategoryAdapter extends BaseAdapter{
     Context context;
     List<HotCategory> listInfo = null;
+    public HotCategoryAdapter(Context context,List<HotCategory> listInfo){
+        this.context = context;
+        this.listInfo = listInfo;
+    }
     @Override
     public int getCount() {
         return listInfo.size();
@@ -54,6 +58,7 @@ public class HotCategoryAdapter extends BaseAdapter{
         HotCategory info = listInfo.get(position);
         if(info!=null){
             vh.item_name.setText(info.getHotname());
+            vh.item_image.setImageResource(info.getResid());
         }
         return convertView;
     }

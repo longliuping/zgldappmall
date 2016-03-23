@@ -24,6 +24,7 @@ import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.Personal;
 import com.zgld.mall.beans.ProductImageUpload;
 import com.zgld.mall.utils.BitmapUtil;
+import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.CustomDialog;
 
@@ -43,6 +44,8 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
     ListView listview;
     List<Personal> listInfo = new ArrayList<>();
     PersonalDataAdapter infoAdapter;
+    CustomDialog customDialog;
+    View logout;
     @Override
     public void handleMsg(Message msg) {
         try {
@@ -97,12 +100,42 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
         title.setText(getString(R.string.title_personal_data));
         listview = (ListView) findViewById(R.id.listview);
         listview.setOnItemClickListener(this);
+        Map<String,String> m = new HashMap<>();
+        AspnetUsers user = new UserDataShare(this).getUserData();
+        if(user==null){
+            finish();
+            return;
+        }
+        logout = findViewById(R.id.logout);
+        logout.setOnClickListener(this);
+        logout.setVisibility(View.VISIBLE);
+        m.put(Contents.TOKEN,user.getUserToken().getAccountToken());
+        m.put(Contents.USERID, user.getUserId() + "");
+        getData(Request.Method.POST, 201, "user/userinfo.html", m, null, 2);
         initData();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.logout:
+                customDialog = new CustomDialog(this, R.style.mystyle, R.layout.customdialog, R.array.title_logout, new CustomDialog.CustomDialogListener() {
+                    @Override
+                    public void customDialogClickLeft() {
+                        customDialog.dismiss();;
+                    }
+
+                    @Override
+                    public void customDialogClickRight() {
+                        customDialog.dismiss();
+                        new UserDataShare(PersonalDataActivity.this).logout();
+                        BroadcastUtils.sendUserLogout(PersonalDataActivity.this);
+                        Contents.loginPage(PersonalDataActivity.this, null, 200);
+                        PersonalDataActivity.this.finish();
+                    }
+                });
+                customDialog.show();
+                break;
 //            case R.id.head_base:// 上传头像
 //                dialog = new CustomDialog(mContext, R.style.mystyle, R.layout.customdialog, R.array.title_upload_image, this);
 //                dialog.show();
@@ -165,7 +198,7 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
         m.put("userinfo.head",result);
         m.put(Contents.TOKEN, user.getUserToken().getAccountToken());
         m.put(Contents.USERID, user.getUserId() + "");
-        getData(Request.Method.POST, 201, "user/update_user_head.html",m,null,1);
+        getData(Request.Method.POST, 201, "user/update_user_head.html",m,null,2);
     }
 
     private void setProvince() {
@@ -225,6 +258,7 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
             }
             infoAdapter = new PersonalDataAdapter(this,listInfo);
             listview.setAdapter(infoAdapter);
+
         }
     }
 

@@ -68,7 +68,14 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
 		this.res = context.getResources().getStringArray(resId);
 		this.listener = listener;
 	}
-
+	public CustomDialog(Context context, int theme, int resLayout, int resId, CustomDialogListener listener,boolean cancelable) {
+		super(context, theme);
+		this.context = context;
+		this.layoutRes = resLayout;
+		this.res = context.getResources().getStringArray(resId);
+		this.listener = listener;
+		setCancelable(cancelable);
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

@@ -63,6 +63,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 		OnCheckedChangeListener, ShoppingCarExpandableListAdapter.ShoppingCarExpandableListAdapterListener {
 
 	protected ConfirmDialog confirmDialog = null;
+	CustomDialog dialog;
 	Activity activity;
 	List<HishopShoppingCarts> listInfo;
 	PullToRefreshExpandableListView listview;
@@ -74,7 +75,6 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 	RelativeLayout bottom;
 	List<String> indexAll = new ArrayList<String>();
 	View null_data_default;
-	CustomDialog dialog;
 	LayoutInflater inflater;
 	View back;
 
@@ -154,15 +154,36 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 	 */
 	@Override
 	public void onCompelete(int tag, String json) {
-		Message msg = handler.obtainMessage();
-		msg.what = tag;
-		Bundle data = new Bundle();
-		data.putString(Contents.JSON, json);
-		msg.setData(data);
-		if (confirmDialog != null && confirmDialog.isShowing()) {
-			confirmDialog.dismiss();
+		try{
+			Message msg = handler.obtainMessage();
+			msg.what = tag;
+			Bundle data = new Bundle();
+			data.putString(Contents.JSON, json);
+			msg.setData(data);
+			if (confirmDialog != null && confirmDialog.isShowing()) {
+				confirmDialog.dismiss();
+			}
+			JSONObject object = new JSONObject(json);
+			if(object.getInt(Contents.STATUS)==201) {
+				dialog = new CustomDialog(activity, R.style.mystyle, R.layout.customdialog, R.array.title_not_user, new CustomDialog.CustomDialogListener() {
+					@Override
+					public void customDialogClickLeft() {
+						dialog.dismiss();
+						Contents.loginPage(activity, null, 200);
+					}
+
+					@Override
+					public void customDialogClickRight() {
+						dialog.dismiss();
+						Contents.loginPage(activity, null, 200);
+					}
+				}, false);
+				dialog.show();
+			}
+			handler.sendMessage(msg);
+		}catch (Exception e){
+			e.printStackTrace();
 		}
-		handler.sendMessage(msg);
 	}
 
 	/**

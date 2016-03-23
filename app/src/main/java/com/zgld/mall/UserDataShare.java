@@ -58,8 +58,9 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 	 * @throws JSONException
 	 */
 	public AspnetUsers updateUser(Message message) throws JSONException {
-		JSONObject jsonObject = new JSONObject(message.getData().getString(Contents.JSON)).getJSONObject(Contents.INFO);
-		AspnetUsers users = new Gson().fromJson(jsonObject.toString(), new TypeToken<AspnetUsers>() {
+		JSONObject jsonObject = new JSONObject(message.getData().getString(Contents.JSON)).getJSONObject(Contents.DATA).getJSONObject(Contents.INFO);
+		String json = jsonObject.toString();
+		AspnetUsers users = new Gson().fromJson(json, new TypeToken<AspnetUsers>() {
 		}.getType());
 		UserDataShare share = new UserDataShare(context);
 		share.saveUserData(users);
@@ -119,7 +120,7 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 			info.setUserToken(token);
 
 			AspnetMembers member = new AspnetMembers();
-			member.setReferralUserId(haredPreferences.getInt("referralUserId",0));
+			member.setReferralUserId(haredPreferences.getInt("referralUserId", 0));
 			member.setTopRegionId(haredPreferences.getInt("topRegionId", 0));
 			member.setRegionId(haredPreferences.getInt("regionId", 0));
 			member.setRealName(haredPreferences.getString("realName", ""));
@@ -129,7 +130,7 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 			member.setCellPhone(haredPreferences.getString("cellPhone", ""));
 			member.setQq(haredPreferences.getString("qq", ""));
 			member.setWangwang(haredPreferences.getString("wangwang", ""));
-			member.setMsn(haredPreferences.getString("msn",""));
+			member.setMsn(haredPreferences.getString("msn", ""));
 			info.setAspnetMembers(member);
 //			Contents.setUser(info);
 		}
@@ -156,7 +157,7 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 
 		editor.putInt("referralUserId",info.getAspnetMembers().getReferralUserId());
 		editor.putInt("topRegionId", info.getAspnetMembers().getTopRegionId());
-		editor.putInt("regionId",info.getAspnetMembers().getRegionId());
+		editor.putInt("regionId", info.getAspnetMembers().getRegionId());
 		editor.putString("realName", info.getAspnetMembers().getRealName());
 		editor.putString("address",info.getAspnetMembers().getAddress());
 		editor.putString("zipcode",info.getAspnetMembers().getZipcode());
@@ -164,7 +165,7 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 		editor.putString("cellPhone",info.getAspnetMembers().getCellPhone());
 		editor.putString("qq",info.getAspnetMembers().getQq());
 		editor.putString("wangwang",info.getAspnetMembers().getWangwang());
-		editor.putString("msn",info.getAspnetMembers().getMsn());
+		editor.putString("msn", info.getAspnetMembers().getMsn());
 		editor.putBoolean(ISLOGIN, true);
 		// 提交当前数据
 		editor.commit();

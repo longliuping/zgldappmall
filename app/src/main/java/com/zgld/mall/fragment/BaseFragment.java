@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.zgld.mall.R;
 import com.zgld.mall.utils.ConfirmDialog;
 import com.zgld.mall.utils.Contents;
+import com.zgld.mall.utils.CustomDialog;
 import com.zgld.mall.volley.AsyncGameRunner;
 import com.zgld.mall.volley.NetWorkTools;
 import com.zgld.mall.volley.RequestListenr;
@@ -27,6 +28,7 @@ import java.util.Map;
  */
 public abstract class BaseFragment extends Fragment implements RequestListenr {
     protected ConfirmDialog confirmDialog = null;
+    CustomDialog dialog;
     public Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             handleMsg(msg);
@@ -60,6 +62,22 @@ public abstract class BaseFragment extends Fragment implements RequestListenr {
           msg.setData(data);
           if (confirmDialog != null && confirmDialog.isShowing()) {
               confirmDialog.dismiss();
+          }
+          if(object.getInt(Contents.STATUS)==201){
+              dialog = new CustomDialog(getContext(), R.style.mystyle, R.layout.customdialog, R.array.title_not_user, new CustomDialog.CustomDialogListener() {
+                  @Override
+                  public void customDialogClickLeft() {
+                      dialog.dismiss();
+                      Contents.loginPage(getActivity(), null, 200);
+                  }
+
+                  @Override
+                  public void customDialogClickRight() {
+                      dialog.dismiss();
+                      Contents.loginPage(getActivity(),null,200);
+                  }
+              },false);
+              dialog.show();
           }
       }catch (Exception e){
           e.printStackTrace();
