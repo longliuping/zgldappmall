@@ -17,6 +17,9 @@ import android.widget.TextView;
 import com.zgld.mall.R;
 import com.zgld.mall.beans.HishopUserShippingAddresses;
 
+/**
+ * 地址
+ */
 public class AddressAdapter extends BaseAdapter {
 	public interface AddressAdapterListener {
 		void selectedChecked(int position);

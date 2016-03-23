@@ -6,6 +6,9 @@ import android.widget.TextView;
 
 import com.zgld.mall.R;
 
+/**
+ * 关于我们
+ */
 public class AboutActivity extends BaseActivity {
     @Override
     public void handleMsg(Message msg) {

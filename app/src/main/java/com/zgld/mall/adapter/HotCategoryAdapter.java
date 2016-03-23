@@ -1,6 +1,7 @@
 package com.zgld.mall.adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,23 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zgld.mall.R;
-import com.zgld.mall.SysApplication;
-import com.zgld.mall.beans.HishopProducts;
-import com.zgld.mall.utils.PriceUtil;
+import com.zgld.mall.beans.HotCategory;
 
 import java.util.List;
 
 /**
- * 首页的产品
- * Created by LongLiuPing on 2016/3/21.
+ * 热门标签
+ * Created by Administrator on 2016/3/23.
  */
-public class HomeProductAdapter extends BaseAdapter{
+public class HotCategoryAdapter extends BaseAdapter{
     Context context;
-    List<HishopProducts> listInfo;
-    public HomeProductAdapter(Context context,List<HishopProducts> listInfo){
-        this.context = context;
-        this.listInfo = listInfo;
-    }
+    List<HotCategory> listInfo = null;
     @Override
     public int getCount() {
         return listInfo.size();
@@ -41,32 +36,24 @@ public class HomeProductAdapter extends BaseAdapter{
         return position;
     }
     class ViewHolder{
-        TextView item_name,item_sale_price;
+        TextView item_name;
         ImageView item_image;
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder vh;
+        ViewHolder vh = null;
         if(convertView==null){
             vh = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_home_product,null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_hot_category,null);
             vh.item_name = (TextView) convertView.findViewById(R.id.item_name);
             vh.item_image = (ImageView) convertView.findViewById(R.id.item_image);
-            vh.item_sale_price = (TextView) convertView.findViewById(R.id.item_sale_price);
             convertView.setTag(vh);
         }else{
             vh = (ViewHolder) convertView.getTag();
         }
-        HishopProducts info = listInfo.get(position);
+        HotCategory info = listInfo.get(position);
         if(info!=null){
-            vh.item_name.setText(info.getProductName());
-            if(info.getHishopSkus()!=null) {
-                vh.item_sale_price.setVisibility(View.VISIBLE);
-                vh.item_sale_price.setText(PriceUtil.priceY(info.getHishopSkus().getSalePrice() + ""));
-            }else{
-                vh.item_sale_price.setVisibility(View.GONE);
-            }
-            SysApplication.DisplayImage(info.getImageUrl1(), vh.item_image);
+            vh.item_name.setText(info.getHotname());
         }
         return convertView;
     }

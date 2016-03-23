@@ -12,6 +12,9 @@ import com.zgld.mall.photoview.PhotoView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 图片浏览
+ */
 public class ImageBrowserAdapter extends PagerAdapter {
 
 	private List<String> mPhotos = new ArrayList<String>();

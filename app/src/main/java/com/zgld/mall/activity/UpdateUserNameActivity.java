@@ -25,7 +25,7 @@ public class UpdateUserNameActivity extends BaseActivity {
         });
         String nameStr = this.getIntent().getStringExtra(Contents.NAME);
         if(nameStr==null || new UserDataShare(this).getUserData() == null){
-            finish();;
+            finish();
             return;
         }
         TextView name = (TextView) findViewById(R.id.title_center);

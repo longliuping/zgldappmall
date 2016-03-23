@@ -1,20 +1,15 @@
 package com.zgld.mall.fragment;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,12 +21,10 @@ import com.umeng.update.UmengUpdateAgent;
 import com.zgld.mall.R;
 import com.zgld.mall.adapter.MaintypeAdapter;
 import com.zgld.mall.beans.HishopProductTypes;
-import com.zgld.mall.beans.HishopProducts;
+import com.zgld.mall.beans.HotCategory;
 import com.zgld.mall.pulltorefresh.LocalFileUtils;
-
+import com.zgld.mall.utils.Contents;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainHomeFragment extends BaseFragment {
@@ -53,7 +46,7 @@ public class MainHomeFragment extends BaseFragment {
     public void handleMsg(Message msg) {
         home_fragment_scrollview.onRefreshComplete();
         try{
-            String json = msg.getData().getString("data");
+            String json = msg.getData().getString(Contents.DATA);
             switch (msg.what){
                 case  201:
                     mAdLoopView = (AdLoopView) view.findViewById(R.id.home_frag_rotate_vp);
@@ -63,17 +56,21 @@ public class MainHomeFragment extends BaseFragment {
                     mAdLoopView.startAutoLoop();mAdLoopView.setOnClickListener(new BaseLoopAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(PagerAdapter parent, View view, int position, int realPosition) {
-                        Log.i("", "");
-                        Log.i("", "");
                     }
                 });
                     break;
                 case 202:
-                    json = new JSONObject(json).getJSONArray("listInfo").toString();
+                    json = new JSONObject(json).getJSONArray(Contents.LISTINIFO).toString();
                     List<HishopProductTypes> listHishopProductTypes = new Gson().fromJson(json,new TypeToken<List<HishopProductTypes>>() {
                     }.getType());
                     infoAdapter = new MaintypeAdapter(getContext(),listHishopProductTypes);
                     listview.setAdapter(infoAdapter);
+                    break;
+                case 203:
+                    json = new JSONObject(json).getJSONArray(Contents.LISTINIFO).toString();
+                    List<HotCategory> listHotCategory = new Gson().fromJson(json,new TypeToken<List<HotCategory>>() {
+                    }.getType());
+
                     break;
             }
         }catch (Exception e){
@@ -119,11 +116,13 @@ public class MainHomeFragment extends BaseFragment {
         initLoopView();
         getDataCache(Request.Method.GET, 201, "home_banner.html", null, null, 1);
         getDataCache(Request.Method.GET, 202, "product/home_all_product.html", null, null, 1);
+        getDataCache(Request.Method.GET,203,"home_hot_category.html",null,null,1);
         initData();
     }
     public void initData(){
         getData(Request.Method.GET, 201, "home_banner.html", null, null, 1);
         getData(Request.Method.GET, 202, "product/home_all_product.html", null, null, 1);
+        getData(Request.Method.GET, 203, "home_hot_category.html", null, null, 1);
     }
     /**
      * 初始化LoopView
@@ -141,8 +140,6 @@ public class MainHomeFragment extends BaseFragment {
         mAdLoopView.startAutoLoop();mAdLoopView.setOnClickListener(new BaseLoopAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(PagerAdapter parent, View view, int position, int realPosition) {
-                Log.i("", "");
-                Log.i("", "");
             }
         });
     }
