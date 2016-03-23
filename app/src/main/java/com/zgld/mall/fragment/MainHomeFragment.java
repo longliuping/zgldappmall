@@ -22,6 +22,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.kevin.loopview.AdLoopView;
 import com.kevin.loopview.internal.BaseLoopAdapter;
+import com.umeng.update.UmengUpdateAgent;
 import com.zgld.mall.R;
 import com.zgld.mall.adapter.MaintypeAdapter;
 import com.zgld.mall.beans.HishopProductTypes;
@@ -95,6 +96,7 @@ public class MainHomeFragment extends BaseFragment {
                 group.removeView(view);
             }
         }
+        UmengUpdateAgent.update(activity);
         return view;
     }
 
