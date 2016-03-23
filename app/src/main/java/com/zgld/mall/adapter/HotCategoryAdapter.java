@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zgld.mall.R;
+import com.zgld.mall.SysApplication;
 import com.zgld.mall.beans.HotCategory;
 
 import java.util.List;
@@ -58,7 +59,13 @@ public class HotCategoryAdapter extends BaseAdapter{
         HotCategory info = listInfo.get(position);
         if(info!=null){
             vh.item_name.setText(info.getHotname());
-            vh.item_image.setImageResource(info.getResid());
+
+            if(info.getHotimg()!=null && !info.getHotimg().isEmpty()) {
+                SysApplication.DisplayImage(info.getHotimg(), vh.item_image);
+            }
+//            if(info.getHotid()!=null && info.getHotid()>0){
+//                vh.item_image.setImageResource(info.getResId());
+//            }
         }
         return convertView;
     }

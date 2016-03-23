@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
@@ -75,6 +76,8 @@ public class SysApplication extends Application implements Thread.UncaughtExcept
 				.cacheInMemory(true) // 设置下载的图片是否缓存在内存中
 				.cacheOnDisc(true) // 设置下载的图片是否缓存在SD卡中
 				.displayer(new RoundedBitmapDisplayer(0)) // 设置成圆角图片
+				.bitmapConfig(Bitmap.Config.ARGB_8888)
+				.imageScaleType(ImageScaleType.NONE)
 				.build(); // 创建配置过得DisplayImageOption对象
 		optionsUser = new DisplayImageOptions.Builder().showStubImage(R.drawable.default_avatar) // 设置图片下载期间显示的图片
 				.showImageForEmptyUri(R.drawable.default_avatar) // 设置图片Uri为空或是错误的时候显示的图片
@@ -82,6 +85,7 @@ public class SysApplication extends Application implements Thread.UncaughtExcept
 				.cacheInMemory(true) // 设置下载的图片是否缓存在内存中
 				.cacheOnDisc(true) // 设置下载的图片是否缓存在SD卡中
 				.displayer(new RoundedBitmapDisplayer(0)) // 设置成圆角图片
+				.bitmapConfig(Bitmap.Config.ARGB_8888)
 				.build(); // 创建配置过得DisplayImageOption对象
 		optionsProduct = new DisplayImageOptions.Builder().showStubImage(R.drawable.no_shortcut_icon) // 设置图片下载期间显示的图片
 				.showImageForEmptyUri(R.drawable.no_shortcut_icon) // 设置图片Uri为空或是错误的时候显示的图片
@@ -89,6 +93,7 @@ public class SysApplication extends Application implements Thread.UncaughtExcept
 				.cacheInMemory(true) // 设置下载的图片是否缓存在内存中
 				.cacheOnDisc(true) // 设置下载的图片是否缓存在SD卡中
 				.displayer(new RoundedBitmapDisplayer(0)) // 设置成圆角图片
+				.bitmapConfig(Bitmap.Config.ARGB_8888)
 				.build(); // 创建配置过得DisplayImageOption对象
 
         instance = this;

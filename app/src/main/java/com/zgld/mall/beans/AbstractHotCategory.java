@@ -11,31 +11,12 @@ public abstract class AbstractHotCategory implements java.io.Serializable {
 
 	private Integer hotid;
 	private String hotname;
-	private Integer resid;
+	private String hotimg;
+	private Integer resId;
 	// Constructors
-
-
-	public Integer getResid() {
-		return resid;
-	}
-
-	public void setResid(Integer resid) {
-		this.resid = resid;
-	}
 
 	/** default constructor */
 	public AbstractHotCategory() {
-	}
-
-	/** minimal constructor */
-	public AbstractHotCategory(Integer hotid) {
-		this.hotid = hotid;
-	}
-
-	/** full constructor */
-	public AbstractHotCategory(Integer hotid, String hotname) {
-		this.hotid = hotid;
-		this.hotname = hotname;
 	}
 
 	// Property accessors
@@ -56,4 +37,19 @@ public abstract class AbstractHotCategory implements java.io.Serializable {
 		this.hotname = hotname;
 	}
 
+	public String getHotimg() {
+		return hotimg;
+	}
+
+	public void setHotimg(String hotimg) {
+		this.hotimg = hotimg;
+	}
+
+	public Integer getResId() {
+		return resId;
+	}
+
+	public void setResId(Integer resId) {
+		this.resId = resId;
+	}
 }

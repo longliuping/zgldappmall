@@ -75,9 +75,11 @@ public class MainHomeFragment extends BaseFragment {
                     break;
                 case 203:
                     json = new JSONObject(json).getJSONArray(Contents.LISTINIFO).toString();
-                    List<HotCategory> listHotCategory = new Gson().fromJson(json,new TypeToken<List<HotCategory>>() {
+                    listMenu = new Gson().fromJson(json, new TypeToken<List<HotCategory>>() {
                     }.getType());
-
+                    gridview = (GridView) view.findViewById(R.id.gridview);
+                    hotCategoryAdapter = new HotCategoryAdapter(activity,listMenu);
+                    gridview.setAdapter(hotCategoryAdapter);
                     break;
             }
         }catch (Exception e){
@@ -94,13 +96,13 @@ public class MainHomeFragment extends BaseFragment {
             TextView title = (TextView) view.findViewById(R.id.title_center);
             title.setText("首页");
             initViews();
+            UmengUpdateAgent.update(activity);
         }else{
             ViewGroup group = (ViewGroup) view.getParent();
             if (group != null) {
                 group.removeView(view);
             }
         }
-        UmengUpdateAgent.update(activity);
         return view;
     }
 
@@ -124,14 +126,16 @@ public class MainHomeFragment extends BaseFragment {
         getDataCache(Request.Method.GET, 201, "home_banner.html", null, null, 1);
         getDataCache(Request.Method.GET, 202, "product/home_all_product.html", null, null, 1);
         getDataCache(Request.Method.GET, 203, "home_hot_category.html", null, null, 1);
-        String name[] = new String[]{"代金卷", "KTV", "火锅", "美发", "洗浴/汗蒸", "甜点饮品", "自助餐", "小吃快餐", "云贵菜"};
-        int img[] = new int[]{R.drawable.category1,R.drawable.category2,R.drawable.category3,R.drawable.category4,R.drawable.category5,R.drawable.category6,R.drawable.category7,R.drawable.category8,R.drawable.category9};
-        for (int i=0;i<9;i++){
-            HotCategory hot = new HotCategory();
-            hot.setHotname(name[i]);
-            hot.setResid(img[i]);
-            listMenu.add(hot);
-        }
+//        String name[] = new String[]{"代金卷", "KTV", "火锅", "美发", "洗浴/汗蒸", "甜点饮品", "自助餐", "小吃快餐", "云贵菜"};
+//        int img[] = new int[]{R.mipmap.category1,R.mipmap.category2,R.mipmap.category3,R.mipmap.category4,R.mipmap.category5,R.mipmap.category6,R.mipmap.category7,R.mipmap.category8,R.mipmap.category9};
+//        int ids[] = new int[]{1,2,3,4,5,6,7,8,9};
+//        for (int i=0;i<9;i++){
+//            HotCategory hot = new HotCategory();
+//            hot.setHotname(name[i]);
+//            hot.setHotid(ids[i]);
+//            hot.setResId(img[i]);
+//            listMenu.add(hot);
+//        }
         gridview = (GridView) view.findViewById(R.id.gridview);
         hotCategoryAdapter = new HotCategoryAdapter(activity,listMenu);
         gridview.setAdapter(hotCategoryAdapter);

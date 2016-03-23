@@ -10,10 +10,11 @@
     >
     <ImageView
         android:id="@+id/item_image"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitCenter"
+        />
     <TextView
         android:id="@+id/item_name"
         android:layout_width="wrap_content"
