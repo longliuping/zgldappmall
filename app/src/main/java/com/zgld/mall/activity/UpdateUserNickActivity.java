@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.zgld.mall.R;
+import com.zgld.mall.UserDataShare;
 import com.zgld.mall.utils.Contents;
 
 public class UpdateUserNickActivity extends BaseActivity {
@@ -23,7 +24,7 @@ public class UpdateUserNickActivity extends BaseActivity {
             }
         });
         String nameStr = this.getIntent().getStringExtra("name");
-        if(nameStr==null || Contents.getUser(this) == null){
+        if(nameStr==null || new UserDataShare(this).getUserData() == null){
             finish();;
             return;
         }

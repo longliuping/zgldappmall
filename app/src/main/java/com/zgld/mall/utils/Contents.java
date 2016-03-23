@@ -68,19 +68,19 @@ public class Contents {
     public static int selectedProvincePosition = 0;// 选中省份
     public static int selectedCityPosition = 0;// 选中城市
     public static int selectedCountyPosition = 0;// 选中的县
-    static AspnetUsers user = null;
-
-    public static AspnetUsers getUser(Context context) {
-        if(new UserDataShare(context).isLogin()){
-            if (user == null) {
-                user = new UserDataShare(context).getUserData();
-            }
-        }else{
-            user = null;
-        }
-        return user;
-
-    }
+//    static AspnetUsers user = null;
+//
+//    public static AspnetUsers getUser(Context context) {
+//        if(new UserDataShare(context).isLogin()){
+//            if (user == null) {
+//                user = new UserDataShare(context).getUserData();
+//            }
+//        }else{
+//            user = null;
+//        }
+//        return user;
+//
+//    }
     public static String getSex(Integer sex){
         if(sex==null){
             return "";
@@ -101,9 +101,9 @@ public class Contents {
         intent.putExtra(DATA,bundle);
         activity.startActivityForResult(intent,flag);
     }
-    public static void setUser(AspnetUsers u) {
-        user = u;
-    }
+//    public static void setUser(AspnetUsers u) {
+//        user = u;
+//    }
     public static void updateCarProduct(Context context) {
         Intent intent = new Intent(Contents.CAR_UPDATE);
         context.sendBroadcast(intent);

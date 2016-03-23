@@ -32,6 +32,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.zgld.mall.R;
+import com.zgld.mall.UserDataShare;
 import com.zgld.mall.adapter.ShoppingCarExpandableListAdapter;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.HishopProducts;
@@ -213,13 +214,13 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 		if (!NetWorkTools.isHasNet(activity)) {
 			listview.onRefreshComplete();
 		}
-		if (Contents.getUser(activity) == null) {
+		if (new UserDataShare(activity).getUserData() == null) {
 			listview.onRefreshComplete();
 			activity.startActivityForResult(new Intent(activity, LoginActivity.class),200);
 			bottom.setVisibility(View.GONE);
 			null_data_default.setVisibility(View.VISIBLE);
 		} else {
-			AspnetUsers user = Contents.getUser(activity);
+			AspnetUsers user = new UserDataShare(activity).getUserData();
 			Map<String,String> m = new HashMap<>();
 			UserToken userToken = user.getUserToken();
 			m.put(Contents.TOKEN,userToken.getAccountToken());
@@ -250,7 +251,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 					listInfo = new ArrayList<>();
 					infoAdapter = new ShoppingCarExpandableListAdapter(activity, listInfo, ShoppingCartMethod.this);
 					infoAdapter.notifyDataSetChanged();
-					Contents.setUser(null);
+					new UserDataShare(activity).logout();
 					bindData();
 					Contents.loginPage(activity,null,200);
 				}
@@ -576,7 +577,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 
 					private void deleteProduct() {
 						Map<String, String> m = new HashMap<String, String>();
-						AspnetUsers users = Contents.getUser(activity);
+						AspnetUsers users = new UserDataShare(activity).getUserData();
 						m.put(Contents.TOKEN, users.getUserToken().getAccountToken());
 						m.put(Contents.USERID,users.getUserId() + "");
 						m.put("productId", listInfo.get(groupPosition).getListHishopProducts().get(childPosition).getProductId() + "");

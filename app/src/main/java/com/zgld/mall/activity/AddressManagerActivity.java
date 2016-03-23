@@ -12,6 +12,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zgld.mall.R;
+import com.zgld.mall.UserDataShare;
 import com.zgld.mall.adapter.AddressAdapter;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.HishopUserShippingAddresses;
@@ -141,7 +142,7 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
 
     void initData() {
         Map<String,String> m = new HashMap<>();
-        AspnetUsers user = Contents.getUser(this);
+        AspnetUsers user =new UserDataShare(this).getUserData();
         m.put(Contents.TOKEN,user.getUserToken().getAccountToken());
         m.put(Contents.USERID,user.getUserId()+"");
         getData(com.android.volley.Request.Method.POST, 201, "addresses/user_shipping_addresses.html", m, null, 1);
@@ -199,7 +200,7 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
                         // TODO Auto-generated method stub
                         dialog.dismiss();
                         Map<String,String> m = new HashMap<>();
-                        AspnetUsers user = Contents.getUser(AddressManagerActivity.this);
+                        AspnetUsers user =new UserDataShare(AddressManagerActivity.this).getUserData();
                         UserToken userToken = user.getUserToken();
                         m.put(Contents.TOKEN,userToken.getAccountToken());
                         m.put(Contents.USERID, user.getUserId() + "");

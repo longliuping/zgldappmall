@@ -54,22 +54,15 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 	/**
 	 * 更新用户信息
 	 * @param message
-	 * @param pwd
 	 * @return
 	 * @throws JSONException
 	 */
-	public AspnetUsers updateUser(Message message,boolean pwd) throws JSONException {
+	public AspnetUsers updateUser(Message message) throws JSONException {
 		JSONObject jsonObject = new JSONObject(message.getData().getString(Contents.JSON)).getJSONObject(Contents.INFO);
 		AspnetUsers users = new Gson().fromJson(jsonObject.toString(), new TypeToken<AspnetUsers>() {
 		}.getType());
 		UserDataShare share = new UserDataShare(context);
 		share.saveUserData(users);
-		if(pwd) {
-			String pam[] = share.getLoginInfo();
-			if (pam != null) {
-				share.saveLoginInfo(pam[0], pam[1]);
-			}
-		}
 		return users;
 	}
 	/**
@@ -138,7 +131,7 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 			member.setWangwang(haredPreferences.getString("wangwang", ""));
 			member.setMsn(haredPreferences.getString("msn",""));
 			info.setAspnetMembers(member);
-			Contents.setUser(info);
+//			Contents.setUser(info);
 		}
 		return info;
 	}
@@ -175,7 +168,7 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 		editor.putBoolean(ISLOGIN, true);
 		// 提交当前数据
 		editor.commit();
-		Contents.setUser(info);
+//		Contents.setUser(info);
 		BroadcastUtils.sendUserLogin(context);
 	}
 
@@ -192,7 +185,7 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 	 * 用戶退出登录
 	 */
 	public void logout() {
-		Contents.setUser(null);
+//		Contents.setUser(null);
 		// 实例化SharedPreferences.Editor对象（第二步）
 		SharedPreferences.Editor editor = haredPreferences.edit();
 		editor.putBoolean(ISLOGIN, false);

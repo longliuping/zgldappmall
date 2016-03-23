@@ -38,7 +38,7 @@ public class UpdateUserPasswordActivity extends BaseActivity implements View.OnC
             }
         });
         String nameStr = this.getIntent().getStringExtra(Contents.NAME);
-        if(nameStr==null || Contents.getUser(this) == null){
+        if(nameStr==null || new UserDataShare(this).getUserData() == null){
             finish();;
             return;
         }
@@ -57,7 +57,12 @@ public class UpdateUserPasswordActivity extends BaseActivity implements View.OnC
             if(msg.getData().getInt(Contents.STATUS)==200){
                 switch (msg.what){
                     case 201:
-                        new UserDataShare(this).updateUser(msg,true);
+                        new UserDataShare(this).updateUser(msg);
+                        UserDataShare share = new UserDataShare(this);
+                        String pam[] = share.getLoginInfo();
+                        if (pam != null) {
+                            share.saveLoginInfo(pam[0], new_pwd.getText().toString());
+                        }
                         finish();
                         break;
                 }
@@ -83,7 +88,7 @@ public class UpdateUserPasswordActivity extends BaseActivity implements View.OnC
                     Toast.makeText(this,"新密码长度不能小于6位数",Toast.LENGTH_LONG).show();
                 }else{
                     Map<String,String> m = new HashMap<>();
-                    AspnetUsers users = Contents.getUser(this);
+                    AspnetUsers users = new UserDataShare(this).getUserData();
                     m.put(Contents.TOKEN,users.getUserToken().getAccountToken());
                     m.put(Contents.USERID,users.getUserId()+"");
                     m.put("oldPassword",old_pwd.getText().toString());

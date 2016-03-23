@@ -3,6 +3,7 @@ package com.zgld.mall.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import com.zgld.mall.R;
+import com.zgld.mall.UserDataShare;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.City;
 import com.zgld.mall.beans.County;
@@ -142,7 +143,7 @@ County county;
                     break;
                 }
                 Map<String, String> m = new HashMap<String, String>();
-                AspnetUsers user = Contents.getUser(this);
+                AspnetUsers user =new UserDataShare(this).getUserData();
                 m.put("token",user.getUserToken().getAccountToken());
                 m.put("userId",user.getUserId()+"");
                 m.put("address.shippingId", info.getShippingId()+"");

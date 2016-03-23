@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zgld.mall.R;
+import com.zgld.mall.UserDataShare;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.City;
 import com.zgld.mall.beans.County;
@@ -146,7 +147,7 @@ public class AddAddressActivity extends BaseActivity implements OnClickListener 
                 } else {
                     m.put("address.regionId", county.getId() + "");
                 }
-                AspnetUsers user = Contents.getUser(this);
+                AspnetUsers user = new UserDataShare(this).getUserData();
                 m.put(Contents.TOKEN,user.getUserToken().getAccountToken());
                 m.put(Contents.USERID,user.getUserId()+"");
                 getData(com.android.volley.Request.Method.POST, 202, "addresses/add_user_shipping_addresses.html", m, null, 1);

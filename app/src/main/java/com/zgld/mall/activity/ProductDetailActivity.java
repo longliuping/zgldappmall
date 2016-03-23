@@ -27,6 +27,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.zgld.mall.AppManager;
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
+import com.zgld.mall.UserDataShare;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.HishopSkus;
 import com.zgld.mall.beans.Supplier;
@@ -210,14 +211,14 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                 }
                 break;
             case R.id.add_car:
-                if (Contents.getUser(this) == null) {
+                if (new UserDataShare(this).getUserData() == null) {
                     Contents.loginPage(this,null,200);
                     return;
                 }
                 showPop();
                 break;
             case R.id.cart:
-                if (Contents.getUser(this) == null) {
+                if (new UserDataShare(this).getUserData() == null) {
                     Contents.loginPage(this,null,200);
                     return;
                 }
@@ -403,7 +404,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
     @Override
     public void confirm(int number, String strNorms,HishopSkus hishopSkus, Integer valueId,Integer attributeId) {
         Map<String,String> m = new HashMap<>();
-        AspnetUsers users = Contents.getUser(this);
+        AspnetUsers users = new UserDataShare(this).getUserData();
         if(users!=null) {
             m.put("skuId", hishopSkus.getSkuId());
             m.put("productId", hishopSkus.getProductId()+"");

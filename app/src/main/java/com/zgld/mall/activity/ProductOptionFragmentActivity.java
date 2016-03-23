@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.zgld.mall.R;
+import com.zgld.mall.UserDataShare;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.HishopSkus;
 import com.zgld.mall.beans.HishopUserShippingAddresses;
@@ -350,7 +351,7 @@ public class ProductOptionFragmentActivity extends BaseFragmentActivity implemen
     public void confirm(int number, String strNorms,HishopSkus hishopSkus, Integer valueId,Integer attributeId) {
         // TODO Auto-generated method stub
         Map<String,String> m = new HashMap<>();
-        AspnetUsers users = Contents.getUser(this);
+        AspnetUsers users = new UserDataShare(this).getUserData();
         if(users!=null) {
             m.put("skuId", hishopSkus.getSkuId());
             m.put("productId", hishopSkus.getProductId()+"");

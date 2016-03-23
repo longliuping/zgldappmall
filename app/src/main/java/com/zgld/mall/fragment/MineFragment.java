@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
+import com.zgld.mall.UserDataShare;
 import com.zgld.mall.activity.BuyersOrdersFragmentActivity;
 import com.zgld.mall.activity.LoginActivity;
 import com.zgld.mall.activity.PersonalDataActivity;
@@ -116,7 +117,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
     }
     void initData(){
-        AspnetUsers users = Contents.getUser(activity);
+        AspnetUsers users = new UserDataShare(activity).getUserData();
         if(users!=null){
             default_user.setVisibility(View.VISIBLE);
             null_user.setVisibility(View.GONE);

@@ -159,7 +159,7 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
     }
     private void uploadPhoto(Bundle extras) {
         Map<String,String> m = new HashMap<>();
-        AspnetUsers user = Contents.getUser(this);
+        AspnetUsers user = new UserDataShare(this).getUserData();
         Bitmap bitmap = extras.getParcelable("data");
         String result = BitmapUtil.bitmapToBase64(bitmap);
         m.put("userinfo.head",result);
