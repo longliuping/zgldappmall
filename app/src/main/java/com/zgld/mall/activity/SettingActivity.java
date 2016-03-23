@@ -127,57 +127,10 @@ public class SettingActivity extends BaseActivity implements OnClickListener, Cu
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-//		case R.id.check_app_update:
-//			if (confirmDialog == null) {
-//				confirmDialog = new ConfirmDialog(this, getString(R.string.check_for_updates));
-//			}
-//			if (confirmDialog.isShowing()) {
-//				confirmDialog.dismiss();
-//			}
-//			confirmDialog.show();
-//			UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-//
-//				@Override
-//				public void onUpdateReturned(int arg0, UpdateResponse arg1) {
-//					// TODO Auto-generated method stub
-//					if (confirmDialog != null && confirmDialog.isShowing()) {
-//						confirmDialog.dismiss();
-//					}
-//					if (arg0 == 1) {
-//						Toast.makeText(SettingActivity.this, getString(R.string.no_new_version), Toast.LENGTH_SHORT)
-//								.show();
-//					}
-//				}
-//			});
-//			UmengUpdateAgent.forceUpdate(this);
-//			break;
 		case R.id.logout:
 			dialog = new CustomDialog(this, R.style.mystyle, R.layout.customdialog, R.array.title_logout, this);
 			dialog.show();
 			break;
-//		case R.id.about:
-//			startActivity(new Intent(this, AboutActivity.class));
-//			break;
-//		case R.id.clear:
-//			DataCleanManager.clearAllData(this);
-//			Toast.makeText(this, getString(R.string.cache_success), Toast.LENGTH_SHORT).show();
-//			break;
-//		case R.id.server_center:
-//
-//			break;
-//		case R.id.wechat:
-//
-//			break;
-//		case R.id.update_pwd:
-//			if (Contents.getUser(this) == null) {
-//				startActivityForResult(new Intent(this, LoginActivity.class), 200);
-//				return;
-//			}
-//			startActivity(new Intent(this, ModifyUserPasswordActivity.class));
-//			break;
-//		case R.id.message:
-//
-//			break;
 		}
 	}
 

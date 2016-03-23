@@ -24,8 +24,6 @@ dependencies {
     compile project(':library_pulltorefresh')
     compile files('libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar')
     compile files('libs/volley.jar')
-    compile files('libs/umeng-analytics-v5.5.3.jar')
-    compile files('libs/umeng-update-v2.6.0.1.jar')
     compile files('libs/gson-1.7.1.jar')
     compile files('libs/sun.misc.BASE64Decoder.jar')
     compile 'com.android.support:support-v4:23.2.1'
@@ -33,4 +31,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.2.1'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.kevin:loopview:1.0.4'
+    compile files('libs/umeng-update-v2.7.0.jar')
 }
