@@ -57,8 +57,8 @@ public class UpdateUserPasswordActivity extends BaseActivity implements View.OnC
             if(msg.getData().getInt(Contents.STATUS)==200){
                 switch (msg.what){
                     case 201:
-                        new UserDataShare(this).updateUser(msg);
                         UserDataShare share = new UserDataShare(this);
+                        share.updateUser(msg);
                         String pam[] = share.getLoginInfo();
                         if (pam != null) {
                             share.saveLoginInfo(pam[0], new_pwd.getText().toString());
