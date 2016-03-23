@@ -23,7 +23,7 @@ public class UpdateUserNameActivity extends BaseActivity {
                 finish();
             }
         });
-        String nameStr = this.getIntent().getStringExtra("name");
+        String nameStr = this.getIntent().getStringExtra(Contents.NAME);
         if(nameStr==null || new UserDataShare(this).getUserData() == null){
             finish();;
             return;
