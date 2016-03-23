@@ -111,22 +111,24 @@
         <activity android:name=".activity.UpdateUserSingleActivity" />
         <activity android:name=".activity.UpdateUserCellPhoneActivity" />
         <activity android:name=".activity.UpdateTelPhoneActivity" />
-        <activity android:name=".activity.UpdateUserPasswordActivity"></activity>
+        <activity android:name=".activity.UpdateUserPasswordActivity" />
         <!-- umeng -->
         <service
             android:name="com.umeng.update.net.DownloadingService"
-            android:process=":DownloadingService"></service>
+            android:process=":DownloadingService" />
 
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="56f13ba1e0f55a9713002460"></meta-data>
+            android:value="56f13ba1e0f55a9713002460" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Channel ID" />
+
+        <activity android:name=".activity.CategoryProductActivity"></activity>
     </application>
 
 </manifest>

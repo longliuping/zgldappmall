@@ -1,12 +1,14 @@
 package com.zgld.mall.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -20,6 +22,7 @@ import com.kevin.loopview.AdLoopView;
 import com.kevin.loopview.internal.BaseLoopAdapter;
 import com.umeng.update.UmengUpdateAgent;
 import com.zgld.mall.R;
+import com.zgld.mall.activity.CategoryProductActivity;
 import com.zgld.mall.adapter.HotCategoryAdapter;
 import com.zgld.mall.adapter.MaintypeAdapter;
 import com.zgld.mall.beans.HishopProductTypes;
@@ -77,7 +80,6 @@ public class MainHomeFragment extends BaseFragment {
                     json = new JSONObject(json).getJSONArray(Contents.LISTINIFO).toString();
                     listMenu = new Gson().fromJson(json, new TypeToken<List<HotCategory>>() {
                     }.getType());
-                    gridview = (GridView) view.findViewById(R.id.gridview);
                     hotCategoryAdapter = new HotCategoryAdapter(activity,listMenu);
                     gridview.setAdapter(hotCategoryAdapter);
                     break;
@@ -139,6 +141,16 @@ public class MainHomeFragment extends BaseFragment {
         gridview = (GridView) view.findViewById(R.id.gridview);
         hotCategoryAdapter = new HotCategoryAdapter(activity,listMenu);
         gridview.setAdapter(hotCategoryAdapter);
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(activity, CategoryProductActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Contents.INFO,listMenu.get(position));
+                intent.putExtras(bundle);
+                activity.startActivity(intent);
+            }
+        });
         initData();
     }
     public void initData(){
