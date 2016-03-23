@@ -66,7 +66,7 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
                     Toast.makeText(getApplicationContext(),user.getUserName(),Toast.LENGTH_SHORT).show();
                     new UserDataShare(this).saveUserData(user);
                     new UserDataShare(this).saveLoginInfo(et_user_name.getText().toString(), et_user_password.getText()
-                                .toString(), user.getUserId()+"");
+                                .toString());
                     setResult(RESULT_OK);
                     finish();
                     break;

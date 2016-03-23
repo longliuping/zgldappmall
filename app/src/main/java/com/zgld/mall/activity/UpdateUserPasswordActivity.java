@@ -10,10 +10,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
+import com.zgld.mall.UserDataShare;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.StringUtils;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +53,18 @@ public class UpdateUserPasswordActivity extends BaseActivity implements View.OnC
 
     @Override
     public void handleMsg(Message msg) {
-
+        try{
+            if(msg.getData().getInt(Contents.STATUS)==200){
+                switch (msg.what){
+                    case 201:
+                        new UserDataShare(this).updateUser(msg,true);
+                        finish();
+                        break;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -63,6 +79,8 @@ public class UpdateUserPasswordActivity extends BaseActivity implements View.OnC
                     Toast.makeText(this,"确认密码不能为空",Toast.LENGTH_LONG).show();
                 }else if(!new_pwd.getText().toString().equals(new_confirm_pwd.getText().toString())){
                     Toast.makeText(this,"新密码和确认密码不一致",Toast.LENGTH_LONG).show();
+                }else if(new_pwd.getText().toString().length()<6){
+                    Toast.makeText(this,"新密码长度不能小于6位数",Toast.LENGTH_LONG).show();
                 }else{
                     Map<String,String> m = new HashMap<>();
                     AspnetUsers users = Contents.getUser(this);

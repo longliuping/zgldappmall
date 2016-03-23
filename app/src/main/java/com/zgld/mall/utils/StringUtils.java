@@ -9,16 +9,16 @@ public class StringUtils {
 
     public static boolean isEmpty(EditText editText){
         if(editText==null || editText.getText()==null || editText.getText().toString().isEmpty()){
-            return false;
-        }else{
             return true;
+        }else{
+            return false;
         }
     }
     public static  boolean isEmpty(String text){
         if(text == null || text.isEmpty()){
             return true;
         }else {
-            return  true;
+            return  false;
         }
     }
 }

@@ -3,16 +3,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.os.Message;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.beans.AspnetMembers;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.UserToken;
 import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
- * 用户数据保存
+ * 保存用户数据
  * 
  * @author Administrator
  * 
@@ -46,11 +52,32 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 	}
 
 	/**
+	 * 更新用户信息
+	 * @param message
+	 * @param pwd
+	 * @return
+	 * @throws JSONException
+	 */
+	public AspnetUsers updateUser(Message message,boolean pwd) throws JSONException {
+		JSONObject jsonObject = new JSONObject(message.getData().getString(Contents.JSON)).getJSONObject(Contents.INFO);
+		AspnetUsers users = new Gson().fromJson(jsonObject.toString(), new TypeToken<AspnetUsers>() {
+		}.getType());
+		UserDataShare share = new UserDataShare(context);
+		share.saveUserData(users);
+		if(pwd) {
+			String pam[] = share.getLoginInfo();
+			if (pam != null) {
+				share.saveLoginInfo(pam[0], pam[1]);
+			}
+		}
+		return users;
+	}
+	/**
 	 * 保存登录用户名密码
 	 * 
 	 * @return
 	 */
-	public void saveLoginInfo(String name, String pwd, String userId) {
+	public void saveLoginInfo(String name, String pwd) {
 		// 实例化SharedPreferences.Editor对象（第二步）
 		SharedPreferences.Editor editor = haredPreferences.edit();
 		// 用putString的方法保存数据
@@ -71,7 +98,6 @@ public class UserDataShare implements OnSharedPreferenceChangeListener {
 		// 使用getString方法获得value，注意第2个参数是value的默认值
 		String name = haredPreferences.getString(NAME, "");
 		String pwd = haredPreferences.getString(PWD, "");
-//		int userId = haredPreferences.getInt(USERID,0);
 		if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(pwd)) {
 			return new String[] { name, pwd};
 		} else {
