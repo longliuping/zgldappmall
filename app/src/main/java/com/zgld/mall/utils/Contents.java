@@ -20,6 +20,8 @@ import java.util.List;
 public class Contents {
     public static final String BASE_URL = "http://114.215.198.143:89/webapi/json/";
     public static final String BASE_IMAGE_PATH = "http://www.jym1798.com:99/";
+    public static final String PAGESIZE = "pageSize";
+    public static final String PAGENUM = "pageNum";
     public static final String TOKEN = "token";
     public static final String USERID = "userId";
     public static final String DATA = "data";
@@ -27,11 +29,7 @@ public class Contents {
     public static final String LISTINIFO = "listInfo";
     public static final String MSG = "msg";
     public static final String STATUS = "status";
-    public static final java.lang.String SUCCESS = "success";
-    public static final java.lang.String NONE = "none";
-    public static final java.lang.String ERROR = "error";
-    public static final java.lang.String INPUT = "input";
-    public static final java.lang.String LOGIN = "login";
+    public static final String SUCCESS = "success";
     public static final String PRODUCTID = "product_id";
     public static final String NAME = "name";
     public static final String JSON = "json";
@@ -73,21 +71,6 @@ public class Contents {
     static AspnetUsers user = null;
 
     public static AspnetUsers getUser(Context context) {
-//		UserInfo u = null;
-//		if(context==null)
-//		{
-//			return u;
-//		}
-//		if (new UserDataShare(context).isLogin()) {
-//			u = new UserInfo();
-//			if (u == null || TextUtils.isEmpty(u.getUserId())) {
-//				u = new UserDataShare(context).getUserData();
-//			}
-//		} else {
-//			return null;
-//		}
-//		return u;
-
         if(new UserDataShare(context).isLogin()){
             if (user == null) {
                 user = new UserDataShare(context).getUserData();
@@ -95,8 +78,6 @@ public class Contents {
         }else{
             user = null;
         }
-        //test user login
-//        Contents.setUser(new UserInfo());
         return user;
 
     }
@@ -117,7 +98,7 @@ public class Contents {
      */
     public static void loginPage(Activity activity,Bundle bundle,int flag){
         Intent intent = new Intent(activity,LoginActivity.class);
-        intent.putExtra("data",bundle);
+        intent.putExtra(DATA,bundle);
         activity.startActivityForResult(intent,flag);
     }
     public static void setUser(AspnetUsers u) {

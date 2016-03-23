@@ -583,9 +583,10 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 
 					private void deleteProduct() {
 						Map<String, String> m = new HashMap<String, String>();
-						m.put("token", Contents.getUser(activity).getUserToken().getAccountToken());
-						m.put("userId", Contents.getUser(activity).getUserId() + "");
-						 m.put("productId", listInfo.get(groupPosition).getListHishopProducts().get(childPosition).getProductId() + "");
+						AspnetUsers users = Contents.getUser(activity);
+						m.put(Contents.TOKEN, users.getUserToken().getAccountToken());
+						m.put(Contents.USERID,users.getUserId() + "");
+						m.put("productId", listInfo.get(groupPosition).getListHishopProducts().get(childPosition).getProductId() + "");
 						m.put("skuId", listInfo.get(groupPosition).getListHishopProducts().get(childPosition).getHishopSkus().getSkuId());
 						getData(Method.POST, 203, "car/delete_car_product.html", m, null, 1);
 					}
