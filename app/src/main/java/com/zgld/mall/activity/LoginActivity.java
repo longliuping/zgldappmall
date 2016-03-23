@@ -14,6 +14,7 @@ import com.zgld.mall.R;
 import com.zgld.mall.UserDataShare;
 import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.utils.BroadcastUtils;
+import com.zgld.mall.utils.Contents;
 
 import org.json.JSONObject;
 
@@ -56,10 +57,10 @@ public class LoginActivity extends BaseActivity implements  View.OnClickListener
     @Override
     public void handleMsg(Message msg) {
         try{
-        if(msg.getData().getInt("status")==200){
+        if(msg.getData().getInt(Contents.STATUS)==200){
             switch (msg.what){
                 case 201:
-                    JSONObject jo = new JSONObject(msg.getData().getString("json")).getJSONObject("data").getJSONObject("info");
+                    JSONObject jo = new JSONObject(msg.getData().getString(Contents.JSON)).getJSONObject(Contents.DATA).getJSONObject(Contents.INFO);
                     AspnetUsers user = new Gson().fromJson(jo.toString(), new TypeToken<AspnetUsers>() {
                     }.getType());
                     Toast.makeText(getApplicationContext(),user.getUserName(),Toast.LENGTH_SHORT).show();

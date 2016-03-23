@@ -1,11 +1,7 @@
 package com.zgld.mall.activity;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.zgld.mall.R;

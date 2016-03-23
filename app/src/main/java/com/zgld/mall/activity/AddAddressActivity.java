@@ -42,7 +42,7 @@ public class AddAddressActivity extends BaseActivity implements OnClickListener 
            switch (msg.what) {
                case 202:
                    JSONObject jo = new JSONObject(json);
-                   if (jo.getInt("status")==200) {
+                   if (jo.getInt(Contents.STATUS)==200) {
                        Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                        setResult(RESULT_OK);
                        finish();
@@ -147,8 +147,8 @@ public class AddAddressActivity extends BaseActivity implements OnClickListener 
                     m.put("address.regionId", county.getId() + "");
                 }
                 AspnetUsers user = Contents.getUser(this);
-                m.put("token",user.getUserToken().getAccountToken());
-                m.put("userId",user.getUserId()+"");
+                m.put(Contents.TOKEN,user.getUserToken().getAccountToken());
+                m.put(Contents.USERID,user.getUserId()+"");
                 getData(com.android.volley.Request.Method.POST, 202, "addresses/add_user_shipping_addresses.html", m, null, 1);
                 break;
         }

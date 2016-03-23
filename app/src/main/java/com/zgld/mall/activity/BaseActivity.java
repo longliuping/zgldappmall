@@ -67,17 +67,18 @@ public abstract class BaseActivity extends Activity  implements RequestListenr {
      */
     @Override
     public void onCompelete(int tag, String json) {
-//        GsonObject go = new Gson().fromJson(json, new TypeToken<GsonObject>() {
-//        }.getType());
         Message msg = handler.obtainMessage();
         msg.what = tag;
        try{
            JSONObject object = new JSONObject(json);
-           Toast.makeText(getApplicationContext(),object.getString("msg"),Toast.LENGTH_SHORT).show();
+           String msgStr = object.getString(Contents.MSG);
+           if(!msgStr.equals(Contents.SUCCESS)) {
+               Toast.makeText(this, msgStr, Toast.LENGTH_SHORT).show();
+           }
            Bundle data = new Bundle();
-           data.putInt("status",object.getInt("status"));
-           data.putString("json", json);
-           data.putString("data",object.getJSONObject("data").toString());
+           data.putInt(Contents.STATUS,object.getInt(Contents.STATUS));
+           data.putString(Contents.JSON, json);
+           data.putString(Contents.DATA,object.getJSONObject(Contents.DATA).toString());
            msg.setData(data);
            if (confirmDialog != null && confirmDialog.isShowing()) {
                confirmDialog.dismiss();

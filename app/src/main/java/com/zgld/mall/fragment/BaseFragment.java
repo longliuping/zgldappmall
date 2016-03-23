@@ -48,11 +48,14 @@ public abstract class BaseFragment extends Fragment implements RequestListenr {
       try{
           msg.what = tag;
           JSONObject object = new JSONObject(json);
-          Toast.makeText(activity,object.getString("msg"),Toast.LENGTH_SHORT).show();
+          String msgStr = object.getString(Contents.MSG);
+          if(!msgStr.equals(Contents.SUCCESS)) {
+              Toast.makeText(activity, msgStr, Toast.LENGTH_SHORT).show();
+          }
           Bundle data = new Bundle();
           data.putString(Contents.JSON, json);
-          data.putInt("status", object.getInt("status"));
-          data.putString("data",object.getJSONObject("data").toString());
+          data.putInt(Contents.STATUS, object.getInt(Contents.STATUS));
+          data.putString(Contents.DATA,object.getJSONObject(Contents.DATA).toString());
           data.putBoolean("cache", false);
           msg.setData(data);
           if (confirmDialog != null && confirmDialog.isShowing()) {
@@ -135,8 +138,8 @@ public abstract class BaseFragment extends Fragment implements RequestListenr {
                    Bundle data = new Bundle();
                    JSONObject object = new JSONObject(json);
                    data.putString(Contents.JSON, json);
-                   data.putInt("status", object.getInt("status"));
-                   data.putString("data",object.getJSONObject("data").toString());
+                   data.putInt(Contents.STATUS, object.getInt(Contents.STATUS));
+                   data.putString(Contents.DATA,object.getJSONObject(Contents.DATA).toString());
                    data.putBoolean("cache", false);
                    msg.setData(data);
                    if (confirmDialog != null && confirmDialog.isShowing()) {

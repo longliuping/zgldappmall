@@ -20,9 +20,18 @@ import java.util.List;
 public class Contents {
     public static final String BASE_URL = "http://114.215.198.143:89/webapi/json/";
     public static final String BASE_IMAGE_PATH = "http://www.jym1798.com:99/";
-    public static final String UPLOAD_USER_IMAGE = "http://www.zncdk.com/ComImgUpload.ashx";// upload
+    public static final String TOKEN = "token";
+    public static final String USERID = "userId";
     public static final String DATA = "data";
     public static final String INFO = "info";
+    public static final String LISTINIFO = "listInfo";
+    public static final String MSG = "msg";
+    public static final String STATUS = "status";
+    public static final java.lang.String SUCCESS = "success";
+    public static final java.lang.String NONE = "none";
+    public static final java.lang.String ERROR = "error";
+    public static final java.lang.String INPUT = "input";
+    public static final java.lang.String LOGIN = "login";
     public static final String PRODUCTID = "product_id";
     public static final String NAME = "name";
     public static final String JSON = "json";

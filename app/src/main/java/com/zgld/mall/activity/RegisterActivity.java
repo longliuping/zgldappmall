@@ -51,8 +51,8 @@ public class RegisterActivity extends BaseActivity implements  View.OnClickListe
         try{
             switch (msg.what){
                 case 201:
-                    if(msg.getData().getInt("status")==200){
-                        JSONObject jsonObject = new JSONObject(msg.getData().getString(Contents.JSON)).getJSONObject("data").getJSONObject("info");
+                    if(msg.getData().getInt(Contents.STATUS)==200){
+                        JSONObject jsonObject = new JSONObject(msg.getData().getString(Contents.JSON)).getJSONObject(Contents.DATA).getJSONObject(Contents.INFO);
                         Gson gson = new Gson();
                         AspnetUsers users = gson.fromJson(jsonObject.toString(), new TypeToken<AspnetUsers>() {
                         }.getType());

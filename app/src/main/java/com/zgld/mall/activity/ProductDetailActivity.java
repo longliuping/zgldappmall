@@ -96,7 +96,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
             Gson gson = new Gson();
             switch (msg.what){
                 case 205:
-                    JSONObject jsonObject = new JSONObject(json).getJSONObject("data").getJSONObject("info");
+                    JSONObject jsonObject = new JSONObject(json).getJSONObject(Contents.DATA).getJSONObject(Contents.INFO);
                     String gsonStr = jsonObject.toString();
                     info = new Gson().fromJson(gsonStr,new TypeToken<Supplier>(){}.getType());
                     initJazzView();

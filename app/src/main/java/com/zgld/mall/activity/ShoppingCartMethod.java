@@ -156,7 +156,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 		Message msg = handler.obtainMessage();
 		msg.what = tag;
 		Bundle data = new Bundle();
-		data.putString("json", json);
+		data.putString(Contents.JSON, json);
 		msg.setData(data);
 		if (confirmDialog != null && confirmDialog.isShowing()) {
 			confirmDialog.dismiss();
@@ -222,8 +222,8 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 			AspnetUsers user = Contents.getUser(activity);
 			Map<String,String> m = new HashMap<>();
 			UserToken userToken = user.getUserToken();
-			m.put("token",userToken.getAccountToken());
-			m.put("userId", user.getUserId() + "");
+			m.put(Contents.TOKEN,userToken.getAccountToken());
+			m.put(Contents.USERID, user.getUserId() + "");
 			getData(Method.POST, 201, "car/user_car_product.html", m, null, 1);
 		}
 	}
@@ -242,8 +242,11 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 				Type entityType = null;
 				JSONArray jsonArray = null;
 				JSONObject jsonObject = new JSONObject(json);
-				Toast.makeText(activity,jsonObject.getString("msg"),Toast.LENGTH_SHORT).show();
-				if(jsonObject.getInt("status")==201){
+				String msgStr = jsonObject.getString(Contents.MSG);
+				if(!msgStr.equals(Contents.SUCCESS)) {
+					Toast.makeText(activity, msgStr, Toast.LENGTH_SHORT).show();
+				}
+				if(jsonObject.getInt(Contents.STATUS)==201){
 					listInfo = new ArrayList<>();
 					infoAdapter = new ShoppingCarExpandableListAdapter(activity, listInfo, ShoppingCartMethod.this);
 					infoAdapter.notifyDataSetChanged();
@@ -253,7 +256,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 				}
 				switch (msg.what) {
 				case 201:
-					jsonArray = new JSONObject(json).getJSONObject("data").getJSONArray("listInfo");
+					jsonArray = new JSONObject(json).getJSONObject(Contents.DATA).getJSONArray(Contents.LISTINIFO);
 					listInfo = new Gson().fromJson(jsonArray.toString(),new TypeToken<List<HishopShoppingCarts>>() {
 				}.getType());
 					infoAdapter = new ShoppingCarExpandableListAdapter(activity, listInfo, ShoppingCartMethod.this);
@@ -314,7 +317,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 					bindData();
 					break;
 					case 203:
-						if(jsonObject.getInt("status")==200){
+						if(jsonObject.getInt(Contents.STATUS)==200){
 							if(listInfo.get(deleteGroupPosition).getListHishopProducts().size()>=deleteChildPosition){
 								listInfo.get(deleteGroupPosition).getListHishopProducts().remove(deleteChildPosition);
 								deleteChildPosition = 0;

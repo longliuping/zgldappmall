@@ -54,7 +54,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity  implements 
         Message msg = handler.obtainMessage();
         msg.what = tag;
         Bundle data = new Bundle();
-        data.putString("json", json);
+        data.putString(Contents.JSON, json);
         msg.setData(data);
         if (confirmDialog != null && confirmDialog.isShowing()) {
             confirmDialog.dismiss();

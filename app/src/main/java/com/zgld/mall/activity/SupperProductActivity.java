@@ -78,8 +78,8 @@ public class SupperProductActivity extends BaseActivity implements AdapterView.O
     public void handleMsg(Message msg) {
         scrollview.onRefreshComplete();
         try{
-            if(msg.getData().getInt("status")==200){
-                JSONArray jsonArray = new JSONObject(msg.getData().getString(Contents.JSON)).getJSONObject("data").getJSONArray("listInfo");
+            if(msg.getData().getInt(Contents.STATUS)==200){
+                JSONArray jsonArray = new JSONObject(msg.getData().getString(Contents.JSON)).getJSONObject(Contents.DATA).getJSONArray(Contents.LISTINIFO);
                 switch (msg.what){
                     case 201:
                         if(pageNum==1){

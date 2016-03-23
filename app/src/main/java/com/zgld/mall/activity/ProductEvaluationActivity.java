@@ -48,7 +48,7 @@ public class ProductEvaluationActivity extends BaseActivity implements View.OnCl
                 try {
                     JSONObject jsonObject = new JSONObject(json);
                     if (jsonObject != null) {
-                        Toast.makeText(this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, jsonObject.getString(Contents.MSG), Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
                     }

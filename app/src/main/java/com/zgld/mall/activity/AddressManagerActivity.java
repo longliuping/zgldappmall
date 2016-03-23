@@ -53,7 +53,7 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
               return;
           }
           json = bundle.getString(Contents.JSON);
-          if(bundle.getInt("status")!=200)
+          if(bundle.getInt(Contents.STATUS)!=200)
           {
               return;
           }
@@ -64,7 +64,7 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
           Type entityType = null;
           switch (msg.what) {
               case 201:
-                  JSONArray jsonArray = new JSONObject(json).getJSONObject("data").getJSONArray("listInfo");
+                  JSONArray jsonArray = new JSONObject(json).getJSONObject(Contents.DATA).getJSONArray(Contents.LISTINIFO);
                   listInfo = new ArrayList<HishopUserShippingAddresses>();
                   entityType = new TypeToken<List<HishopUserShippingAddresses>>() {
                   }.getType();
@@ -85,7 +85,7 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
               case 202:
                   initData();
                   JSONObject jsonObject = new JSONObject(json);
-                  if(jsonObject.getInt("status")==200) {
+                  if(jsonObject.getInt(Contents.STATUS)==200) {
                       listInfo.remove(deletePosition);
                       deletePosition = 0;
                   }
@@ -142,8 +142,8 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
     void initData() {
         Map<String,String> m = new HashMap<>();
         AspnetUsers user = Contents.getUser(this);
-        m.put("token",user.getUserToken().getAccountToken());
-        m.put("userId",user.getUserId()+"");
+        m.put(Contents.TOKEN,user.getUserToken().getAccountToken());
+        m.put(Contents.USERID,user.getUserId()+"");
         getData(com.android.volley.Request.Method.POST, 201, "addresses/user_shipping_addresses.html", m, null, 1);
     }
 
@@ -201,8 +201,8 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
                         Map<String,String> m = new HashMap<>();
                         AspnetUsers user = Contents.getUser(AddressManagerActivity.this);
                         UserToken userToken = user.getUserToken();
-                        m.put("token",userToken.getAccountToken());
-                        m.put("userId", user.getUserId() + "");
+                        m.put(Contents.TOKEN,userToken.getAccountToken());
+                        m.put(Contents.USERID, user.getUserId() + "");
                         m.put("address.shippingId",listInfo.get(deletePosition).getShippingId()+"");
                         getData(Request.Method.POST, 202, "addresses/delete_user_shipping_addresses.html", m, null, 1);
                     }

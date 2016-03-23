@@ -79,14 +79,6 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            // if ((System.currentTimeMillis() - exitTime) > 2000) {
-            // Toast.makeText(getApplicationContext(), "再按一次退出程序",
-            // Toast.LENGTH_SHORT).show();
-            // exitTime = System.currentTimeMillis();
-            // } else {
-            //
-            // AppManager.getAppManager().AppExit(this);
-            // }
             PackageManager pm = getPackageManager();
             ResolveInfo homeInfo = pm.resolveActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME),
                     0);

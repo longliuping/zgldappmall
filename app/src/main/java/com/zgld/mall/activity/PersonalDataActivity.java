@@ -52,8 +52,8 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
             }
             switch (msg.what) {
                 case 201:
-                    if(msg.getData().getInt("status")==200){
-                        JSONObject jsonObject = new JSONObject(json).getJSONObject("data").getJSONObject("info");
+                    if(msg.getData().getInt(Contents.STATUS)==200){
+                        JSONObject jsonObject = new JSONObject(json).getJSONObject(Contents.DATA).getJSONObject(Contents.INFO);
                         Gson gson = new Gson();
                         AspnetUsers user = gson.fromJson(jsonObject.toString(), new TypeToken<AspnetUsers>() {
                         }.getType());
@@ -163,8 +163,8 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
         Bitmap bitmap = extras.getParcelable("data");
         String result = BitmapUtil.bitmapToBase64(bitmap);
         m.put("userinfo.head",result);
-        m.put("token", user.getUserToken().getAccountToken());
-        m.put("userId", user.getUserId() + "");
+        m.put(Contents.TOKEN, user.getUserToken().getAccountToken());
+        m.put(Contents.USERID, user.getUserId() + "");
         getData(Request.Method.POST, 201, "user/update_user_head.html",m,null,1);
     }
 
