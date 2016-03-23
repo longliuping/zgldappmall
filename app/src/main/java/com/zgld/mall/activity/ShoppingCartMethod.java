@@ -408,13 +408,6 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 			}
 			break;
 		case R.id.go:
-//			MenuType menuType = new MenuType();
-//			Intent intent = new Intent();
-//			menuType.setText("云端销售中心");
-//			menuType.setId(-1);
-//			intent.setClass(activity, ProductListFragmentActivity.class);
-//			intent.putExtra(Contents.INFO, menuType);
-//			activity.startActivity(intent);
 			break;
 		}
 	}
