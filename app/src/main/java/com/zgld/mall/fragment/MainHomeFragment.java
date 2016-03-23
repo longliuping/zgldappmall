@@ -116,13 +116,13 @@ public class MainHomeFragment extends BaseFragment {
         initLoopView();
         getDataCache(Request.Method.GET, 201, "home_banner.html", null, null, 1);
         getDataCache(Request.Method.GET, 202, "product/home_all_product.html", null, null, 1);
-        getDataCache(Request.Method.GET,203,"home_hot_category.html",null,null,1);
+//        getDataCache(Request.Method.GET,203,"home_hot_category.html",null,null,1);
         initData();
     }
     public void initData(){
         getData(Request.Method.GET, 201, "home_banner.html", null, null, 1);
         getData(Request.Method.GET, 202, "product/home_all_product.html", null, null, 1);
-        getData(Request.Method.GET, 203, "home_hot_category.html", null, null, 1);
+//        getData(Request.Method.GET, 203, "home_hot_category.html", null, null, 1);
     }
     /**
      * 初始化LoopView

@@ -20,7 +20,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="#D5D5D5" />
+            android:background="#D5D5D5" android:visibility="gone"/>
 
         <android.support.v4.app.FragmentTabHost
             android:id="@android:id/tabhost"
