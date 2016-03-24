@@ -69,7 +69,6 @@ public class HotSupplierActivity extends BaseActivity implements AdapterView.OnI
             @Override
             public void onClick(View v) {
                 finish();
-                ;
             }
         });
         info = (HotCategory) this.getIntent().getSerializableExtra(Contents.INFO);
