@@ -15,10 +15,9 @@
         />
     <TextView
         android:id="@+id/item_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#393939"
-        android:text="产品名字"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
         android:minLines="2"
@@ -36,16 +35,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:text="现价："
         android:textColor="#999999"
         />
         <TextView
             android:id="@+id/item_sale_price"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textColor="#cc0000"
-            android:text="¥158.00"/>
+            android:textColor="#cc0000" />
     </LinearLayout>
     </LinearLayout>
 </LinearLayout>
