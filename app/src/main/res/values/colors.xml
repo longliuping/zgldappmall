@@ -398,4 +398,6 @@
     <color name="reg_right">#8C8C8C</color>
     <color name="circle_default_text_color">#303030</color>
     <color name="circle_selected_text_color">#F86442</color>
+
+    <color name="light_gray">#fff5f5f5</color>
 </resources>
