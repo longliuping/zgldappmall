@@ -27,7 +27,7 @@
                android:layout_height="wrap_content"
                android:layout_weight="1"/>
            <com.zgld.mall.widget.NiceSpinner
-               android:id="@+id/nice_county"
+               android:id="@+id/nice_spinner_county"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:layout_weight="1"/>

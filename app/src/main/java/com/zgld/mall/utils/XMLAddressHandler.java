@@ -27,7 +27,7 @@ public class XMLAddressHandler extends DefaultHandler {
 
     private String tagName = null;// 当前解析的元素标签
 
-    List<Province> getProvinces() {
+    public List<Province> getProvinces() {
         return provinces;
     }
 
@@ -37,6 +37,50 @@ public class XMLAddressHandler extends DefaultHandler {
 
     List<County> getCountys() {
         return countys;
+    }
+
+    public void setProvinces(List<Province> provinces) {
+        this.provinces = provinces;
+    }
+
+    public Province getCurrentProvince() {
+        return currentProvince;
+    }
+
+    public void setCurrentProvince(Province currentProvince) {
+        this.currentProvince = currentProvince;
+    }
+
+    public void setCitys(List<City> citys) {
+        this.citys = citys;
+    }
+
+    public City getCurrentCity() {
+        return currentCity;
+    }
+
+    public void setCurrentCity(City currentCity) {
+        this.currentCity = currentCity;
+    }
+
+    public void setCountys(List<County> countys) {
+        this.countys = countys;
+    }
+
+    public County getCurrentCounty() {
+        return currentCounty;
+    }
+
+    public void setCurrentCounty(County currentCounty) {
+        this.currentCounty = currentCounty;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 
     // 接收文档开始的通知。当遇到文档的开头的时候，调用这个方法，可以在其中做一些预处理的工作。
