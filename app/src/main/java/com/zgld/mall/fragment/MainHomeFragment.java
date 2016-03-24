@@ -22,7 +22,7 @@ import com.kevin.loopview.AdLoopView;
 import com.kevin.loopview.internal.BaseLoopAdapter;
 import com.umeng.update.UmengUpdateAgent;
 import com.zgld.mall.R;
-import com.zgld.mall.activity.CategoryProductActivity;
+import com.zgld.mall.activity.HotSupplierActivity;
 import com.zgld.mall.adapter.HotCategoryAdapter;
 import com.zgld.mall.adapter.MaintypeAdapter;
 import com.zgld.mall.beans.HishopProductTypes;
@@ -144,7 +144,7 @@ public class MainHomeFragment extends BaseFragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(activity, CategoryProductActivity.class);
+                Intent intent = new Intent(activity, HotSupplierActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Contents.INFO,listMenu.get(position));
                 intent.putExtras(bundle);

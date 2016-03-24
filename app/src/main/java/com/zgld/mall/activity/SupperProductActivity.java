@@ -48,13 +48,13 @@ public class SupperProductActivity extends BaseActivity implements AdapterView.O
                 ;
             }
         });
-        TextView title = (TextView) findViewById(R.id.title_center);
-        title.setText("商家店铺");
         info = (Supplier) this.getIntent().getSerializableExtra(Contents.INFO);
         if(info==null){
             finish();
             return;
         }
+        TextView title = (TextView) findViewById(R.id.title_center);
+        title.setText(info.getSupplierName()+"");
         ImageView head = (ImageView) findViewById(R.id.head);
         SysApplication.DisplayUserImage(info.getSupplierUrl1(), head);
         TextView name = (TextView) findViewById(R.id.name);
