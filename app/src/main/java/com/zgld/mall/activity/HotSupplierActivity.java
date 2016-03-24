@@ -82,9 +82,6 @@ public class HotSupplierActivity extends BaseActivity implements AdapterView.OnI
             InputStream inStream = this.getResources().getAssets().open("address.xml");
             SAXParserFactory spf = SAXParserFactory.newInstance();// 创建解析器
             SAXParser saxParser = spf.newSAXParser();
-            // 设置解析器的相关特性，true表示开启命名空间特性
-            // saxParser.setProperty("http://xml.org/sax/features/namespaces",
-            // true);
             XMLAddressHandler handler = new XMLAddressHandler();
             saxParser.parse(inStream, handler);
             province = handler.getProvinces().get(0);
@@ -182,7 +179,6 @@ public class HotSupplierActivity extends BaseActivity implements AdapterView.OnI
         m.put("areaid",areaid+"");
         m.put("hotid",info.getHotid()+"");
         getData(Request.Method.POST, 201, "supplier/hot_area_supplier.html", m, null, pageNum);
-//        getData(Request.Method.POST, 201, "supplier/hot_supplier.html", m, null, pageNum);
     }
     @Override
     public void onNothingSelected(AdapterView<?> parent) {

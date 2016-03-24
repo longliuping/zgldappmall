@@ -72,7 +72,7 @@ public class SupperProductActivity extends BaseActivity implements AdapterView.O
         initData();
     }
     void initData(){
-        getData(Request.Method.GET, 201, "supplier/supplier_product.html?id="+info.getUserId()+"&pageSize=18&pageNum="+pageNum, null, null, 1);
+        getData(Request.Method.GET, 201, "supplier/supplier_product.html?id="+info.getUserId()+"&pageSize=18&pageNum="+pageNum, null, null, pageNum);
     }
     @Override
     public void handleMsg(Message msg) {
