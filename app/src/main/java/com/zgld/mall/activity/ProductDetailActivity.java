@@ -35,6 +35,7 @@ import com.zgld.mall.jazzy.JazzPageChangeListener;
 import com.zgld.mall.jazzy.JazzProductDetailAdapter;
 import com.zgld.mall.jazzy.JazzyProductDetailViewPager;
 import com.zgld.mall.pop.PublishSelectPicPopupWindow;
+import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.PriceUtil;
 
@@ -104,7 +105,7 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                     initBData();
                     break;
                 case 207:
-
+                    BroadcastUtils.sendCarProduct(this);
                     break;
             }
         } catch (Exception e) {

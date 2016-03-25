@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class Contents {
     public static final String BASE_URL = "http://114.215.198.143:89/webapi/json/";
+//    public static final String BASE_URL = "http://192.168.1.154:8080/ZgldApi/json/";
     public static final String BASE_IMAGE_PATH = "http://www.jym1798.com:99/";
     public static final String PAGESIZE = "pageSize";
     public static final String PAGENUM = "pageNum";

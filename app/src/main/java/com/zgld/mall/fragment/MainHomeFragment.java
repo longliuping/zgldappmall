@@ -25,6 +25,7 @@ import com.zgld.mall.R;
 import com.zgld.mall.activity.HotSupplierActivity;
 import com.zgld.mall.adapter.HotCategoryAdapter;
 import com.zgld.mall.adapter.MaintypeAdapter;
+import com.zgld.mall.beans.HishopCategories;
 import com.zgld.mall.beans.HishopProductTypes;
 import com.zgld.mall.beans.HotCategory;
 import com.zgld.mall.pulltorefresh.LocalFileUtils;
@@ -71,9 +72,9 @@ public class MainHomeFragment extends BaseFragment {
                     break;
                 case 202:
                     json = new JSONObject(json).getJSONArray(Contents.LISTINIFO).toString();
-                    List<HishopProductTypes> listHishopProductTypes = new Gson().fromJson(json,new TypeToken<List<HishopProductTypes>>() {
+                    List<HishopCategories> hishopCategoriesList = new Gson().fromJson(json,new TypeToken<List<HishopCategories>>() {
                     }.getType());
-                    infoAdapter = new MaintypeAdapter(getContext(),listHishopProductTypes);
+                    infoAdapter = new MaintypeAdapter(getContext(),hishopCategoriesList);
                     listview.setAdapter(infoAdapter);
                     break;
                 case 203:
@@ -128,16 +129,6 @@ public class MainHomeFragment extends BaseFragment {
         getDataCache(Request.Method.GET, 201, "home_banner.html", null, null, 1);
         getDataCache(Request.Method.GET, 202, "product/home_all_product.html", null, null, 1);
         getDataCache(Request.Method.GET, 203, "home_hot_category.html", null, null, 1);
-//        String name[] = new String[]{"代金卷", "KTV", "火锅", "美发", "洗浴/汗蒸", "甜点饮品", "自助餐", "小吃快餐", "云贵菜"};
-//        int img[] = new int[]{R.mipmap.category1,R.mipmap.category2,R.mipmap.category3,R.mipmap.category4,R.mipmap.category5,R.mipmap.category6,R.mipmap.category7,R.mipmap.category8,R.mipmap.category9};
-//        int ids[] = new int[]{1,2,3,4,5,6,7,8,9};
-//        for (int i=0;i<9;i++){
-//            HotCategory hot = new HotCategory();
-//            hot.setHotname(name[i]);
-//            hot.setHotid(ids[i]);
-//            hot.setResId(img[i]);
-//            listMenu.add(hot);
-//        }
         gridview = (GridView) view.findViewById(R.id.gridview);
         hotCategoryAdapter = new HotCategoryAdapter(activity,listMenu);
         gridview.setAdapter(hotCategoryAdapter);

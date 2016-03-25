@@ -14,11 +14,14 @@ import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.zgld.mall.R;
+import com.zgld.mall.UserDataShare;
 import com.zgld.mall.adapter.OKOrderAdapter;
+import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.HishopProducts;
 import com.zgld.mall.beans.HishopShoppingCarts;
 import com.zgld.mall.beans.HishopUserShippingAddresses;
 import com.zgld.mall.beans.Supplier;
+import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.PriceUtil;
 
@@ -109,33 +112,16 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
     public void handleMsg(Message msg) {
         Bundle bundle = msg.getData();
         String json = "";
-        if (bundle == null) {
-            return;
-        }
         json = bundle.getString(Contents.JSON);
-        if (json == null) {
-            return;
-        }
         switch (msg.what) {
             case 205:
-                if (json != null && Integer.parseInt(json) > 0) {
+                if(msg.getData().getInt(Contents.STATUS)==200){
+                    BroadcastUtils.sendCarProduct(this);
                     setResult(RESULT_OK);
-                    Toast.makeText(this, "成功", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(this, BuyersOrdersFragmentActivity.class));// -2已有訂單
-                    // -3購物車務產品
-                    // -4產品庫存量不足
-                    Contents.updateCarProduct(this);
+                    Intent intent = new Intent();
+                    intent.setClass(this,BuyersOrdersFragmentActivity.class);
+                    startActivity(intent);
                     finish();
-                } else if (json.equals("-1")) {
-                    Toast.makeText(this, "已有订单", Toast.LENGTH_SHORT).show();
-                } else if (json.equals("-2")) {
-                    Toast.makeText(this, "已有订单", Toast.LENGTH_SHORT).show();
-                } else if (json.equals("-3")) {
-                    Toast.makeText(this, "购物车没有该产品", Toast.LENGTH_SHORT).show();
-                } else if (json.equals("-4")) {
-                    Toast.makeText(this, "产品库存量不足", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -181,32 +167,34 @@ public class OKOrderActivity extends BaseActivity implements PullToRefreshBase.O
                 startActivityForResult(intent, 200);
                 break;
             case R.id.item_pay:
+                AspnetUsers users = new UserDataShare(this).getUserData();
+                if(users==null){
+                    Contents.loginPage(this,null,200);
+                    return;
+                }
                 if (addressInfo == null) {
                     Toast.makeText(this, "请选择地址", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 Map<String, String> m = new HashMap<String, String>();
-                StringBuffer productId = new StringBuffer();
-                StringBuffer cartsId = new StringBuffer();
-//                for (int i = 0; i < listInfo.size(); i++) {
-//                    for (int j = 0; j < listInfo.get(i).getCartItems().size(); j++) {
-//                        productId.append(listInfo.get(i).getCartItems().get(j).getProductId() + ",");
-//                        cartsId.append(listInfo.get(i).getCartItems().get(j).getCartsId() + ",");
-//                    }
-//                }
-                if (!TextUtils.isEmpty(productId)) {
-                    productId.deleteCharAt(productId.length() - 1);
+                StringBuffer skuId = new StringBuffer();
+                StringBuffer nums = new StringBuffer();
+                for (int i = 0; i < listInfo.size(); i++) {
+                    skuId.append(listInfo.get(i).getSkuId() + ",");
+                    nums.append(listInfo.get(i).getQuantity() + ",");
                 }
-                if (!TextUtils.isEmpty(cartsId)) {
-                    cartsId.deleteCharAt(cartsId.length() - 1);
+                if (!TextUtils.isEmpty(skuId)) {
+                    skuId.deleteCharAt(skuId.length() - 1);
                 }
-                m.put("productId", productId.toString());
-                m.put("remark", remark);
-                m.put("Remark", remark);
-                m.put("shippingModeId", "3");
-                m.put("paymentTypeId", "1");
-                m.put("cartsId", cartsId.toString());
-                getData(com.android.volley.Request.Method.POST, 205, "Orders/OrdersAdd", m, null, pageIndex);
+                if (!TextUtils.isEmpty(nums)) {
+                    nums.deleteCharAt(nums.length() - 1);
+                }
+                m.put("shippingId", addressInfo.getShippingId()+"");
+                m.put("skuId", skuId.toString());
+                m.put("skuNumber", nums.toString());
+                m.put(Contents.TOKEN,users.getUserToken().getAccountToken());
+                m.put(Contents.USERID,users.getUserId()+"");
+                getData(com.android.volley.Request.Method.POST, 205, "order/submit_order.html", m, null, 1);
                 break;
         }
     }

@@ -16,6 +16,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.zgld.mall.R;
 import com.zgld.mall.adapter.HomeProductAdapter;
+import com.zgld.mall.beans.HishopCategories;
 import com.zgld.mall.beans.HishopProductTypes;
 import com.zgld.mall.beans.HishopProducts;
 import com.zgld.mall.utils.Contents;
@@ -29,7 +30,7 @@ import java.util.List;
 public class ProductTypeActivity extends BaseActivity implements AdapterView.OnItemClickListener,PullToRefreshBase.OnRefreshListener2{
     PullToRefreshScrollView scrollview;
     GridView gridview;
-    HishopProductTypes info = null;
+    HishopCategories info = null;
     int pageNum = 1;
     HomeProductAdapter infoAdapter;
     List<HishopProducts> listInfo = new ArrayList<>();
@@ -38,7 +39,7 @@ public class ProductTypeActivity extends BaseActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         initStyle();
         setContentView(R.layout.activity_product_type);
-        info = (HishopProductTypes) this.getIntent().getSerializableExtra(Contents.INFO);
+        info = (HishopCategories) this.getIntent().getSerializableExtra(Contents.INFO);
         if(info==null){
             finish();;
             return;
@@ -50,7 +51,7 @@ public class ProductTypeActivity extends BaseActivity implements AdapterView.OnI
             }
         });
         TextView title = (TextView) findViewById(R.id.title_center);
-        title.setText(info.getTypeName());
+        title.setText(info.getName());
         gridview = (GridView) findViewById(R.id.gridview);
         gridview.setOnItemClickListener(this);
         scrollview = (PullToRefreshScrollView) findViewById(R.id.scrollview);
@@ -62,7 +63,7 @@ public class ProductTypeActivity extends BaseActivity implements AdapterView.OnI
         initData();
     }
     void initData(){
-        getData(Request.Method.GET, 201, "product/home_type_product.html?id="+info.getTypeId()+"&pageSize=18&pageNum="+pageNum, null, null, pageNum);
+        getData(Request.Method.GET, 201, "product/home_type_product.html?id="+info.getAssociatedProductType()+"&pageSize=18&pageNum="+pageNum, null, null, pageNum);
     }
     @Override
     public void handleMsg(Message msg) {

@@ -426,7 +426,7 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("listInfo", listCarts);
 				intent.putExtras(bundle);
-				activity.startActivityForResult(intent, 200);
+				activity.startActivityForResult(intent, 208);
 			}
 			break;
 		case R.id.go:
@@ -447,6 +447,9 @@ public class ShoppingCartMethod implements RequestListenr, OnRefreshListener2, O
 				infoAdapter.notifyDataSetChanged();
 				bindData();
 				pageIndex = 1;
+				initData();
+			}
+			if(requestCode==208){
 				initData();
 			}
 		}

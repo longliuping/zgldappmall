@@ -33,6 +33,7 @@ import com.zgld.mall.indicator.FragmentPagerAdp;
 import com.zgld.mall.indicator.TabInfoBean;
 import com.zgld.mall.indicator.TitleIndicator;
 import com.zgld.mall.pop.PublishSelectPicPopupWindow;
+import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 
 /**
@@ -83,13 +84,6 @@ public class ProductOptionFragmentActivity extends BaseFragmentActivity implemen
         title.setTextSize(18);
         correlation_add = (Button) findViewById(R.id.correlation_add);
         correlation_add.setOnClickListener(this);
-
-//        if (info != null || "3".equals(info.getPutawayType())) {
-//            if (info.getPutawayType().equals("3")) {
-//                Button add_car = (Button) findViewById(R.id.add_car);
-//                add_car.setText("首付款");
-//            }
-//        }
     }
 
     private void initFragment() {
@@ -217,28 +211,12 @@ public class ProductOptionFragmentActivity extends BaseFragmentActivity implemen
                 showPop();
                 break;
             case R.id.cart:
-                // intent.putExtra("car", true);
-                // intent.setClass(getApplicationContext(), MainActivity.class);
-                // startActivity(intent);
                 startActivity(new Intent(this, ShoppingCartActivity.class));
                 break;
             case R.id.back:
                 finish();
                 break;
             case R.id.correlation_add:
-//                if (info != null && (info.getUserId().equals(Contents.getUser(this).getUserId()))) {
-//                    Toast.makeText(this, getString(R.string.can_not_add_their_own_products), Toast.LENGTH_SHORT).show();
-//                    break;
-//                }
-//                if (info != null) {
-//                    getData(com.android.volley.Request.Method.GET,
-//                            208,
-//                            "UserOrProduct/UserOrProductCorrelationAdd?productId=" + info.getProductId() + "&userId="
-//                                    + Contents.getUser(this).getUserId() + "&token=" + Contents.getUser(this).getToken()
-//                                    + "&returnPrice=" + info.getReturnPrice() + "&purchaseDate="
-//                                    + DateUtil.getDay(new Date().getTime()) + "&purchaseNum=1&accessTimes=&remark=", null,
-//                            null, true);
-//                }
                 break;
 
         }
@@ -248,64 +226,9 @@ public class ProductOptionFragmentActivity extends BaseFragmentActivity implemen
     @Override
     public void handleMsg(Message msg) {
         // TODO Auto-generated method stub
-        Bundle bundle = msg.getData();
-        String json = "";
-        if (bundle == null) {
-            return;
-        }
-        json = bundle.getString(Contents.JSON);
         switch (msg.what) {
-            case 202:// 加入购物车
-//                if (json != null) {
-//                    if (json.trim().equals("1")) {
-//                        Toast.makeText(this, getString(R.string.add_shopping_cart_success), Toast.LENGTH_SHORT).show();
-//                        BroadcastUtils.sendCarProduct(this);
-//                    } else if (json.trim().equals("-2")) {
-//                        Toast.makeText(this, getString(R.string.can_not_sell_their_own_products), Toast.LENGTH_SHORT)
-//                                .show();
-//                    } else {
-//                        Toast.makeText(this, json, Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    Toast.makeText(this, getString(R.string.add_shopping_cart_failed), Toast.LENGTH_SHORT).show();
-//                }
-                break;
-            case 208:
-//                if (json != null) {
-//                    if (json.trim().equals("1")) {
-//                        Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-//                    } else if (json.trim().equals("0")) {
-//                        Toast.makeText(this, getString(R.string.can_not_add_their_own_products), Toast.LENGTH_SHORT).show();
-//                    } else if (json.trim().equals("-1")) {
-//                        Toast.makeText(this, getString(R.string.add_shopping_myshop_exis), Toast.LENGTH_SHORT).show();
-//                    } else if (json.trim().equals("2")) {
-//                        Toast.makeText(this, getString(R.string.add_shopping_myshop_use), Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(this, getString(R.string.add_shopping_myshop_failed), Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    Toast.makeText(this, getString(R.string.add_shopping_myshop_failed), Toast.LENGTH_SHORT).show();
-//                }
-                break;
-            case 305:
-                if (json != null && Integer.parseInt(json) > 0) {
-                    setResult(RESULT_OK);
-                    Toast.makeText(this, "成功", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(this, BuyersOrdersFragmentActivity.class));// -2已有訂單//
-                    // -3購物車務產品//
-                    // -4產品庫存量不足
-                    finish();
-                } else if (json.equals("-1")) {
-                    Toast.makeText(this, "已有订单", Toast.LENGTH_SHORT).show();
-                } else if (json.equals("-2")) {
-                    Toast.makeText(this, "已有订单", Toast.LENGTH_SHORT).show();
-                } else if (json.equals("-3")) {
-                    Toast.makeText(this, "产品库存量不足", Toast.LENGTH_SHORT).show();
-                } else if (json.equals("-4")) {
-                    Toast.makeText(this, "产品库存量不足", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "失败", Toast.LENGTH_SHORT).show();
-                }
+            case 207:
+                BroadcastUtils.sendCarProduct(this);
                 break;
         }
     }

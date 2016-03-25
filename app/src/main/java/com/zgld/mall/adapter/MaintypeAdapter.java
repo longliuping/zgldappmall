@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.zgld.mall.R;
 import com.zgld.mall.activity.ProductDetailActivity;
 import com.zgld.mall.activity.ProductTypeActivity;
+import com.zgld.mall.beans.HishopCategories;
 import com.zgld.mall.beans.HishopProductTypes;
 import com.zgld.mall.utils.Contents;
 
@@ -24,8 +25,8 @@ import java.util.List;
  */
 public class MaintypeAdapter extends BaseAdapter{
     Context context;
-    List<HishopProductTypes> listInfo;
-    public MaintypeAdapter(  Context context,List<HishopProductTypes> listInfo){
+    List<HishopCategories> listInfo;
+    public MaintypeAdapter(  Context context,List<HishopCategories> listInfo){
         this.context = context;
         this.listInfo = listInfo;
     }
@@ -61,9 +62,9 @@ public class MaintypeAdapter extends BaseAdapter{
         }else{
             vh = (ViewHolder) convertView.getTag();
         }
-        final HishopProductTypes info = listInfo.get(position);
+        final HishopCategories info = listInfo.get(position);
         if(info!=null){
-            vh.item_name.setText(info.getTypeName());
+            vh.item_name.setText(info.getName());
             vh.item_gridview.setAdapter(new HomeProductAdapter(context, info.getHishopProducts()));
             vh.item_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
