@@ -3,7 +3,6 @@ package com.zgld.mall.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,10 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zgld.mall.R;
-import com.zgld.mall.SysApplication;
-import com.zgld.mall.activity.ProductDetailActivity;
-import com.zgld.mall.beans.OrderItems;
-import com.zgld.mall.beans.Orders;
+import com.zgld.mall.beans.HishopOrderItems;
+import com.zgld.mall.beans.HishopOrders;
 import com.zgld.mall.utils.PriceUtil;
 
 public class ProductWaitEvaluationAdapter extends BaseExpandableListAdapter {
@@ -62,11 +59,11 @@ public class ProductWaitEvaluationAdapter extends BaseExpandableListAdapter {
 		void payment(int groupPosition, int childPosition);
 	}
 
-	List<Orders> listInfo;
+	List<HishopOrders> listInfo;
 	LayoutInflater layoutInflater;
 	Context context;
 
-	public ProductWaitEvaluationAdapter(Context context, List<Orders> listInfo) {
+	public ProductWaitEvaluationAdapter(Context context, List<HishopOrders> listInfo) {
 		// TODO Auto-generated constructor stub
 		this.listInfo = listInfo;
 		layoutInflater = LayoutInflater.from(context);
@@ -103,7 +100,7 @@ public class ProductWaitEvaluationAdapter extends BaseExpandableListAdapter {
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		// return listInfo.get(groupPosition).getProducts().size();
-		return listInfo.get(groupPosition).getOrderItems().size();
+		return listInfo.get(groupPosition).getListHishopOrderItems().size();
 	}
 
 	/**
@@ -112,7 +109,7 @@ public class ProductWaitEvaluationAdapter extends BaseExpandableListAdapter {
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		// return listInfo.get(groupPosition).getProducts().get(childPosition);
-		return listInfo.get(groupPosition).getOrderItems().get(childPosition);
+		return listInfo.get(groupPosition).getListHishopOrderItems().get(childPosition);
 	}
 
 	/**
@@ -151,7 +148,7 @@ public class ProductWaitEvaluationAdapter extends BaseExpandableListAdapter {
 		} else {
 			holder = (GroupViewHolder) convertView.getTag();
 		}
-		Orders info = listInfo.get(groupPosition);
+		HishopOrders info = listInfo.get(groupPosition);
 		if (info != null) {
 			holder.item_status.setText("");
 		}
@@ -203,13 +200,13 @@ public class ProductWaitEvaluationAdapter extends BaseExpandableListAdapter {
 		holder.item_evaluation.setVisibility(View.GONE);
 		holder.item_base_bottom.setVisibility(View.GONE);
 		final ChildViewHolder h = holder;
-		final OrderItems item = listInfo.get(groupPosition).getOrderItems().get(childPosition);
-		final Orders info = listInfo.get(groupPosition);
+		final HishopOrderItems item = listInfo.get(groupPosition).getListHishopOrderItems().get(childPosition);
+		final HishopOrders info = listInfo.get(groupPosition);
 		if (info != null) {
-			holder.item_postage.setText(PriceUtil.priceY(info.getAdjustedFreight()));
+//			holder.item_postage.setText(PriceUtil.priceY(info.getAdjustedFreight()));
 //			holder.item_title.setText(item.getItemDescription());
 //			holder.item_detail.setText(item.getNorms());
-			holder.item_list_price.setText(info.getOrderTotal());
+//			holder.item_list_price.setText(info.getOrderTotal());
 //			holder.item_number.setText("X" + item.getQuantity());
 //			holder.item_number_all.setText(item.getQuantity());
 //			holder.item_price.setText(PriceUtil.priceY(item.getItemAdjustedPrice()));

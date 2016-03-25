@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.Request.Method;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -17,7 +16,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.zgld.mall.R;
 import com.zgld.mall.adapter.BuyersOrdersAdapter;
-import com.zgld.mall.beans.Orders;
+import com.zgld.mall.beans.HishopOrders;
 import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.volley.NetWorkTools;
@@ -48,7 +47,7 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment implements OnRefreshListener2,
         OnItemClickListener, OnClickListener, BuyersOrdersAdapter.BuyersOrdersAdapterListener {
-    List<Orders> listInfo = new ArrayList<Orders>();
+    List<HishopOrders> listInfo = new ArrayList<HishopOrders>();
     PullToRefreshExpandableListView listview;
     BuyersOrdersAdapter infoAdapter;
     int pageIndex = 1;
@@ -119,7 +118,7 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
                     try {
                         if (TextUtils.isEmpty(json)) {
                             if (pageIndex == 1) {
-                                listInfo = new ArrayList<Orders>();
+                                listInfo = new ArrayList<HishopOrders>();
                                 infoAdapter = new BuyersOrdersAdapter(activity, listInfo, false, this);
                                 listview.getRefreshableView().setAdapter(infoAdapter);
                                 null_data_default.setVisibility(View.VISIBLE);
@@ -131,20 +130,20 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    entityType = new TypeToken<List<Orders>>() {
+                    entityType = new TypeToken<List<HishopOrders>>() {
                     }.getType();
                     if (pageIndex == 1) {
-                        listInfo = new ArrayList<Orders>();
+                        listInfo = new ArrayList<HishopOrders>();
                         infoAdapter = new BuyersOrdersAdapter(activity, listInfo, false, this);
                         listview.getRefreshableView().setAdapter(infoAdapter);
                     }
-                    List<Orders> list = gson.fromJson(jsonArray.toString(), entityType);
+                    List<HishopOrders> list = gson.fromJson(jsonArray.toString(), entityType);
                     if (list == null || list.size() <= 0) {
                         Toast.makeText(activity, activity.getString(R.string.no_data), Toast.LENGTH_SHORT).show();
                     }
                     if (list != null && list.size() > 0) {
                         for (int i = 0; i < list.size(); i++) {
-                            Orders info = list.get(i);
+                            HishopOrders info = list.get(i);
                             listInfo.add(info);
                         }
                         infoAdapter = new BuyersOrdersAdapter(activity, listInfo, false, this);
@@ -299,7 +298,7 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
             }
         });
         pageIndex = 1;
-        listInfo = new ArrayList<Orders>();
+        listInfo = new ArrayList<HishopOrders>();
         infoAdapter = new BuyersOrdersAdapter(activity, listInfo, false, this);
         listview.getRefreshableView().setAdapter(infoAdapter);
         infoAdapter.notifyDataSetChanged();

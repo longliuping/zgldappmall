@@ -1,7 +1,6 @@
 package com.zgld.mall.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zgld.mall.R;
-import com.zgld.mall.SysApplication;
-import com.zgld.mall.beans.OrderItems;
-import com.zgld.mall.beans.Orders;
-import com.zgld.mall.utils.PriceUtil;
+import com.zgld.mall.beans.HishopOrderItems;
+import com.zgld.mall.beans.HishopOrders;
 
 public class OrderDetailsAdapter extends BaseExpandableListAdapter {
 
-	Orders listInfo;
+	HishopOrders listInfo;
 	LayoutInflater layoutInflater;
 	Context context;
 
-	public OrderDetailsAdapter(Context context, Orders listInfo) {
+	public OrderDetailsAdapter(Context context, HishopOrders listInfo) {
 		// TODO Auto-generated constructor stub
 		this.listInfo = listInfo;
 		layoutInflater = LayoutInflater.from(context);
@@ -33,7 +30,7 @@ public class OrderDetailsAdapter extends BaseExpandableListAdapter {
 	 */
 	@Override
 	public int getGroupCount() {
-		return listInfo.getOrderItems().size();
+		return listInfo.getListHishopOrderItems().size();
 	}
 
 	/**
@@ -41,7 +38,7 @@ public class OrderDetailsAdapter extends BaseExpandableListAdapter {
 	 */
 	@Override
 	public Object getGroup(int groupPosition) {
-		return listInfo.getOrderItems().get(groupPosition);
+		return listInfo;
 	}
 
 	/**
@@ -58,7 +55,7 @@ public class OrderDetailsAdapter extends BaseExpandableListAdapter {
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		// return listInfo.get(groupPosition).getProducts().size();
-		return listInfo.getOrderItems().size();
+		return listInfo.getListHishopOrderItems().size();
 	}
 
 	/**
@@ -67,7 +64,7 @@ public class OrderDetailsAdapter extends BaseExpandableListAdapter {
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		// return listInfo.get(groupPosition).getProducts().get(childPosition);
-		return listInfo.getOrderItems().get(childPosition);
+		return listInfo.getListHishopOrderItems().get(childPosition);
 	}
 
 	/**
@@ -104,10 +101,10 @@ public class OrderDetailsAdapter extends BaseExpandableListAdapter {
 		} else {
 			holder = (GroupViewHolder) convertView.getTag();
 		}
-		OrderItems info = listInfo.getOrderItems().get(0);
-		if (info != null) {
-			holder.item_car_manufactor_name.setText(info.getUsername() + ">");
-		}
+		HishopOrderItems info = listInfo.getListHishopOrderItems().get(0);
+//		if (info != null) {
+//			holder.item_car_manufactor_name.setText(info.getUsername() + ">");
+//		}
 		return convertView;
 	}
 
@@ -151,7 +148,7 @@ public class OrderDetailsAdapter extends BaseExpandableListAdapter {
 			holder = (ChildViewHoldeer) convertView.getTag();
 		}
 		holder.bottom.setVisibility(View.GONE);
-		final OrderItems info = listInfo.getOrderItems().get(childPosition);
+		final HishopOrderItems info = listInfo.getListHishopOrderItems().get(childPosition);
 		if (info != null) {
 			holder.item_title.setText("");
 //			if (info.getNorms() != null) {

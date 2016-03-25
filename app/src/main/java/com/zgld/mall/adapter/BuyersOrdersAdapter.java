@@ -1,12 +1,9 @@
 package com.zgld.mall.adapter;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,21 +11,11 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request.Method;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
-import com.zgld.mall.SysApplication;
-import com.zgld.mall.beans.OrderItems;
+import com.zgld.mall.beans.HishopOrders;
 import com.zgld.mall.beans.OrderStatus;
-import com.zgld.mall.beans.Orders;
-import com.zgld.mall.sync.OrderAsync;
-import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.CustomDialog;
-import com.zgld.mall.utils.DateUtil;
-import com.zgld.mall.utils.PriceUtil;
 
 public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 	private  String orderId="";
@@ -74,14 +61,14 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 		void payment(int groupPosition, int childPosition);
 	}
 
-	List<Orders> listInfo;
+	List<HishopOrders> listInfo;
 	LayoutInflater layoutInflater;
 	Context context;
 	BuyersOrdersAdapterListener listener;
 	CustomDialog dialog;
 	boolean display = false;// 处理完成后，是否显示当前item
 
-	public BuyersOrdersAdapter(Context context, List<Orders> listInfo, boolean display,
+	public BuyersOrdersAdapter(Context context, List<HishopOrders> listInfo, boolean display,
 			BuyersOrdersAdapterListener listener) {
 		this.listInfo = listInfo;
 		this.layoutInflater = LayoutInflater.from(context);
@@ -119,7 +106,7 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		// return listInfo.get(groupPosition).getProducts().size();
-		return listInfo.get(groupPosition).getOrderItems().size();
+		return listInfo.get(groupPosition).getListHishopOrderItems().size();
 	}
 
 	/**
@@ -128,7 +115,7 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		// return listInfo.get(groupPosition).getProducts().get(childPosition);
-		return listInfo.get(groupPosition).getOrderItems().get(childPosition);
+		return listInfo.get(groupPosition).getListHishopOrderItems().get(childPosition);
 	}
 
 	/**
@@ -167,7 +154,7 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 		} else {
 			holder = (GroupViewHolder) convertView.getTag();
 		}
-		Orders info = listInfo.get(groupPosition);
+		HishopOrders info = listInfo.get(groupPosition);
 		if (info != null) {
 			convertView.setOnClickListener(new OnClickListener() {
 
@@ -179,7 +166,7 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 				}
 			});
 			String result = "";
-			holder.item_name.setText(info.getSupplierName() + ">");
+//			holder.item_name.setText(info.getSupplierName() + ">");
 			String str = "";
 			switch (info.getOrderStatus()) {
 			case OrderStatus.A:
@@ -271,155 +258,7 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 		} else {
 			holder = (ChildViewHolder) convertView.getTag();
 		}
-		holder.item_confirm.setVisibility(View.GONE);
-		holder.item_pay.setVisibility(View.GONE);
-		holder.item_cancel.setVisibility(View.GONE);
-		holder.item_refund.setVisibility(View.GONE);
-		holder.item_evaluation.setVisibility(View.GONE);
-		holder.item_base_bottom.setVisibility(View.GONE);
-		holder.item_pre_base.setVisibility(View.GONE);
-		holder.item_view_logistics.setVisibility(View.GONE);
-		final ChildViewHolder h = holder;
-		final OrderItems item = listInfo.get(groupPosition).getOrderItems().get(childPosition);
-		final Orders info = listInfo.get(groupPosition);
-		if (info != null) {
-			convertView.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-//					Intent intent = new Intent(context, OrderDetailsActivity.class);
-//					intent.putExtra("orderId", listInfo.get(groupPosition).getOrderId());
-//					context.startActivity(intent);
-				}
-			});
-			if (isLastChild) {
-//				if (item.getBuyCategories().equals("3")) {
-//					holder.item_pre_base.setVisibility(View.VISIBLE);
-//					holder.item_start_price.setText(PriceUtil.priceY(item.getAdvancePrice()));
-//					holder.item_end_price.setText(PriceUtil.priceY(item.getRemaining()));
-//					holder.tem_price_base.setVisibility(View.GONE);
-//					if ("0".equals(info.getIsPayBalancePayment())) {
-//						holder.item_pay.setText("立即支付(首款)");
-//					} else {
-//						holder.item_pay.setText("立即支付(尾款)");
-//					}
-//				} else {
-//					holder.item_pre_base.setVisibility(View.GONE);
-//					holder.item_pay.setText("立即支付");
-//					holder.tem_price_base.setVisibility(View.VISIBLE);
-//				}
-				holder.item_base_bottom.setVisibility(View.VISIBLE);
-				// 就按共几件商品
-				int itemQuantityCount = 0;
-				for (OrderItems itemQuantity : listInfo.get(groupPosition).getOrderItems()) {
-//					itemQuantityCount += Integer.parseInt(itemQuantity.getQuantity());
-				}
-				holder.item_number_all.setText(itemQuantityCount + "");
-				holder.item_date.setText(DateUtil.getSMillon(info.getOrderDate()) + "");
-			}
-			
-			switch (info.getOrderStatus()) {
-			case OrderStatus.A:
-				// holder.item_cancel.setVisibility(View.VISIBLE);
-				holder.item_pay.setVisibility(View.VISIBLE);
-				holder.item_cancel.setVisibility(View.VISIBLE);
-				break;
-			case OrderStatus.B:
-				holder.item_pay.setVisibility(View.VISIBLE);
-				holder.item_cancel.setVisibility(View.VISIBLE);
-				break;
-			case OrderStatus.C:
-				if (info.getRefundStatus() == 2 || info.getRefundStatus() == 3) {
-					holder.item_refund.setVisibility(View.GONE);
-				} else {
-					holder.item_refund.setVisibility(View.VISIBLE);
-				}
-
-				break;
-			case OrderStatus.D:
-				holder.item_confirm.setVisibility(View.VISIBLE);
-				break;
-			case OrderStatus.E:
-				break;
-			case OrderStatus.F:
-				holder.item_evaluation.setVisibility(View.VISIBLE);
-				break;
-			case OrderStatus.G:
-				holder.item_evaluation.setVisibility(View.VISIBLE);
-				break;
-			}
-			holder.item_postage.setText(PriceUtil.priceY(info.getAdjustedFreight()));
-//			holder.item_title.setText(item.getItemDescription());
-//			holder.item_detail.setText(item.getNorms());
-//			holder.item_list_price.setText(PriceUtil.priceY(info.getOrderTotal()));
-//			holder.item_number.setText("X" + item.getQuantity());
-//			String categories=item.getBuyCategories();
-//			if (categories.equals("3")) {
-//				if(item.getAdvancePrice()!=null && !item.getAdvancePrice().trim().isEmpty() && item.getRemaining()!=null && !item.getRemaining().trim().isEmpty()){
-//					double salePrice=Double.parseDouble(item.getAdvancePrice())+Double.parseDouble(item.getRemaining());
-//					holder.item_price.setText(PriceUtil.priceY(String.valueOf(salePrice)));//实际销售价额
-//				}
-//			} else {
-//				holder.item_price.setText(PriceUtil.priceY(item.getItemAdjustedPrice()));//实际销售价额
-//			}
-//			holder.item_market_price.setText(PriceUtil.priceY(item.getSalePrice()));//市场价格
-			holder.item_view_logistics.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-//					Intent intent = new Intent(context, ViewLogisticsActivity.class);
-//					context.startActivity(intent);
-				}
-			});
-//			SysApplication.DisplayImage(item.getThumbnailsUrl(), holder.item_image);
-			holder.item_image.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-//					Intent intent = new Intent(context, ProductDetailActivity.class);
-//					intent.putExtra(Contents.PRODUCTID, item.getProductId());
-//					context.startActivity(intent);
-				}
-			});
-			holder.item_confirm.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					confirmOrder(groupPosition, childPosition);
-				}
-			});
-			holder.item_cancel.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					cancelOrder(groupPosition, childPosition);
-				}
-			});
-			holder.item_refund.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					applyRefund(groupPosition, childPosition);
-				}
-			});
-			holder.item_evaluation.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// listener.commentProduct(groupPosition, childPosition);
-//					Intent intent = new Intent(context, ProductEvaluationActivity.class);
-//					intent.putExtra(Contents.INFO, listInfo.get(groupPosition));
-//					context.startActivity(intent);
-				}
-			});
-			holder.item_pay.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					payOrder(groupPosition, childPosition);
-				}
-			});
-		}
 		return convertView;
 	}
 
@@ -493,49 +332,9 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 	 */
 	public void payOrder(final int groupPosition, final int childPosition) {
 		Map<String, String> m = new HashMap<String, String>();
-		final Orders orderInfo = listInfo.get(groupPosition);
-		if (orderInfo.getIsPayBalancePayment().equals("2")) {
-			orderId = orderInfo.getSecondTimePayNo();
-		} else {
-			orderId = orderInfo.getOrderId();
-		}
+		final HishopOrders orderInfo = listInfo.get(groupPosition);
+
 		m.put("out_trade_no", orderId);
-		
-//		new OrderAsync(context, Method.POST, 2010, "Alipay/AlipayConfig", m, null, 1,
-//				new OrderAsyncListener() {
-//
-//					@Override
-//					public void complete(int tag, String json) {
-//						Gson gson = new Gson();
-//						Type entityType = null;
-//						entityType = new TypeToken<Config>() {
-//						}.getType();
-//						Config config = gson.fromJson(json.trim(), entityType);
-//						if (config != null && config.getConfig() != null) {
-//							Alipay alipay = null;
-//							for (Alipay a : config.getConfig()) {
-//								alipay = a;
-//							}
-//							if (alipay != null) {
-//								if (orderInfo.getIsPayBalancePayment().equals("2")) {
-//									alipay.setProductName(orderInfo.getOrderItems().get(childPosition).getItemDescription());
-//									alipay.setOrderTotal(orderInfo.getOrderItems().get(childPosition).getRemaining());
-//								}
-//								new AlipayUtil(context, orderId, alipay, new AlipayUtilListener() {
-//
-//									@Override
-//									public void alipaySuccess() {
-//										listInfo.get(groupPosition).setOrderStatus(5);
-//										if (!display) {
-//											listInfo.remove(groupPosition);
-//										}
-//										notifyDataSetChangedAdapter();
-//									}
-//								});
-//							}
-//						}
-//					}
-//				});
 	}
 
 	/**

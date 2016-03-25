@@ -1,27 +1,20 @@
 package com.zgld.mall.activity;
 
-import android.app.Activity;
 import android.location.Address;
 import android.os.Bundle;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
 import com.zgld.mall.adapter.OrderDetailsAdapter;
-import com.zgld.mall.beans.OrderItems;
-import com.zgld.mall.beans.Orders;
+import com.zgld.mall.beans.HishopOrders;
 import com.zgld.mall.utils.Contents;
 
-import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,7 +33,7 @@ public class OrderDetailsActivity extends BaseActivity {
     OrderDetailsAdapter infoAdapter;
     int pageIndex = 1;
 
-    public static List<OrderItems> listInfo = new ArrayList<>();
+    public static List<HishopOrders> listInfo = new ArrayList<>();
 
     TextView name, address, address_title;
     Address addressInfo;
@@ -101,7 +94,7 @@ public class OrderDetailsActivity extends BaseActivity {
         Type entityType = null;
         switch (msg.what) {
             case 201:
-                entityType = new TypeToken<OrderItems>() {
+                entityType = new TypeToken<HishopOrders>() {
                 }.getType();
                 try {
 //                    listInfo = new Orders.OrderItems();

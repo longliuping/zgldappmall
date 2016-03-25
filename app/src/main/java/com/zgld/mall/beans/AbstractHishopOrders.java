@@ -21,10 +21,10 @@ public abstract class AbstractHishopOrders implements java.io.Serializable {
 	private Double adjustedDiscount;
 	private Integer orderStatus;
 	private String closeReason;
-	private Date orderDate;
-	private Date payDate;
-	private Date shippingDate;
-	private Date finishDate;
+	private String orderDate;
+	private String payDate;
+	private String shippingDate;
+	private String finishDate;
 	private Integer userId;
 	private String username;
 	private String emailAddress;
@@ -150,35 +150,35 @@ public abstract class AbstractHishopOrders implements java.io.Serializable {
 		this.closeReason = closeReason;
 	}
 
-	public Date getOrderDate() {
+	public String getOrderDate() {
 		return this.orderDate;
 	}
 
-	public void setOrderDate(Date orderDate) {
+	public void setOrderDate(String orderDate) {
 		this.orderDate = orderDate;
 	}
 
-	public Date getPayDate() {
+	public String getPayDate() {
 		return this.payDate;
 	}
 
-	public void setPayDate(Date payDate) {
+	public void setPayDate(String payDate) {
 		this.payDate = payDate;
 	}
 
-	public Date getShippingDate() {
+	public String getShippingDate() {
 		return this.shippingDate;
 	}
 
-	public void setShippingDate(Date shippingDate) {
+	public void setShippingDate(String shippingDate) {
 		this.shippingDate = shippingDate;
 	}
 
-	public Date getFinishDate() {
+	public String getFinishDate() {
 		return this.finishDate;
 	}
 
-	public void setFinishDate(Date finishDate) {
+	public void setFinishDate(String finishDate) {
 		this.finishDate = finishDate;
 	}
 
