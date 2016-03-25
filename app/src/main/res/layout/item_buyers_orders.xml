@@ -66,23 +66,12 @@
                 android:textColor="#727272"
                 android:textSize="16sp" />
 
-            <com.boen.wearingcloud.widget.OriginalPriceTextView
-                android:id="@+id/item_market_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/item_price"
-                android:layout_marginTop="5dp"
-                android:gravity="end"
-                android:text="￥80.00"
-                android:textColor="#000000" />
-
             <TextView
                 android:id="@+id/item_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/item_market_price"
+                android:layout_below="@id/item_price"
                 android:layout_marginTop="5dp"
                 android:text="x1"
                 android:textColor="#727272" />
@@ -157,45 +146,11 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="实付 :"
+                            android:text="共计 :"
                             android:textColor="#727272" />
 
                         <TextView
                             android:id="@+id/item_list_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="￥165"
-                            android:textColor="#000000" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/item_pre_base"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:visibility="gone" >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="首款 "
-                            android:textColor="#727272" />
-
-                        <TextView
-                            android:id="@+id/item_start_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="￥165"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="尾款"
-                            android:textColor="#727272" />
-
-                        <TextView
-                            android:id="@+id/item_end_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="￥165"

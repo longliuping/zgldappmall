@@ -13,9 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zgld.mall.R;
+import com.zgld.mall.SysApplication;
+import com.zgld.mall.beans.HishopOrderItems;
 import com.zgld.mall.beans.HishopOrders;
 import com.zgld.mall.beans.OrderStatus;
 import com.zgld.mall.utils.CustomDialog;
+import com.zgld.mall.utils.PriceUtil;
 
 public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 	private  String orderId="";
@@ -165,46 +168,23 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 //					context.startActivity(intent);
 				}
 			});
-			String result = "";
-//			holder.item_name.setText(info.getSupplierName() + ">");
+			holder.item_name.setText("订单号："+info.getOrderId());
 			String str = "";
 			switch (info.getOrderStatus()) {
-			case OrderStatus.A:
-				str = "待付款";
+			case 1:
+				str = "等待付款";
 				break;
-			case OrderStatus.B:
-				str = "待付款";
+			case 2:
+				str = "等待发货";
 				break;
-			case OrderStatus.C:
-				switch (info.getRefundStatus()) {
-				case 0:
-					str = "待发货";
-					break;
-				case 1:
-					str = "申请退款";
-					break;
-				case 2:
-					str = "已退款";
-					break;
-				case 3:
-					str = "拒绝退款";
-					break;
-				}
+			case 3:
+				str = "已发货";
 				break;
-			case OrderStatus.D:
-				str = "待收货";
+			case 4:
+				str = "已关闭";
 				break;
-			case OrderStatus.E:
-				str = "已取消";
-				break;
-			case OrderStatus.F:
-				str = "已完成";
-				break;
-			case OrderStatus.G:
-				str = "待评价";
-				break;
-			case OrderStatus.H:
-				str = "待退款";
+			case 5:
+				str = "成功订单";
 				break;
 			}
 			holder.item_status.setText(str);
@@ -214,12 +194,11 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 
 	class ChildViewHolder {
 		ImageView item_image;
-		TextView item_title, item_detail, item_price, item_market_price, item_number, item_postage, item_list_price,
+		TextView item_title, item_detail, item_price, item_number, item_postage, item_list_price,
 				item_number_all;
 		TextView item_confirm, item_cancel, item_refund, item_evaluation, item_pay,item_view_logistics;
-		View item_base_bottom, item_pre_base, tem_price_base;
+		View item_base_bottom, tem_price_base;
 		TextView item_date;
-		TextView item_start_price, item_end_price;
 	}
 
 	/**
@@ -236,7 +215,6 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 			holder.item_title = (TextView) convertView.findViewById(R.id.item_title);
 			holder.item_detail = (TextView) convertView.findViewById(R.id.item_detail);
 			holder.item_price = (TextView) convertView.findViewById(R.id.item_price);
-			holder.item_market_price = (TextView) convertView.findViewById(R.id.item_market_price);
 			holder.item_number = (TextView) convertView.findViewById(R.id.item_number);
 			// holder.item_send = convertView.findViewById(R.id.item_send);
 			holder.item_postage = (TextView) convertView.findViewById(R.id.item_postage);
@@ -249,16 +227,32 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 			holder.item_pay = (TextView) convertView.findViewById(R.id.item_pay);
 			holder.item_base_bottom = convertView.findViewById(R.id.item_base_bottom);
 			holder.item_date = (TextView) convertView.findViewById(R.id.item_date);
-			holder.item_pre_base = convertView.findViewById(R.id.item_pre_base);
-			holder.item_start_price = (TextView) convertView.findViewById(R.id.item_start_price);
-			holder.item_end_price = (TextView) convertView.findViewById(R.id.item_end_price);
 			holder.tem_price_base = convertView.findViewById(R.id.tem_price_base);
 			holder.item_view_logistics = (TextView) convertView.findViewById(R.id.item_view_logistics);
 			convertView.setTag(holder);
 		} else {
 			holder = (ChildViewHolder) convertView.getTag();
 		}
-
+		HishopOrderItems info = listInfo.get(groupPosition).getListHishopOrderItems().get(childPosition);
+		holder.item_base_bottom.setVisibility(View.GONE);
+		if(info!=null){
+			SysApplication.DisplayImage(info.getThumbnailsUrl(),holder.item_image);
+			holder.item_title.setText(info.getItemDescription());
+			holder.item_detail.setText(info.getSkucontent());
+			holder.item_price.setText(PriceUtil.priceY(info.getItemListPrice() + ""));
+			holder.item_number.setText("X"+info.getQuantity());
+			if(isLastChild){
+				holder.item_base_bottom.setVisibility(View.VISIBLE);
+				int num = 0;
+				for (int i =0;i<listInfo.get(groupPosition).getListHishopOrderItems().size();i++){
+					HishopOrderItems item = listInfo.get(groupPosition).getListHishopOrderItems().get(i);
+					num+=item.getQuantity();
+				}
+				holder.item_number_all.setText(num+"");
+				holder.item_postage.setText(PriceUtil.priceY(listInfo.get(groupPosition).getFreight()+""));
+				holder.item_list_price.setText(PriceUtil.priceY(listInfo.get(groupPosition).getOrderTotal()+""));
+			}
+		}
 		return convertView;
 	}
 
