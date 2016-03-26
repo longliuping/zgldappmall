@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,14 +12,23 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
+import com.zgld.mall.UserDataShare;
+import com.zgld.mall.beans.AspnetUsers;
 import com.zgld.mall.beans.HishopOrderItems;
 import com.zgld.mall.beans.HishopOrders;
 import com.zgld.mall.beans.OrderStatus;
+import com.zgld.mall.sync.OrderAsync;
+import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.CustomDialog;
 import com.zgld.mall.utils.PriceUtil;
+import com.zgld.mall.utils.StringUtils;
 
 public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 
@@ -222,7 +232,7 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 						holder.item_cancel.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-
+								cancelOrder(groupPosition,childPosition);
 							}
 						});
 						break;
@@ -351,27 +361,36 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 					@Override
 					public void customDialogClickRight() {
 						dialog.dismiss();
-//						String url = "Orders/OrderStatusUpdate?orderId=" + listInfo.get(groupPosition).getOrderId()
-//								+ "&orderStatus=4&token=" + Contents.getUser(context).getToken() + "&userId="
-//								+ Contents.getUser(context).getUserId() + "";
-//						new OrderAsync(context, Method.GET, 306, url, null, null, 1, new OrderAsync.OrderAsyncListener() {
-//
-//							@Override
-//							public void complete(int tag, String json) {
-//								if (tag == 306 && json.trim().equals("1")) {
-//									Toast.makeText(context, context.getString(R.string.cancel_order_success),
-//											Toast.LENGTH_SHORT).show();
-//									listInfo.get(groupPosition).setOrderStatus(4);
-//									if (!display) {
+						Map<String,String> m = new HashMap<>();
+						AspnetUsers users = new UserDataShare(context).getUserData();
+						if(users!=null){
+							m.put(Contents.TOKEN,users.getUserToken().getAccountToken());
+							m.put(Contents.USERID, users.getUserId() + "");
+							m.put("orderid",listInfo.get(groupPosition).getOrderId());
+							new OrderAsync(context, Request.Method.POST, 306, "order/cancel_order.html", m, null, 1, new OrderAsync.OrderAsyncListener() {
+
+								@Override
+								public void complete(int tag, Bundle data) {
+									try
+									{
+										if (tag == 306 && data.getInt(Contents.STATUS)==200) {
 //										listInfo.remove(groupPosition);
-//									}
-//									notifyDataSetChangedAdapter();
-//								} else {
-//									Toast.makeText(context, context.getString(R.string.cancel_order_failed),
-//											Toast.LENGTH_SHORT).show();
-//								}
-//							}
-//						});
+											HishopOrders orders = new Gson().fromJson(data.getString(Contents.DATA),new TypeToken<HishopOrders>(){}.getType());
+											if(orders!=null){
+												listInfo.set(groupPosition,orders);
+											}
+//										listInfo.get(groupPosition).setOrderStatus(4);
+										}
+										BuyersOrdersAdapter.this.notifyDataSetChanged();
+									}catch (Exception e){
+										e.printStackTrace();
+
+
+									}
+
+								}
+							});
+						}
 					}
 
 					@Override

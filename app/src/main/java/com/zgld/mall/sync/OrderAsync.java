@@ -2,7 +2,7 @@ package com.zgld.mall.sync;
 
 import java.util.Map;
 import android.content.Context;
-import android.text.TextUtils;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import com.zgld.mall.R;
@@ -12,9 +12,11 @@ import com.zgld.mall.volley.AsyncGameRunner;
 import com.zgld.mall.volley.NetWorkTools;
 import com.zgld.mall.volley.RequestListenr;
 
+import org.json.JSONObject;
+
 public class OrderAsync implements RequestListenr {
 	public interface OrderAsyncListener {
-		void complete(int tag, String json);
+		void complete(int tag, Bundle data);
 	}
 
 	Context context = null;
@@ -59,11 +61,22 @@ public class OrderAsync implements RequestListenr {
 	@Override
 	public void onCompelete(int tag, String json) {
 		// TODO Auto-generated method stub
-		if (confirmDialog != null && confirmDialog.isShowing()) {
-			confirmDialog.dismiss();
-		}
-		if (!TextUtils.isEmpty(json)) {
-			listener.complete(tag, json);
+		try{
+			if (confirmDialog != null && confirmDialog.isShowing()) {
+				confirmDialog.dismiss();
+			}
+			JSONObject object = new JSONObject(json);
+			String msgStr = object.getString(Contents.MSG);
+			if(!msgStr.equals(Contents.SUCCESS)) {
+				Toast.makeText(context, msgStr, Toast.LENGTH_SHORT).show();
+			}
+			Bundle data = new Bundle();
+			data.putInt(Contents.STATUS,object.getInt(Contents.STATUS));
+			data.putString(Contents.JSON, json);
+			data.putString(Contents.DATA,object.getJSONObject(Contents.DATA).toString());
+			listener.complete(tag,data);
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 	}
 
