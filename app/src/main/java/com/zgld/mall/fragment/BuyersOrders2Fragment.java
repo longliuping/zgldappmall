@@ -43,7 +43,7 @@ import com.zgld.mall.utils.Contents;
 import com.zgld.mall.volley.NetWorkTools;
 
 public class BuyersOrders2Fragment extends BuyersOrdersBaseFragment implements OnRefreshListener2,
-        OnItemClickListener, OnClickListener {
+        OnItemClickListener, OnClickListener,BuyersOrdersAdapter.BuyersOrdersAdapterListener {
     List<HishopOrders> listInfo = new ArrayList<HishopOrders>();
     PullToRefreshExpandableListView listview;
     BuyersOrdersAdapter infoAdapter;
@@ -115,7 +115,7 @@ public class BuyersOrders2Fragment extends BuyersOrdersBaseFragment implements O
                 case 202:
                     if (pageNum == 1) {
                         listInfo = new ArrayList<HishopOrders>();
-                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo);
+                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo,this);
                         listview.getRefreshableView().setAdapter(infoAdapter);
                     }
                     JSONObject jsonObject = new JSONObject(json).getJSONObject(Contents.DATA);
@@ -125,7 +125,7 @@ public class BuyersOrders2Fragment extends BuyersOrdersBaseFragment implements O
                     List<HishopOrders> list = gson.fromJson(jsonArray.toString(), entityType);
                     if (list != null && list.size() > 0) {
                         listInfo.addAll(list);
-                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo);
+                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo,this);
                         listview.getRefreshableView().setAdapter(infoAdapter);
                         int groupCount = listview.getRefreshableView().getCount();
                         for (int i = 0; i < groupCount; i++) {
@@ -232,7 +232,7 @@ public class BuyersOrders2Fragment extends BuyersOrdersBaseFragment implements O
         });
         pageNum = 1;
         listInfo = new ArrayList<HishopOrders>();
-        infoAdapter = new BuyersOrdersAdapter(activity, listInfo);
+        infoAdapter = new BuyersOrdersAdapter(activity, listInfo,this);
         listview.getRefreshableView().setAdapter(infoAdapter);
         infoAdapter.notifyDataSetChanged();
         null_data_default = view.findViewById(R.id.null_data_default);
@@ -240,5 +240,10 @@ public class BuyersOrders2Fragment extends BuyersOrdersBaseFragment implements O
         network_error = view.findViewById(R.id.network_error);
         network_error.setVisibility(View.GONE);
         initData();
+    }
+
+    @Override
+    public void update(int tag, Bundle bundle) {
+        infoAdapter.notifyDataSetChanged();
     }
 }

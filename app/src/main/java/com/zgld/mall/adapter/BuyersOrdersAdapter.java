@@ -30,19 +30,24 @@ import com.zgld.mall.utils.CustomDialog;
 import com.zgld.mall.utils.PriceUtil;
 import com.zgld.mall.utils.StringUtils;
 
-public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
+import org.json.JSONObject;
 
+public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
+public interface BuyersOrdersAdapterListener{
+	public void update(int tag,Bundle bundle);
+}
 
 	List<HishopOrders> listInfo;
 	LayoutInflater layoutInflater;
 	Context context;
 	CustomDialog dialog;
 	boolean display = false;// 处理完成后，是否显示当前item
-
-	public BuyersOrdersAdapter(Context context, List<HishopOrders> listInfo) {
+	BuyersOrdersAdapterListener listener;
+	public BuyersOrdersAdapter(Context context, List<HishopOrders> listInfo,BuyersOrdersAdapterListener listener) {
 		this.listInfo = listInfo;
 		this.layoutInflater = LayoutInflater.from(context);
 		this.context = context;
+		this.listener = listener;
 	}
 
 	/**
@@ -375,10 +380,13 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 									{
 										if (tag == 306 && data.getInt(Contents.STATUS)==200) {
 //										listInfo.remove(groupPosition);
-											HishopOrders orders = new Gson().fromJson(data.getString(Contents.DATA),new TypeToken<HishopOrders>(){}.getType());
+											String json = data.getString(Contents.JSON);
+											JSONObject jsonObject = new JSONObject(json).getJSONObject(Contents.DATA).getJSONObject(Contents.INFO);
+											HishopOrders orders = new Gson().fromJson(jsonObject.toString(),new TypeToken<HishopOrders>(){}.getType());
 											if(orders!=null){
 												listInfo.set(groupPosition,orders);
 											}
+											listener.update(tag,null);
 //										listInfo.get(groupPosition).setOrderStatus(4);
 										}
 										BuyersOrdersAdapter.this.notifyDataSetChanged();
