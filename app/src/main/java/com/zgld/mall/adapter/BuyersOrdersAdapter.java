@@ -206,6 +206,10 @@ public interface BuyersOrdersAdapterListener{
 		}
 		HishopOrderItems info = listInfo.get(groupPosition).getListHishopOrderItems().get(childPosition);
 		holder.item_base_bottom.setVisibility(View.GONE);
+		holder.item_pay.setVisibility(View.GONE);
+		holder.item_cancel.setVisibility(View.GONE);
+		holder.item_refund.setVisibility(View.GONE);
+		holder.item_view_logistics.setVisibility(View.GONE);
 		if(info!=null){
 			SysApplication.DisplayImage(info.getThumbnailsUrl(),holder.item_image);
 			holder.item_title.setText(info.getItemDescription());
