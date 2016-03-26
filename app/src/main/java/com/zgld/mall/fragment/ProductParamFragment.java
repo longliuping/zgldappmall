@@ -68,8 +68,8 @@ public class ProductParamFragment extends ProductBaseFragment implements OnRefre
 
 	private void initData() {
 		if (product != null) {
-			getData(Method.GET, 201, "ProductAttributes/QueryAttributes?productid=" + product.getHishopProducts().getProductId(), null,
-					null, 1);
+//			getData(Method.GET, 201, "ProductAttributes/QueryAttributes?productid=" + product.getHishopProducts().getProductId(), null,
+//					null, 1);
 		}
 	}
 

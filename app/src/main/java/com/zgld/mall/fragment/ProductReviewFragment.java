@@ -77,7 +77,7 @@ public class ProductReviewFragment extends ProductBaseFragment implements OnRefr
 			m.put("productId", info.getHishopProducts().getProductId()+"");
 			m.put("Size", 10 + "");
 			m.put("pageIndex", pageIndex + "");
-			getData(Method.POST, 666, "ProductReviews/QueryProductReview", m, null, 1);
+//			getData(Method.POST, 666, "ProductReviews/QueryProductReview", m, null, 1);
 		}
 	}
 

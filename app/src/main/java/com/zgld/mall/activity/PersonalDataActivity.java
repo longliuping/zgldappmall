@@ -37,8 +37,6 @@ import java.util.List;
 import java.util.Map;
 
 public class PersonalDataActivity extends BaseActivity implements View.OnClickListener, CustomDialog.CustomDialogListener,AdapterView.OnItemClickListener {
-    ProductImageUpload productImageUpload;
-    int regionID = 0;
     CustomDialog dialog;
     private Context mContext=null;
     ListView listview;
@@ -63,17 +61,6 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
                         new UserDataShare(this).saveUserData(user);
                         initData();
                         setResult(RESULT_OK);
-                    }
-                    break;
-                case 402:
-                    if (json != null && json.trim().equals("1")) {
-                        Toast.makeText(this, getString(R.string.update_success), Toast.LENGTH_SHORT).show();
-//                    Contents.getUser(this).setRegionId(regionID + "");
-//                    new UserDataShare(this).saveUserData(Contents.getUser(this));
-                        initData();
-                        setResult(RESULT_OK);
-                    } else {
-                        Toast.makeText(this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
                     }
                     break;
             }
@@ -136,34 +123,6 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
                 });
                 customDialog.show();
                 break;
-//            case R.id.head_base:// 上传头像
-//                dialog = new CustomDialog(mContext, R.style.mystyle, R.layout.customdialog, R.array.title_upload_image, this);
-//                dialog.show();
-//                break;
-//            case R.id.name_base:// 昵称
-//                startActivityForResult(new Intent(mContext, ModifyUserNickActivity.class), 202);
-//                break;
-//            case R.id.sex_base:// 性别
-//                startActivityForResult(new Intent(mContext, ModifyUserSexActivity.class), 203);
-//                break;
-//            case R.id.single_base:// 个性签名
-//                startActivityForResult(new Intent(mContext, ModifyUserSingleActivity.class), 204);
-//                break;
-//            case R.id.phone_base:// 手机号
-//                startActivityForResult(new Intent(mContext, ModifyUserPhoneActivity.class), 205);
-//                break;
-//            case R.id.user_address_base:// 所在地
-//                Contents.selectedCityPosition=0;
-//                Contents.selectedCountyPosition=0;
-//                Contents.selectedProvincePosition=0;
-//                startActivityForResult(new Intent(mContext, ProvinceActivity.class), 206);
-//                break;
-//            case R.id.wechat_base:// 绑定微信号
-//                startActivityForResult(new Intent(mContext, ModifyUserWechatActivity.class), 207);
-//                break;
-//            case R.id.user_data_address_base:// 收货地址
-//                startActivityForResult(new Intent(mContext, AddressManagerActivity.class), 208);
-//                break;
         }
     }
 
@@ -185,9 +144,6 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
                 startPhotoZoom(Uri.fromFile(file), true);
             }
         }
-        if (requestCode == 206) {
-            setProvince();
-        }
         initData();
     }
     private void uploadPhoto(Bundle extras) {
@@ -201,53 +157,16 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
         getData(Request.Method.POST, 201, "user/update_user_head.html",m,null,2);
     }
 
-    private void setProvince() {
-        if(Contents.selectedProvincePosition<=0){
-            return;
-        }
-//        List<City> listCity = Contents.listProvince.get(Contents.selectedProvincePosition).getCitys();
-//        if (listCity == null || listCity.size() <= 0) {
-//            if(Contents.listProvince.size()>=Contents.selectedProvincePosition){
-//                regionID = Contents.listProvince.get(Contents.selectedProvincePosition).getId();
-//            }
-//        } else {
-//            List<County> listCounty = listCity.get(Contents.selectedCityPosition).getCountys();
-//            if (listCounty == null || listCounty.size() <= 0) {
-//                if(listCity.size()>=Contents.selectedCityPosition){
-//                    regionID = listCity.get(Contents.selectedCityPosition).getId();
-//                }
-//            } else {
-//                if(listCounty.size()>=Contents.selectedCountyPosition){
-//                    regionID = listCounty.get(Contents.selectedCountyPosition).getId();
-//                }
-//            }
-//        }
-//        Map<String, String> m = new HashMap<String, String>();
-//        m.put("gender", Contents.getUser(this).getGender());
-//        m.put("token", Contents.getUser(this).getToken());
-//        m.put("userId", Contents.getUser(this).getUserId());
-//        m.put("nickName", Contents.getUser(this).getNickname());
-//        m.put("personalSignature", Contents.getUser(this).getPersonalSignature());
-//        m.put("cellPhone", Contents.getUser(this).getCellPhone());
-//        m.put("regionId", regionID + "");
-//        m.put("wechat", Contents.getUser(this).getWeChat());
-//        m.put("address", Contents.getUser(this).getAddress());
-//        m.put("headImg", Contents.getUser(this).getHeadImg());
-//        getData(com.android.volley.Request.Method.POST, 402, "User/UserUpdateInfo", m, null, 1);
-//        Contents.listProvince=null;
-    }
-
-
     void initData() {
         AspnetUsers user = new UserDataShare(this).getUserData();
         if(user!=null){
-            int types[] = new int[]{2,1,1,1,1,1,1,1,1,1,1};
-            String names[] = new String[]{"上传头像","登录名","昵称","性别","个性签名","电话号码","手机号码","修改密码"};
-            String values[] = new String[]{user.getHead()+"",user.getUserName(),"",Contents.getSex(user.getGender()),"",user.getAspnetMembers().getTelPhone(),user.getAspnetMembers().getCellPhone(),""};
-            Class className[] = new Class[]{null,UpdateUserNameActivity.class,UpdateUserNickActivity.class,UpdateUserSexActivity.class,UpdateUserSingleActivity.class,UpdateUserCellPhoneActivity.class,UpdateTelPhoneActivity.class,UpdateUserPasswordActivity
+            int types[] = new int[]{2,1,1,1,1};
+            String names[] = new String[]{"上传头像","性别","电话号码","手机号码","修改密码"};
+            String values[] = new String[]{user.getHead()+"",Contents.getSex(user.getGender()),user.getAspnetMembers().getTelPhone(),user.getAspnetMembers().getCellPhone(),""};
+            Class className[] = new Class[]{null,UpdateUserSexActivity.class,UpdateUserCellPhoneActivity.class,UpdateTelPhoneActivity.class,UpdateUserPasswordActivity
             .class};
             listInfo = new ArrayList<>();
-            for (int i=0;i<8;i++)
+            for (int i=0;i<5;i++)
             {
                 Personal info = new Personal();
                 info.setType(types[i]);

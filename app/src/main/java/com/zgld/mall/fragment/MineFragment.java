@@ -38,8 +38,8 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class MineFragment extends BaseFragment implements View.OnClickListener{
-    String menuString[] = {"我的订单","我的收藏","设置"};
-    int menuInt[] = {R.drawable.me_order,R.drawable.me_love,R.drawable.me_setting};
+    String menuString[] = {"我的订单","设置"};
+    int menuInt[] = {R.drawable.me_order,R.drawable.me_setting};
     ListView list_menu;
 
     public MineFragment() {
@@ -98,7 +98,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
                 if (position == 0) {
                     startActivity(new Intent(getActivity(), BuyersOrdersFragmentActivity.class));
                 }
-                if (position == 2) {
+                if (position == 1) {
                     startActivity(new Intent(getActivity(), SettingActivity.class));
                 }
             }
