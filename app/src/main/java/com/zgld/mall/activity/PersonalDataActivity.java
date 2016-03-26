@@ -169,7 +169,7 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
             Class className[] = new Class[]{null,UpdateUserSexActivity.class,UpdateUserCellPhoneActivity.class,UpdateTelPhoneActivity.class,UpdateUserEmailActivity.class,UpdateUserPasswordActivity
             .class};
             listInfo = new ArrayList<>();
-            for (int i=0;i<5;i++)
+            for (int i=0;i<6;i++)
             {
                 Personal info = new Personal();
                 info.setType(types[i]);
