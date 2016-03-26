@@ -31,6 +31,7 @@ import java.util.Map;
  */
 
 public class UpdateUserAddressActivity extends BaseActivity implements OnClickListener {
+
     @Override
     public void handleMsg(Message msg) {
         // TODO Auto-generated method stub

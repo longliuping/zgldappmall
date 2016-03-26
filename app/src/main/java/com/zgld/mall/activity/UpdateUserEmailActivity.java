@@ -21,7 +21,7 @@ import com.zgld.mall.utils.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpdateUserNameActivity extends BaseActivity implements View.OnClickListener{
+public class UpdateUserEmailActivity extends BaseActivity implements View.OnClickListener{
     Button submit;
     EditText name;
     AspnetUsers users;
@@ -29,14 +29,14 @@ public class UpdateUserNameActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initStyle();
-        setContentView(R.layout.activity_update_user_name);
+        setContentView(R.layout.activity_update_user_email);
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        String nameStr = this.getIntent().getStringExtra(Contents.NAME);
+        String nameStr = this.getIntent().getStringExtra("name");
         users = new UserDataShare(this).getUserData();
         if(nameStr==null || users == null){
             finish();;
@@ -73,13 +73,15 @@ public class UpdateUserNameActivity extends BaseActivity implements View.OnClick
         switch (v.getId()){
             case R.id.submit:
                 if(StringUtils.isEmpty(name)){
-                    Toast.makeText(this, "内容不能为空", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,"内容不能为空",Toast.LENGTH_LONG).show();
+                }else if(!EmailUtil.emailMatches(name.getText().toString())){
+                    Toast.makeText(this,"邮箱格式错误",Toast.LENGTH_LONG).show();
                 }else{
                     Map<String,String> m = new HashMap<>();
                     m.put(Contents.TOKEN,users.getUserToken().getAccountToken());
                     m.put(Contents.USERID,users.getUserId()+"");
                     m.put("userinfo.email",name.getText().toString());
-                    getData(Request.Method.POST,201,"user/update_user_password.html",m,null,1);
+                    getData(Request.Method.POST,201,"user/update_user_email.html",m,null,1);
                 }
                 break;
         }

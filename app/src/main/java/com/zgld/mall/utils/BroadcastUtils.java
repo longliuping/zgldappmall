@@ -72,4 +72,15 @@ public class BroadcastUtils {
 		mIntent.putExtra(USER_LOGIN, "发送广播，相当于在这里传送数据");
 		context.sendBroadcast(mIntent);
 	}
+	public static String USER_UPDATE = "user_update";
+
+	/**
+	 * 更新登录用户信息
+	 * @param context
+	 */
+	public static void sendUserUpdate(Context context){
+		Intent mIntent = new Intent(USER_UPDATE);
+		mIntent.putExtra(USER_LOGIN, "发送广播，相当于在这里传送数据");
+		context.sendBroadcast(mIntent);
+	}
 }

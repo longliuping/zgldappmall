@@ -130,6 +130,9 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            if(requestCode==208){
+                initData();
+            }
             if (requestCode == Contents.PHOTORESOULT) {
                 Bundle extras = data.getExtras();
                 if (extras != null) {
@@ -160,10 +163,10 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
     void initData() {
         AspnetUsers user = new UserDataShare(this).getUserData();
         if(user!=null){
-            int types[] = new int[]{2,1,1,1,1};
-            String names[] = new String[]{"上传头像","性别","电话号码","手机号码","修改密码"};
-            String values[] = new String[]{user.getHead()+"",Contents.getSex(user.getGender()),user.getAspnetMembers().getTelPhone(),user.getAspnetMembers().getCellPhone(),""};
-            Class className[] = new Class[]{null,UpdateUserSexActivity.class,UpdateUserCellPhoneActivity.class,UpdateTelPhoneActivity.class,UpdateUserPasswordActivity
+            int types[] = new int[]{2,1,1,1,1,1};
+            String names[] = new String[]{"上传头像","性别","电话号码","手机号码","电子邮件","修改密码"};
+            String values[] = new String[]{user.getHead()+"",Contents.getSex(user.getGender()),user.getAspnetMembers().getCellPhone(),user.getAspnetMembers().getTelPhone(),user.getEmail(),""};
+            Class className[] = new Class[]{null,UpdateUserSexActivity.class,UpdateUserCellPhoneActivity.class,UpdateTelPhoneActivity.class,UpdateUserEmailActivity.class,UpdateUserPasswordActivity
             .class};
             listInfo = new ArrayList<>();
             for (int i=0;i<5;i++)
@@ -177,7 +180,8 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
             }
             infoAdapter = new PersonalDataAdapter(this,listInfo);
             listview.setAdapter(infoAdapter);
-
+        }else {
+            Contents.loginPage(this,null,200);
         }
     }
 
@@ -221,7 +225,7 @@ public class PersonalDataActivity extends BaseActivity implements View.OnClickLi
         }else{
             Intent intent = new Intent(this,info.getClassName());
             intent.putExtra("name","修改"+info.getName());
-            startActivityForResult(intent,200);
+            startActivityForResult(intent,208);
         }
     }
 

@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.zgld.mall.R;
 import com.zgld.mall.UserDataShare;
 import com.zgld.mall.beans.AspnetUsers;
+import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.utils.StringUtils;
 
@@ -26,6 +27,7 @@ import java.util.Map;
 public class UpdateUserPasswordActivity extends BaseActivity implements View.OnClickListener{
     Button submit;
     EditText old_pwd,new_pwd,new_confirm_pwd;
+    AspnetUsers users;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,8 @@ public class UpdateUserPasswordActivity extends BaseActivity implements View.OnC
             }
         });
         String nameStr = this.getIntent().getStringExtra(Contents.NAME);
-        if(nameStr==null || new UserDataShare(this).getUserData() == null){
+        users = new UserDataShare(this).getUserData();
+        if(nameStr==null || users == null){
             finish();;
             return;
         }
@@ -63,6 +66,8 @@ public class UpdateUserPasswordActivity extends BaseActivity implements View.OnC
                         if (pam != null) {
                             share.saveLoginInfo(pam[0], new_pwd.getText().toString());
                         }
+                        BroadcastUtils.sendUserUpdate(this);
+                        setResult(RESULT_OK);
                         finish();
                         break;
                 }
@@ -88,7 +93,6 @@ public class UpdateUserPasswordActivity extends BaseActivity implements View.OnC
                     Toast.makeText(this,"新密码长度不能小于6位数",Toast.LENGTH_LONG).show();
                 }else{
                     Map<String,String> m = new HashMap<>();
-                    AspnetUsers users = new UserDataShare(this).getUserData();
                     m.put(Contents.TOKEN,users.getUserToken().getAccountToken());
                     m.put(Contents.USERID,users.getUserId()+"");
                     m.put("oldPassword",old_pwd.getText().toString());

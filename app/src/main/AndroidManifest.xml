@@ -128,7 +128,8 @@
             android:name="UMENG_CHANNEL"
             android:value="Channel ID" />
 
-        <activity android:name=".activity.HotSupplierActivity"></activity>
+        <activity android:name=".activity.HotSupplierActivity" />
+        <activity android:name=".activity.UpdateUserEmailActivity"></activity>
     </application>
 
 </manifest>

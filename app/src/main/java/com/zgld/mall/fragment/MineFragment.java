@@ -103,6 +103,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
                 }
             }
         });
+
         initData();
         return view;
     }
