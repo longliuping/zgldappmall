@@ -3,6 +3,7 @@ package com.zgld.mall.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 public class UpdateUserSexActivity extends BaseActivity implements View.OnClickListener{
     Button submit;
-    EditText name;
+    View right_male, right_female, male, female;
     AspnetUsers users;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +45,30 @@ public class UpdateUserSexActivity extends BaseActivity implements View.OnClickL
         }
         TextView title = (TextView) findViewById(R.id.title_center);
         title.setText(nameStr);
-        name = (EditText) findViewById(R.id.name);
+        right_male = findViewById(R.id.right_male);
+        right_female = findViewById(R.id.right_female);
+        male = findViewById(R.id.male);
+        male.setOnClickListener(this);
+        female = findViewById(R.id.female);
+        female.setOnClickListener(this);
         submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(this);
+//        updateView(users.getGender()+"");
+    }
+    void updateView(String Gender) {
+        if (TextUtils.isEmpty(Gender)) {
+            right_male.setVisibility(View.VISIBLE);
+            right_female.setVisibility(View.GONE);
+        } else if (Gender.equals("1")) {
+            right_male.setVisibility(View.VISIBLE);
+            right_female.setVisibility(View.GONE);
+        } else if (Gender.equals("0")) {
+            right_male.setVisibility(View.GONE);
+            right_female.setVisibility(View.VISIBLE);
+        } else {
+            right_male.setVisibility(View.GONE);
+            right_female.setVisibility(View.VISIBLE);
+        }
     }
     @Override
     public void handleMsg(Message msg) {
@@ -70,15 +92,27 @@ public class UpdateUserSexActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.male:
+                updateView("1");
+                break;
+            case R.id.female:
+                updateView("0");
+                break;
             case R.id.submit:
-                if(StringUtils.isEmpty(name)){
-                    Toast.makeText(this, "内容不能为空", Toast.LENGTH_LONG).show();
+                int a = right_male.getVisibility();
+                int b = right_female.getVisibility();
+                if(right_male.getVisibility() == View.GONE && right_female.getVisibility()==View.GONE){
+                    Toast.makeText(this, "请选择", Toast.LENGTH_LONG).show();
                 }else{
                     Map<String,String> m = new HashMap<>();
+                    if (right_male.getVisibility() == View.VISIBLE) {
+                        m.put("userinfo.gender", "1");
+                    } else {
+                        m.put("userinfo.gender", "0");
+                    }
                     m.put(Contents.TOKEN,users.getUserToken().getAccountToken());
                     m.put(Contents.USERID,users.getUserId()+"");
-                    m.put("userinfo.email",name.getText().toString());
-                    getData(Request.Method.POST,201,"user/update_user_password.html",m,null,1);
+                    getData(Request.Method.POST,201,"user/update_user_gender.html",m,null,1);
                 }
                 break;
         }
