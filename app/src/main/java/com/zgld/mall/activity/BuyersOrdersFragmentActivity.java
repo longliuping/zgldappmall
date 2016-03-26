@@ -13,11 +13,12 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.zgld.mall.R;
-import com.zgld.mall.fragment.BuyersOrdersAllFragment;
-import com.zgld.mall.fragment.BuyersOrdersWaitEvaluationFragment;
-import com.zgld.mall.fragment.BuyersOrdersWaitPaymentFragment;
-import com.zgld.mall.fragment.BuyersOrdersWaitReceivedFragment;
-import com.zgld.mall.fragment.BuyersOrdersWaitSendFragment;
+import com.zgld.mall.fragment.BuyersOrders0Fragment;
+import com.zgld.mall.fragment.BuyersOrders1Fragment;
+import com.zgld.mall.fragment.BuyersOrders2Fragment;
+import com.zgld.mall.fragment.BuyersOrders3Fragment;
+import com.zgld.mall.fragment.BuyersOrders4Fragment;
+import com.zgld.mall.fragment.BuyersOrders5Fragment;
 import com.zgld.mall.indicator.FragmentPagerAdp;
 import com.zgld.mall.indicator.TabInfoBean;
 import com.zgld.mall.indicator.TitleIndicator;
@@ -90,11 +91,12 @@ public class BuyersOrdersFragmentActivity extends BaseFragmentActivity implement
 
     private int supplyTabs(ArrayList<TabInfoBean> mTabs2) {
         String[] titles = getResources().getStringArray(R.array.title_buyers_orders);
-        mTabs2.add(new TabInfoBean(Contents.FRAGMENT_ONE, titles[0], BuyersOrdersAllFragment.class));
-        mTabs2.add(new TabInfoBean(Contents.FRAGMENT_TWO, titles[1], BuyersOrdersWaitPaymentFragment.class));
-        mTabs2.add(new TabInfoBean(Contents.FRAGMENT_THREE, titles[2], BuyersOrdersWaitSendFragment.class));
-        mTabs2.add(new TabInfoBean(Contents.FRAGMENT_FOUR, titles[3], BuyersOrdersWaitReceivedFragment.class));
-        mTabs2.add(new TabInfoBean(Contents.FRAGMENT_FIVE, titles[4], BuyersOrdersWaitEvaluationFragment.class));
+        mTabs2.add(new TabInfoBean(Contents.FRAGMENT_ONE, titles[0], BuyersOrders0Fragment.class));
+        mTabs2.add(new TabInfoBean(Contents.FRAGMENT_TWO, titles[1], BuyersOrders1Fragment.class));
+        mTabs2.add(new TabInfoBean(Contents.FRAGMENT_THREE, titles[2], BuyersOrders2Fragment.class));
+        mTabs2.add(new TabInfoBean(Contents.FRAGMENT_FOUR, titles[3], BuyersOrders3Fragment.class));
+        mTabs2.add(new TabInfoBean(Contents.FRAGMENT_FIVE, titles[4], BuyersOrders4Fragment.class));
+        mTabs2.add(new TabInfoBean(Contents.FRAGMENT_SIX, titles[5], BuyersOrders5Fragment.class));
         return Contents.FRAGMENT_ONE;
     }
 

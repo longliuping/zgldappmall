@@ -261,6 +261,7 @@
                 android:paddingTop="5dp"
                 android:text="查看物流"
                 android:textColor="#FEFEFE"
+                android:visibility="gone"
                  />
         </LinearLayout>
     </LinearLayout>

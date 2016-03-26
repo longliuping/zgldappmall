@@ -21,62 +21,18 @@ import com.zgld.mall.utils.CustomDialog;
 import com.zgld.mall.utils.PriceUtil;
 
 public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
-	private  String orderId="";
-	public interface BuyersOrdersAdapterListener {
-		/**
-		 * 确认收货
-		 * 
-		 * @param groupPosition
-		 * @param childPosition
-		 */
-		void confirmOrder(int groupPosition, int childPosition);
 
-		/**
-		 * 取消订单
-		 * 
-		 * @param groupPosition
-		 * @param childPosition
-		 */
-		void cannerOrder(int groupPosition, int childPosition);
-
-		/**
-		 * 产品评论
-		 * 
-		 * @param groupPosition
-		 * @param childPosition
-		 */
-		void commentProduct(int groupPosition, int childPosition);
-
-		/**
-		 * 申请退款
-		 * 
-		 * @param groupPosition
-		 * @param childPosition
-		 */
-		void applyRefund(int groupPosition, int childPosition);
-
-		/**
-		 * 付款
-		 * 
-		 * @param groupPosition
-		 * @param childPosition
-		 */
-		void payment(int groupPosition, int childPosition);
-	}
 
 	List<HishopOrders> listInfo;
 	LayoutInflater layoutInflater;
 	Context context;
-	BuyersOrdersAdapterListener listener;
 	CustomDialog dialog;
 	boolean display = false;// 处理完成后，是否显示当前item
 
-	public BuyersOrdersAdapter(Context context, List<HishopOrders> listInfo, boolean display,
-			BuyersOrdersAdapterListener listener) {
+	public BuyersOrdersAdapter(Context context, List<HishopOrders> listInfo) {
 		this.listInfo = listInfo;
 		this.layoutInflater = LayoutInflater.from(context);
 		this.context = context;
-		this.listener = listener;
 	}
 
 	/**
@@ -251,6 +207,60 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 				holder.item_number_all.setText(num+"");
 				holder.item_postage.setText(PriceUtil.priceY(listInfo.get(groupPosition).getFreight()+""));
 				holder.item_list_price.setText(PriceUtil.priceY(listInfo.get(groupPosition).getOrderTotal()+""));
+
+				switch (listInfo.get(groupPosition).getOrderStatus()) {
+					case 1:
+//						str = "等待付款";
+						holder.item_pay.setVisibility(View.VISIBLE);
+						holder.item_pay.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+
+							}
+						});
+						holder.item_cancel.setVisibility(View.VISIBLE);
+						holder.item_cancel.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+
+							}
+						});
+						break;
+					case 2:
+//						str = "等待发货";
+						holder.item_refund.setVisibility(View.VISIBLE);
+						holder.item_refund.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+
+							}
+						});
+						break;
+					case 3:
+//						str = "已发货";
+						holder.item_view_logistics.setVisibility(View.VISIBLE);
+						holder.item_view_logistics.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+
+							}
+						});
+						break;
+					case 4:
+//						str = "已关闭";
+						break;
+					case 5:
+//						str = "成功订单";
+						holder.item_view_logistics.setVisibility(View.VISIBLE);
+						holder.item_view_logistics.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+
+							}
+						});
+						break;
+				}
+
 			}
 		}
 		return convertView;
@@ -327,8 +337,6 @@ public class BuyersOrdersAdapter extends BaseExpandableListAdapter {
 	public void payOrder(final int groupPosition, final int childPosition) {
 		Map<String, String> m = new HashMap<String, String>();
 		final HishopOrders orderInfo = listInfo.get(groupPosition);
-
-		m.put("out_trade_no", orderId);
 	}
 
 	/**

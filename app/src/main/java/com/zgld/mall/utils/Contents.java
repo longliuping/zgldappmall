@@ -43,6 +43,7 @@ public class Contents {
     public static final int FRAGMENT_THREE = 2;
     public static final int FRAGMENT_FOUR = 3;
     public static final int FRAGMENT_FIVE = 4;
+    public static final int FRAGMENT_SIX = 5;
     // 产品参数
     public static final int TAB_PRODUCT_PARAM = 0;
     // 产品详情

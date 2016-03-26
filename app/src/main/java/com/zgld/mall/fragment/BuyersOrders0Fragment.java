@@ -2,24 +2,12 @@ package com.zgld.mall.fragment;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
-import com.zgld.mall.R;
-import com.zgld.mall.adapter.BuyersOrdersAdapter;
-import com.zgld.mall.beans.HishopOrders;
-import com.zgld.mall.utils.BroadcastUtils;
-import com.zgld.mall.utils.Contents;
-import com.zgld.mall.volley.NetWorkTools;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -28,39 +16,46 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ExpandableListView;
-import android.widget.Toast;
-import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.Toast;
 
-/**
- * 买家订单 待评论
- *
- * @author LLP
- *
- */
-public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment implements OnRefreshListener2,
-        OnItemClickListener, OnClickListener, BuyersOrdersAdapter.BuyersOrdersAdapterListener {
+import com.android.volley.Request.Method;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
+import com.zgld.mall.R;
+import com.zgld.mall.UserDataShare;
+import com.zgld.mall.adapter.BuyersOrdersAdapter;
+import com.zgld.mall.beans.AspnetUsers;
+import com.zgld.mall.beans.HishopOrders;
+import com.zgld.mall.utils.BroadcastUtils;
+import com.zgld.mall.utils.Contents;
+import com.zgld.mall.volley.NetWorkTools;
+
+public class BuyersOrders0Fragment extends BuyersOrdersBaseFragment implements OnRefreshListener2,
+        OnItemClickListener, OnClickListener {
     List<HishopOrders> listInfo = new ArrayList<HishopOrders>();
     PullToRefreshExpandableListView listview;
     BuyersOrdersAdapter infoAdapter;
-    int pageIndex = 1;
     View view;
     Activity activity;
     View null_data_default, network_error;
-
+    int pageNum = 1;
     @Override
     public void onAttach(Activity activity) {
         this.activity = activity;
         super.onAttach(activity);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view == null) {
@@ -81,7 +76,7 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
     private void initData() {
         network_error.setVisibility(View.GONE);
         null_data_default.setVisibility(View.GONE);
-        if (pageIndex == 1 && !NetWorkTools.isHasNet(activity)) {
+        if (pageNum == 1 && !NetWorkTools.isHasNet(activity)) {
             null_data_default.setVisibility(View.GONE);
             network_error.setVisibility(View.VISIBLE);
             network_error.setOnClickListener(new OnClickListener() {
@@ -94,9 +89,14 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
             listview.onRefreshComplete();
             return;
         }
-//        getData(Method.GET, 202, "Orders/TobeReviews?token=" + Contents.getUser(activity).getToken() + "&userId="
-//                + Contents.getUser(activity).getUserId() + "&pageSize=10&pageIndex=" + pageIndex
-//                + "&Areaflag=2&reviewsflag=2", null, null, 1);
+        Map<String,String> m = new HashMap<>();
+        AspnetUsers users = new UserDataShare(activity).getUserData();
+        m.put(Contents.TOKEN,users.getUserToken().getAccountToken());
+        m.put(Contents.USERID,users.getUserId()+"");
+        m.put(Contents.PAGENUM,pageNum+"");
+        m.put(Contents.PAGESIZE,20+"");
+        m.put("id","0");
+        getData(Method.POST, 202, "order/user_order.html", m, null, pageNum);
     }
 
     @Override
@@ -104,57 +104,35 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
         try {
             Bundle bundle = msg.getData();
             String json = "";
-            if (bundle == null) {
-                return;
-            }
             json = bundle.getString(Contents.JSON);
             Gson gson = new Gson();
             Type entityType = null;
             JSONArray jsonArray = new JSONArray();
+            if(msg.getData().getInt(Contents.STATUS)!=200){
+                return;
+            }
             switch (msg.what) {
-                case 201:
-                    break;
                 case 202:
-                    try {
-                        if (TextUtils.isEmpty(json)) {
-                            if (pageIndex == 1) {
-                                listInfo = new ArrayList<HishopOrders>();
-                                infoAdapter = new BuyersOrdersAdapter(activity, listInfo, false, this);
-                                listview.getRefreshableView().setAdapter(infoAdapter);
-                                null_data_default.setVisibility(View.VISIBLE);
-                            }
-                            return;
-                        }
-                        JSONObject jsonObject = new JSONObject(json);
-                        jsonArray = jsonObject.getJSONArray("Orders");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    entityType = new TypeToken<List<HishopOrders>>() {
-                    }.getType();
-                    if (pageIndex == 1) {
+                    if (pageNum == 1) {
                         listInfo = new ArrayList<HishopOrders>();
-                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo, false, this);
+                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo);
                         listview.getRefreshableView().setAdapter(infoAdapter);
                     }
+                    JSONObject jsonObject = new JSONObject(json).getJSONObject(Contents.DATA);
+                    jsonArray = jsonObject.getJSONArray(Contents.LISTINIFO);
+                    entityType = new TypeToken<List<HishopOrders>>() {
+                    }.getType();
                     List<HishopOrders> list = gson.fromJson(jsonArray.toString(), entityType);
-                    if (list == null || list.size() <= 0) {
-                        Toast.makeText(activity, activity.getString(R.string.no_data), Toast.LENGTH_SHORT).show();
-                    }
                     if (list != null && list.size() > 0) {
-                        for (int i = 0; i < list.size(); i++) {
-                            HishopOrders info = list.get(i);
-                            listInfo.add(info);
-                        }
-                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo, false, this);
+                        listInfo.addAll(list);
+                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo);
                         listview.getRefreshableView().setAdapter(infoAdapter);
                         int groupCount = listview.getRefreshableView().getCount();
                         for (int i = 0; i < groupCount; i++) {
                             listview.getRefreshableView().expandGroup(i);
                         }
                         infoAdapter.notifyDataSetChanged();
-                        listview.invalidate();
-                        pageIndex++;
+                        pageNum++;
                     }
                     if (listInfo == null || listInfo.size() <= 0) {
                         null_data_default.setVisibility(View.VISIBLE);
@@ -172,14 +150,11 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        Intent intent = new Intent(activity, OrderDetailsActivity.class);
-//        intent.putExtra("orderId", listInfo.get(position).getOrderId());
-//        startActivityForResult(intent, 200);
     }
 
     @Override
     public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-        pageIndex = 1;
+        pageNum = 1;
         initData();
     }
 
@@ -190,58 +165,22 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+
+        }
     }
 
     int sendCargoPosition;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == activity.RESULT_OK) {
             if (requestCode == 209) {
-                listInfo.remove(commentProductPosition);
+//                listInfo.remove(commentProductPosition);
                 infoAdapter.notifyDataSetChanged();
             }
         }
-    }
-
-    int confirmOrderPosition;
-
-    @Override
-    public void confirmOrder(int groupPosition, int childPosition) {
-        // TODO Auto-generated method stub
-        confirmOrderPosition = groupPosition;
-//        getData(Method.GET, 307, "Orders/OrderStatusUpdate?orderId=" + listInfo.get(groupPosition).getOrderId()
-//                + "&orderStatus=5&userId=" + Contents.getUser(activity).getUserId() + "", null, null, 1);
-    }
-
-    @Override
-    public void cannerOrder(int groupPosition, int childPosition) {
-        // TODO Auto-generated method stub
-    }
-
-    int commentProductPosition;
-
-    @Override
-    public void commentProduct(int groupPosition, int childPosition) {
-        // TODO Auto-generated method stub
-        commentProductPosition = groupPosition;
-//        Intent intent = new Intent(activity, ProductEvaluationActivity.class);
-//        intent.putExtra(Contents.INFO, listInfo.get(groupPosition));
-//        startActivityForResult(intent, 209);
-    }
-
-    int applyRefundPosition;
-
-    @Override
-    public void applyRefund(int groupPosition, int childPosition) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void payment(int groupPosition, int childPosition) {
-        // TODO Auto-generated method stub
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -249,8 +188,6 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(BroadcastUtils.BUYERS_ORDER_ACTION_NAME)) {
-                // pageIndex = 1;
-                // initData();
             }
         }
 
@@ -259,13 +196,11 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
     public void registerBoradcastReceiver() {
         IntentFilter myIntentFilter = new IntentFilter();
         myIntentFilter.addAction(BroadcastUtils.BUYERS_ORDER_ACTION_NAME);
-        // 注册广播
         activity.registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
     @Override
     public void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
         if (mBroadcastReceiver != null) {
             activity.unregisterReceiver(mBroadcastReceiver);
@@ -280,7 +215,6 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
 
     @Override
     protected void lazyLoad() {
-        // TODO Auto-generated method stub
         if (!isPrepared || !isVisible || mHasLoadedOnce) {
             return;
         }
@@ -293,13 +227,12 @@ public class BuyersOrdersWaitEvaluationFragment extends BuyersOrdersBaseFragment
 
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                // TODO Auto-generated method stub
                 return true;
             }
         });
-        pageIndex = 1;
+        pageNum = 1;
         listInfo = new ArrayList<HishopOrders>();
-        infoAdapter = new BuyersOrdersAdapter(activity, listInfo, false, this);
+        infoAdapter = new BuyersOrdersAdapter(activity, listInfo);
         listview.getRefreshableView().setAdapter(infoAdapter);
         infoAdapter.notifyDataSetChanged();
         null_data_default = view.findViewById(R.id.null_data_default);

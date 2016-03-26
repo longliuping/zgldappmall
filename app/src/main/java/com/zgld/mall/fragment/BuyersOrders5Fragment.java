@@ -42,14 +42,8 @@ import com.zgld.mall.utils.BroadcastUtils;
 import com.zgld.mall.utils.Contents;
 import com.zgld.mall.volley.NetWorkTools;
 
-/**
- * 买家订单 全部
- *
- * @author LLP
- *
- */
-public class BuyersOrdersAllFragment extends BuyersOrdersBaseFragment implements OnRefreshListener2,
-        OnItemClickListener, OnClickListener, BuyersOrdersAdapter.BuyersOrdersAdapterListener {
+public class BuyersOrders5Fragment extends BuyersOrdersBaseFragment implements OnRefreshListener2,
+        OnItemClickListener, OnClickListener {
     List<HishopOrders> listInfo = new ArrayList<HishopOrders>();
     PullToRefreshExpandableListView listview;
     BuyersOrdersAdapter infoAdapter;
@@ -101,7 +95,7 @@ public class BuyersOrdersAllFragment extends BuyersOrdersBaseFragment implements
         m.put(Contents.USERID,users.getUserId()+"");
         m.put(Contents.PAGENUM,pageNum+"");
         m.put(Contents.PAGESIZE,20+"");
-        m.put("id","0");
+        m.put("id","5");
         getData(Method.POST, 202, "order/user_order.html", m, null, pageNum);
     }
 
@@ -118,12 +112,10 @@ public class BuyersOrdersAllFragment extends BuyersOrdersBaseFragment implements
                 return;
             }
             switch (msg.what) {
-                case 201:
-                    break;
                 case 202:
                     if (pageNum == 1) {
                         listInfo = new ArrayList<HishopOrders>();
-                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo, true, this);
+                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo);
                         listview.getRefreshableView().setAdapter(infoAdapter);
                     }
                     JSONObject jsonObject = new JSONObject(json).getJSONObject(Contents.DATA);
@@ -133,7 +125,7 @@ public class BuyersOrdersAllFragment extends BuyersOrdersBaseFragment implements
                     List<HishopOrders> list = gson.fromJson(jsonArray.toString(), entityType);
                     if (list != null && list.size() > 0) {
                         listInfo.addAll(list);
-                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo, true, this);
+                        infoAdapter = new BuyersOrdersAdapter(activity, listInfo);
                         listview.getRefreshableView().setAdapter(infoAdapter);
                         int groupCount = listview.getRefreshableView().getCount();
                         for (int i = 0; i < groupCount; i++) {
@@ -148,26 +140,6 @@ public class BuyersOrdersAllFragment extends BuyersOrdersBaseFragment implements
                         null_data_default.setVisibility(View.GONE);
                     }
                     break;
-                case 304:
-                    if (json.trim().equals("1")) {
-                        Toast.makeText(activity, "申请成功", Toast.LENGTH_SHORT).show();
-                        listInfo.remove(confirmOrderPosition);
-                        infoAdapter.notifyDataSetChanged();
-                        BroadcastUtils.sendBuyersOrder(activity);
-                    } else {
-                        Toast.makeText(activity, "申请失败", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case 307:
-                    if (json.trim().equals("1")) {
-                        Toast.makeText(activity, getString(R.string.confirm_sign_success), Toast.LENGTH_SHORT).show();
-                        listInfo.remove(confirmOrderPosition);
-                        infoAdapter.notifyDataSetChanged();
-                        BroadcastUtils.sendBuyersOrder(activity);
-                    } else {
-                        Toast.makeText(activity, getString(R.string.confirm_sign_failed), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -178,9 +150,6 @@ public class BuyersOrdersAllFragment extends BuyersOrdersBaseFragment implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        Intent intent = new Intent(activity, OrderDetailsActivity.class);
-//        intent.putExtra("orderId", listInfo.get(position).getOrderId());
-//        startActivityForResult(intent, 200);
     }
 
     @Override
@@ -208,44 +177,10 @@ public class BuyersOrdersAllFragment extends BuyersOrdersBaseFragment implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == activity.RESULT_OK) {
             if (requestCode == 209) {
-                listInfo.remove(commentProductPosition);
+//                listInfo.remove(commentProductPosition);
                 infoAdapter.notifyDataSetChanged();
             }
         }
-    }
-
-    int confirmOrderPosition;
-
-    @Override
-    public void confirmOrder(int groupPosition, int childPosition) {
-        confirmOrderPosition = groupPosition;
-//        getData(Method.GET, 307, "Orders/OrderStatusUpdate?orderId=" + listInfo.get(groupPosition).getOrderId()
-//                + "&orderStatus=5&userId=" + Contents.getUser(activity).getUserId() + "", null, null, 1);
-    }
-
-    @Override
-    public void cannerOrder(int groupPosition, int childPosition) {
-    }
-
-    int commentProductPosition;
-
-    @Override
-    public void commentProduct(int groupPosition, int childPosition) {
-        commentProductPosition = groupPosition;
-//        Intent intent = new Intent(activity, ProductEvaluationActivity.class);
-//        intent.putExtra(Contents.INFO, listInfo.get(groupPosition));
-//        startActivityForResult(intent, 209);
-    }
-
-    int applyRefundPosition;
-
-    @Override
-    public void applyRefund(int groupPosition, int childPosition) {
-
-    }
-
-    @Override
-    public void payment(int groupPosition, int childPosition) {
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -297,7 +232,7 @@ public class BuyersOrdersAllFragment extends BuyersOrdersBaseFragment implements
         });
         pageNum = 1;
         listInfo = new ArrayList<HishopOrders>();
-        infoAdapter = new BuyersOrdersAdapter(activity, listInfo, true, this);
+        infoAdapter = new BuyersOrdersAdapter(activity, listInfo);
         listview.getRefreshableView().setAdapter(infoAdapter);
         infoAdapter.notifyDataSetChanged();
         null_data_default = view.findViewById(R.id.null_data_default);
