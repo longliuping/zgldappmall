@@ -118,7 +118,7 @@ public class AddressManagerActivity extends BaseActivity implements OnItemClickL
         listview.setOnRefreshListener(this);
         TextView add = (TextView) findViewById(R.id.add);
         add.setVisibility(View.VISIBLE);
-        add.setOnClickListener(new OnClickListener() {
+        add.setOnClickListener(new OnClickListener()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   {
 
             @Override
             public void onClick(View v) {

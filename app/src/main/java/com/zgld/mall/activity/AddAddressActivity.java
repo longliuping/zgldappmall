@@ -47,10 +47,6 @@ public class AddAddressActivity extends BaseActivity implements OnClickListener 
                        Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                        setResult(RESULT_OK);
                        finish();
-                   } else if (json != null && json.trim().equals("-1")) {
-                       Toast.makeText(this, getString(R.string.already_exists), Toast.LENGTH_SHORT).show();
-                   } else {
-                       Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                    }
                    break;
            }

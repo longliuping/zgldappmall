@@ -5,6 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 
 import com.zgld.mall.SysApplication;
 import com.zgld.mall.photoview.PhotoView;
@@ -41,10 +42,11 @@ public class ImageBrowserAdapter extends PagerAdapter {
 	@Override
 	public View instantiateItem(ViewGroup container, int position) {
 		PhotoView photoView = new PhotoView(container.getContext());
+		photoView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 		// imageLoader.DisplayImageAbstract(
 		// mPhotos.get(position % mPhotos.size()), photoView, false);
 		SysApplication.DisplayAbstractImage(mPhotos.get(position % mPhotos.size()), photoView);
-		container.addView(photoView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		container.addView(photoView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		return photoView;
 	}
 

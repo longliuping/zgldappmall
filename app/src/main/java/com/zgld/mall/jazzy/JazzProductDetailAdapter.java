@@ -6,10 +6,12 @@ import java.util.List;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
+import com.zgld.mall.R;
 import com.zgld.mall.SysApplication;
 
 public class JazzProductDetailAdapter extends PagerAdapter {
@@ -59,11 +61,8 @@ public class JazzProductDetailAdapter extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(View container, final int position) {
-		// imageLoader.DisplayImageAbstract(mImageUrls.get(position),
-		// mImageViews[position], false);
+		mImageViews[position].setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 		SysApplication.DisplayAbstractImage(mImageUrls.get(position), mImageViews[position]);
-		// ImageLoader.getInstance().displayImage(mImageUrls.get(position),
-		// mImageViews[position]);
 		((ViewPager) container).addView(mImageViews[position], 0);
 		mViewPager.setObjectForPosition(mImageViews[position], position);
 		mImageViews[position].setOnClickListener(new OnClickListener() {

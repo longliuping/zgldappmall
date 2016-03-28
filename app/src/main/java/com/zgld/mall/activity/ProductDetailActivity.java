@@ -309,6 +309,11 @@ public class ProductDetailActivity extends BaseActivity implements AdapterView.O
                 mImageUrls.add(info.getHishopProducts().getImageUrl4());
             }
 
+            /////
+
+
+            ////////////////////////////////////////////////////////////////
+
             mIndicators = new ImageView[mImageUrls.size()];
             // mIndicator.setBackgroundColor(Color.argb(200, 135, 135, 152));
             mIndicator.setGravity(Gravity.CENTER_HORIZONTAL);
