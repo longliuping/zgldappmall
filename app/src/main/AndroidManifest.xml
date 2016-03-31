@@ -129,7 +129,8 @@
             android:value="Channel ID" />
 
         <activity android:name=".activity.HotSupplierActivity" />
-        <activity android:name=".activity.UpdateUserEmailActivity"></activity>
+        <activity android:name=".activity.UpdateUserEmailActivity" />
+        <activity android:name=".activity.UserAccountActivity"></activity>
     </application>
 
 </manifest>

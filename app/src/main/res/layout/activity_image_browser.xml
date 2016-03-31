@@ -12,8 +12,8 @@
 
         <com.zgld.mall.photoview.ScrollViewPager
             android:id="@+id/imagebrowser_svp_pager"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
 
     <LinearLayout
