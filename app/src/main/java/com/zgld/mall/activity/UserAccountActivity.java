@@ -7,9 +7,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.zgld.mall.R;
+import com.zgld.mall.UserDataShare;
+import com.zgld.mall.beans.AspnetUsers;
 
+/**
+ * 用户账户
+ */
 public class UserAccountActivity extends BaseActivity {
-
+    AspnetUsers users;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +28,12 @@ public class UserAccountActivity extends BaseActivity {
                 finish();
             }
         });
+        users = new UserDataShare(this).getUserData();
+        if(users==null){
+            finish();
+            return;
+        }
+
     }
 
     @Override
